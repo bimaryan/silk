@@ -2,23 +2,19 @@
 
 use App\Http\Controllers\WEB\Admin\AdminController;
 use App\Http\Controllers\WEB\Admin\DashboardController;
+use App\Http\Controllers\WEB\Admin\DokumenSpoController;
+use App\Http\Controllers\WEB\Admin\DosenController;
+use App\Http\Controllers\WEB\Admin\KelasController;
 use App\Http\Controllers\WEB\Admin\MahasiswaController;
+use App\Http\Controllers\WEB\Admin\MataKuliahController;
 use App\Http\Controllers\WEB\Auth\ForgotPasswordController;
 use App\Http\Controllers\WEB\Auth\LoginController;
 use App\Http\Controllers\WEB\Auth\LogoutController;
 use App\Http\Controllers\WEB\Auth\ResetPasswordController;
+use App\Http\Controllers\WEB\Staff\BarangController;
+use App\Http\Controllers\WEB\Staff\Kategoricontroller;
+use App\Http\Controllers\WEB\Staff\SatuanController;
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
 
 // ROUTE LOGIN
 Route::resource('login', LoginController::class);
@@ -38,10 +34,21 @@ Route::middleware(['auth:admin'])->group(function () {
         Route::prefix('pengguna')->group(function () {
             Route::resource('admin-dan-staff', AdminController::class);
             Route::resource('data-mahasiswa', MahasiswaController::class);
+            Route::resource('data-dosen', DosenController::class);
         });
+
+        Route::resource('data-kelas', KelasController::class);
+        Route::resource('data-mata-kuliah', MataKuliahController::class);
+        Route::resource('data-spo', DokumenSpoController::class);
     });
 
-    Route::middleware(['UserAccess:Staff'])->group(function () {});
+    Route::middleware(['UserAccess:Staff'])->group(function () {
+        Route::prefix('data/')->group(function () {
+            Route::resource('barang', BarangController::class);
+            Route::resource('kategori', Kategoricontroller::class);
+            Route::resource('satuan', SatuanController::class);
+        });
+    });
 });
 
 Route::middleware(['multiGuard:dosen,mahasiswa'])->group(function () {});

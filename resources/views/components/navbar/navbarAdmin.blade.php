@@ -90,7 +90,7 @@
                             </a>
                         </li>
                         <li>
-                            <a
+                            <a href="{{ route('data-dosen.index') }}"
                                 class="flex gap-1 items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 {{ Route::is('data-dosen') ? 'bg-gray-300' : '' }}">
                                 <i class="fa-solid fa-user me-2"></i>Dosen
                             </a>
