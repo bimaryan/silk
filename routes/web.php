@@ -13,7 +13,9 @@ use App\Http\Controllers\WEB\Auth\LogoutController;
 use App\Http\Controllers\WEB\Auth\ResetPasswordController;
 use App\Http\Controllers\WEB\Staff\BarangController;
 use App\Http\Controllers\WEB\Staff\Kategoricontroller;
+use App\Http\Controllers\WEB\Staff\RuanganController;
 use App\Http\Controllers\WEB\Staff\SatuanController;
+use App\Http\Controllers\WEB\Staff\VerifikasiPeminjamanController;
 use Illuminate\Support\Facades\Route;
 
 // ROUTE LOGIN
@@ -47,8 +49,13 @@ Route::middleware(['auth:admin'])->group(function () {
             Route::resource('barang', BarangController::class);
             Route::resource('kategori', Kategoricontroller::class);
             Route::resource('satuan', SatuanController::class);
+            Route::resource('ruangan', RuanganController::class);
         });
+
+        Route::resource('verifikasi-peminjaman', VerifikasiPeminjamanController::class);
     });
 });
 
-Route::middleware(['multiGuard:dosen,mahasiswa'])->group(function () {});
+Route::middleware(['multiGuard:dosen,mahasiswa'])->group(function () {
+    Route::resource('logout', LogoutController::class)->only('index');
+});
