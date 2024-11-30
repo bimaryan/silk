@@ -1,0 +1,78 @@
+<?php
+
+namespace App\Http\Controllers\WEB\Admin;
+
+use App\Models\Kelas;
+use App\Models\Mahasiswa;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+
+class MahasiswaController extends Controller
+{
+    public function index()
+    {
+        $mahasiswa = Mahasiswa::get();
+        $kelas = Kelas::all();
+        return view('pages.admin.pengguna.mahasiswa.index', ['mahasiswa' => $mahasiswa], ['kelas' => $kelas]);
+    }
+
+    public function store(Request $request)
+    {
+        $validatedData = $request->validate([
+            'nama' => 'required|string',
+            'nim' => 'required|string',
+            // 'kelas_id' => 'required|string',
+        ]);
+
+
+        $validatedData['password'] = Hash::make('@Poli' . $validatedData['nim']);
+
+        DB::transaction(function () use ($request) {
+            $mahasiswa = new Mahasiswa();
+            $mahasiswa->nama = $request->nama;
+            $mahasiswa->nim = $request->nim;
+            // $mahasiswa->kelas_id = $request->kelas_id;
+            $mahasiswa->password = Hash::make($request->password);
+            $mahasiswa->save();
+        });
+
+        return redirect()->back()->with('success', 'Pendaftaran sudah berhasil.');
+    }
+
+    public function update(Request $request, Mahasiswa $data_mahasiswa)
+    {
+        $request->validate([
+            'foto' => 'required|image|mimes:png,jpg,jpeg|max:2048',
+            'nama' => 'required|string',
+            'nim' => 'required|string',
+            // 'kelas_id' => 'required|exists:kelas,id',
+        ]);
+
+        if ($request->hasFile('foto')) {
+            if ($data_mahasiswa->foto && file_exists(public_path($data_mahasiswa->foto))) {
+                unlink(public_path($data_mahasiswa->foto));
+            }
+
+            $filepath = $request->file('foto')->move('foto_mahasiswa', time() . '_' . $request->file('foto')->getClientOriginalName());
+
+            $data_mahasiswa->foto = $filepath;
+        }
+
+        $data_mahasiswa->update([
+            'nama' => $request->nama,
+            'nim' => $request->nim,
+            // 'kelas_id' => $request->kelas_id,
+        ]);
+
+
+        return redirect()->back()->with('success', 'Mahasiswa berhasil di diperbarui!');
+    }
+
+    public function destroy(Mahasiswa $data_mahasiswa)
+    {
+        $data_mahasiswa->delete();
+        return redirect()->back()->with('success', 'Mahasiswa berhasil di hapus!');
+    }
+}
