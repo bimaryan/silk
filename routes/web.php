@@ -35,9 +35,13 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::resource('logout', LogoutController::class)->only('index');
 
     Route::middleware(['UserAccess:Admin'])->group(function () {
-        Route::prefix('pengguna')->group(function(){
+        Route::prefix('pengguna')->group(function () {
             Route::resource('admin-dan-staff', AdminController::class);
             Route::resource('data-mahasiswa', MahasiswaController::class);
         });
     });
+
+    Route::middleware(['UserAccess:Staff'])->group(function () {});
 });
+
+Route::middleware(['multiGuard:dosen,mahasiswa'])->group(function () {});
