@@ -23,10 +23,7 @@ class DokumenSpoController extends Controller
             'file' => 'required|mimes:pdf,doc,docx|max:2048',
         ]);
 
-        // Simpan file dan buat nama unik
-        $originalName = $request->file('file')->getClientOriginalName();
-        $fileName = pathinfo($originalName, PATHINFO_FILENAME) . '_' . time() . '.' . $request->file('file')->getClientOriginalExtension();
-        $file_path = $request->file('file')->storeAs('dokumen-spo', $fileName, 'public');
+        $file_path = $request->file('file')->move('dokumen-spo', time() . '_' . $request->file('file')->getClientOriginalName());
 
         // Pastikan path file berhasil disimpan
         if (!$file_path) {
@@ -44,6 +41,18 @@ class DokumenSpoController extends Controller
     public function destroy(DokumenSpo $data_spo)
     {
         $data_spo->delete();
+
         return redirect()->back()->with('success', 'Dokumen SPO berhasil dihapus!');
+    }
+
+    public function downloadSPO(DokumenSpo $data_spo)
+    {
+        $filePath = $data_spo->file;
+
+        if (file_exists($filePath)) {
+            return response()->download($filePath);
+        } else {
+            return back()->with('error', 'File tidak ditemukan.');
+        }
     }
 }

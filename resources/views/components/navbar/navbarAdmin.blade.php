@@ -85,13 +85,13 @@
                         </li>
                         <li>
                             <a href="{{ route('data-mahasiswa.index') }}"
-                                class="flex gap-1 items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 {{ Route::is('data-mahasiswa') ? 'bg-gray-300' : '' }}">
+                                class="flex gap-1 items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 {{ Route::is('data-mahasiswa.index') ? 'bg-gray-300' : '' }}">
                                 <i class="fa-solid fa-user me-2"></i>Mahasiswa
                             </a>
                         </li>
                         <li>
                             <a href="{{ route('data-dosen.index') }}"
-                                class="flex gap-1 items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 {{ Route::is('data-dosen') ? 'bg-gray-300' : '' }}">
+                                class="flex gap-1 items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 {{ Route::is('data-dosen.index') ? 'bg-gray-300' : '' }}">
                                 <i class="fa-solid fa-user me-2"></i>Dosen
                             </a>
                         </li>
@@ -99,21 +99,21 @@
                 </li>
                 <li>
                     <a href="{{ route('data-kelas.index') }}"
-                        class="mt-2 flex items-center p-2  rounded-lg dark:text-gray-100 hover:bg-green-800 hover:text-white group  {{ Route::is('data-kelas') ? 'bg-green-500 text-white' : '' }}">
+                        class="mt-2 flex items-center p-2  rounded-lg dark:text-gray-100 hover:bg-green-800 hover:text-white group  {{ Route::is('data-kelas.index') ? 'bg-green-500 text-white' : '' }}">
                         <span class="flex-1 ms-3 whitespace-nowrap"><i
                                 class="fa-solid fa-landmark me-2"></i>Kelas</span>
                     </a>
                 </li>
                 <li>
-                    <a
-                        class="mt-2 flex items-center p-2  rounded-lg dark:text-gray-100 hover:bg-green-800 hover:text-white group  {{ Route::is('data-mata-kuliah') ? 'bg-green-500 text-white' : '' }}">
+                    <a href="{{ 'data-mata-kuliah' }}"
+                        class="mt-2 flex items-center p-2  rounded-lg dark:text-gray-100 hover:bg-green-800 hover:text-white group  {{ Route::is('data-mata-kuliah.index') ? 'bg-green-500 text-white' : '' }}">
                         <span class="flex-1 ms-3 whitespace-nowrap"><i class="fa-solid fa-book"></i> Mata
                             Kuliah</span>
                     </a>
                 </li>
                 <li>
-                    <a
-                        class="flex items-center p-2  rounded-lg dark:text-gray-100 hover:bg-green-800 hover:text-white group  {{ Route::is('data-spo') ? 'bg-green-500 text-white' : '' }}">
+                    <a href="{{ 'data-spo' }}"
+                        class="flex items-center p-2  rounded-lg dark:text-gray-100 hover:bg-green-800 hover:text-white group  {{ Route::is('data-spo.index') ? 'bg-green-500 text-white' : '' }}">
                         <span class="flex-1 ms-3 whitespace-nowrap"><i class="fa-solid fa-file-lines"></i> Dokumen
                             SPO</span>
                     </a>
