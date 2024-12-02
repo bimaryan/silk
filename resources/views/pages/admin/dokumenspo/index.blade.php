@@ -12,39 +12,37 @@
                     });
                 </script>
             @endif
+            @if (session('error'))
+                <script>
+                    Swal.fire({
+                        title: "Error",
+                        text: "{{ session('error') }}",
+                        icon: "danger",
+                        confirmButtonColor: "#3085d6",
+                    });
+                </script>
+            @endif
             <div class="p-4 bg-white rounded-lg shadow-lg">
                 <div class="flex items-center justify-between">
                     <div>
-                        <h3 class="text-2xl font-semibold text-green-500">Data Kelas</h3>
+                        <h3 class="text-2xl font-semibold text-green-500">Dokumen SPO</h3>
                     </div>
                     <div>
-                        <button class="justify-center px-4 py-2 text-white bg-green-500 rounded hover:bg-green-800"
-                            data-modal-target="import-kelas" data-modal-toggle="import-kelas" data-tooltip-target="import"
-                            data-tooltip-placement="left"><i class="fa-solid fa-file-arrow-up"></i>
-                        </button>
 
-                        <div id="import" role="tooltip"
-                            class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
-                            Import
-                            <div class="tooltip-arrow" data-popper-arrow></div>
-                        </div>
-
-                        @include('components.modal.modalimportKelas')
-
-                        <button data-modal-target="tambah-kelas" data-modal-toggle="tambah-kelas"
+                        <button data-modal-target="tambah-spo" data-modal-toggle="tambah-spo"
                             class="justify-center px-4 py-2 text-white bg-green-500 rounded hover:bg-green-800"><i
                                 class="fa-solid fa-plus"></i>
                         </button>
 
                         {{-- MODAL TAMBAH KELAS --}}
-                        @include('components.modal.modaltambahKelas')
+                        @include('components.modal.modaltambahDokumenspo')
                     </div>
                 </div>
             </div>
 
             <div class="p-4 bg-white rounded-lg shadow-lg">
-                <div id='tableKelas'>
-                    @include('components.tables.tableKelas', ['kelas' => $kelas])
+                <div id='tableSPO'>
+                    @include('components.tables.tableDokumenspo', ['dokumen' => $dokumen])
                 </div>
             </div>
 
@@ -87,7 +85,7 @@
 
                 function loadTable(page = 1) {
                     $.ajax({
-                        url: "{{ route('data-kelas.index') }}",
+                        url: "{{ route('data-spo.index') }}",
                         method: "GET",
                         data: {
                             // name: $('#filterName').val(),
@@ -99,13 +97,13 @@
                         },
                         success: function(response) {
                             // Replace table and pagination links
-                            $('#tableMahasiswa').html($(response).find('#tableMahasiswa').html());
+                            $('#tableSPO').html($(response).find('#tableSPO').html());
                         }
                     });
                 }
             });
             $(document).ready(function() {
-                $('#data-kelas').DataTable({
+                $('#data-spo').DataTable({
                     paging: true,
                     scrollCollapse: true,
                     scrollY: '300px'

@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class KelasController extends Controller
 {
-    public function kelas()
+    public function index()
     {
         $kelas = Kelas::get();
         return view('pages.admin.kelas.index', ['kelas' => $kelas]);

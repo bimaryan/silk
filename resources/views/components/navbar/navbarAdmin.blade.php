@@ -98,23 +98,25 @@
                     </ul>
                 </li>
                 <li>
-                    <a
+
+                    <a href="{{ route('data-kelas.index') }}"
                         class="mt-2 flex items-center p-2  rounded-lg dark:text-gray-100 hover:bg-green-800 hover:text-white group  {{ Route::is('data-kelas.index') ? 'bg-green-500 text-white' : '' }}">
                         <span class="flex-1 ms-3 whitespace-nowrap"><i
                                 class="fa-solid fa-landmark me-2"></i>Kelas</span>
                     </a>
                 </li>
                 <li>
-                    <a
+
+                    <a href="{{ 'data-mata-kuliah' }}"
                         class="mt-2 flex items-center p-2  rounded-lg dark:text-gray-100 hover:bg-green-800 hover:text-white group  {{ Route::is('data-mata-kuliah.index') ? 'bg-green-500 text-white' : '' }}">
-                        <span class="flex-1 ms-3 whitespace-nowrap"><i class="fa-regular fa-file-lines me-2"></i>Mata
+                        <span class="flex-1 ms-3 whitespace-nowrap"><i class="fa-solid fa-book"></i> Mata
                             Kuliah</span>
                     </a>
                 </li>
                 <li>
-                    <a
+                    <a href="{{ 'data-spo' }}"
                         class="flex items-center p-2  rounded-lg dark:text-gray-100 hover:bg-green-800 hover:text-white group  {{ Route::is('data-spo.index') ? 'bg-green-500 text-white' : '' }}">
-                        <span class="flex-1 ms-3 whitespace-nowrap"><i class="fa-solid fa-chart-simple me-2"></i>Dokumen
+                        <span class="flex-1 ms-3 whitespace-nowrap"><i class="fa-solid fa-file-lines"></i> Dokumen
                             SPO</span>
                     </a>
                 </li>

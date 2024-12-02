@@ -42,6 +42,7 @@ Route::post('reset-password/{token}', [ResetPasswordController::class, 'store'])
 Route::middleware(['auth:admin'])->group(function () {
     Route::resource('dashboard', DashboardController::class)->only('index');
     Route::resource('logout', LogoutController::class)->only('index');
+    Route::resource('laporan-peminjamandownloadSPO', LogoutController::class)->only('index');
 
     Route::middleware(['UserAccess:Admin'])->group(function () {
         Route::prefix('pengguna')->group(function () {
@@ -53,6 +54,7 @@ Route::middleware(['auth:admin'])->group(function () {
         Route::resource('data-kelas', KelasController::class);
         Route::resource('data-mata-kuliah', MataKuliahController::class);
         Route::resource('data-spo', DokumenSpoController::class);
+        Route::get('download-spo/{data_spo}', [DokumenSpoController::class, 'downloadSPO'])->name('download.spo');
     });
 
     Route::middleware(['UserAccess:Staff'])->group(function () {
