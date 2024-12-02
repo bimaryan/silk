@@ -11,6 +11,14 @@ use App\Http\Controllers\WEB\Auth\ForgotPasswordController;
 use App\Http\Controllers\WEB\Auth\LoginController;
 use App\Http\Controllers\WEB\Auth\LogoutController;
 use App\Http\Controllers\WEB\Auth\ResetPasswordController;
+use App\Http\Controllers\WEB\Pengguna\BerandaController;
+use App\Http\Controllers\WEB\Pengguna\DetailController;
+use App\Http\Controllers\WEB\Pengguna\EditPasswordController;
+use App\Http\Controllers\WEB\Pengguna\EditProfileController;
+use App\Http\Controllers\WEB\Pengguna\InformasiController;
+use App\Http\Controllers\WEB\Pengguna\KatalogController;
+use App\Http\Controllers\WEB\Pengguna\KeranjangController;
+use App\Http\Controllers\WEB\Pengguna\RiwayatController;
 use App\Http\Controllers\WEB\Staff\BarangController;
 use App\Http\Controllers\WEB\Staff\Kategoricontroller;
 use App\Http\Controllers\WEB\Staff\RuanganController;
@@ -20,6 +28,9 @@ use Illuminate\Support\Facades\Route;
 
 // ROUTE LOGIN
 Route::resource('login', LoginController::class);
+
+// ROUTE BERANDA
+Route::resource('/', BerandaController::class);
 
 // ROUTE FORGOT PASSWORD
 Route::resource('forgot-password', ForgotPasswordController::class);
@@ -58,4 +69,15 @@ Route::middleware(['auth:admin'])->group(function () {
 
 Route::middleware(['multiGuard:dosen,mahasiswa'])->group(function () {
     Route::resource('logout', LogoutController::class)->only('index');
+
+    Route::resource('beranda', BerandaController::class)->only('index');
+    Route::resource('katalog', KatalogController::class);
+    Route::resource('informasi', InformasiController::class);
+    Route::resource('detail', DetailController::class);
+    Route::resource('riwayat', RiwayatController::class);
+    Route::resource('keranjang', KeranjangController::class);
+    Route::resource('edit-profile', EditProfileController::class);
+    Route::resource('edit-password', EditPasswordController::class);
+
+
 });

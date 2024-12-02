@@ -30,19 +30,19 @@ class BarangController extends Controller
             $query->where('kategori_id', $request->kategori_id);
         }
 
-        if ($request->has('kondisi') && $request->kondisi != '') {
-            $query->whereHas('stock', function ($q) use ($request) {
-                if ($request->kondisi == 'habis') {
-                    $q->where('stock', 0);
-                } elseif ($request->kondisi == 'terpakai') {
-                    $q->where('is_stock_reduced', true);
-                } elseif ($request->kondisi == 'hilang') {
-                    $q->where('is_stock_lost', true);
-                } else {
-                    $q->where('stock', '>', 0);
-                }
-            });
-        }
+        // if ($request->has('kondisi') && $request->kondisi != '') {
+        //     $query->whereHas('stock', function ($q) use ($request) {
+        //         if ($request->kondisi == 'habis') {
+        //             $q->where('stock', 0);
+        //         } elseif ($request->kondisi == 'terpakai') {
+        //             $q->where('is_stock_reduced', true);
+        //         } elseif ($request->kondisi == 'hilang') {
+        //             $q->where('is_stock_lost', true);
+        //         } else {
+        //             $q->where('stock', '>', 0);
+        //         }
+        //     });
+        // }
 
         if ($request->has('stock') && $request->stock != '') {
             $query->whereHas('stock', function ($q) use ($request) {
@@ -60,7 +60,7 @@ class BarangController extends Controller
         $satuans = Satuan::all();
         $stocks = Stock::all();
 
-        return view('pages.staff.barang.index', compact('barangs', 'kategoris', 'kondisis', 'satuans', 'stocks', 'notifikasiPeminjaman'));
+        return view('pages.staff.barang.index', compact('barangs', 'kategoris',  'satuans', 'stocks', 'notifikasiPeminjaman'));
     }
 
     public function store(Request $request)
