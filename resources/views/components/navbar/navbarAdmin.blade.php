@@ -98,6 +98,7 @@
                     </ul>
                 </li>
                 <li>
+
                     <a href="{{ route('data-kelas.index') }}"
                         class="mt-2 flex items-center p-2  rounded-lg dark:text-gray-100 hover:bg-green-800 hover:text-white group  {{ Route::is('data-kelas.index') ? 'bg-green-500 text-white' : '' }}">
                         <span class="flex-1 ms-3 whitespace-nowrap"><i
@@ -105,6 +106,7 @@
                     </a>
                 </li>
                 <li>
+
                     <a href="{{ 'data-mata-kuliah' }}"
                         class="mt-2 flex items-center p-2  rounded-lg dark:text-gray-100 hover:bg-green-800 hover:text-white group  {{ Route::is('data-mata-kuliah.index') ? 'bg-green-500 text-white' : '' }}">
                         <span class="flex-1 ms-3 whitespace-nowrap"><i class="fa-solid fa-book"></i> Mata
@@ -120,7 +122,7 @@
                 </li>
                 <li>
                     <a
-                        class="flex items-center p-2  rounded-lg dark:text-gray-100 hover:bg-green-800 hover:text-white group  {{ Route::is('laporan') ? 'bg-green-500 text-white' : '' }}">
+                        class="flex items-center p-2  rounded-lg dark:text-gray-100 hover:bg-green-800 hover:text-white group  {{ Route::is('laporan.index') ? 'bg-green-500 text-white' : '' }}">
                         <span class="flex-1 ms-3 whitespace-nowrap"><i class="fa-solid fa-chart-simple me-2"></i>Laporan
                             Peminjaman</span>
                     </a>
@@ -143,20 +145,20 @@
 
                     <ul id="dropdown" class="hidden py-2 space-y-2" aria-labelledby="kelolaproduk">
                         <li>
-                            <a
-                                class="flex gap-1 items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 {{ Route::is('data-barang') ? 'bg-gray-300' : '' }}"><i
+                            <a href="{{ route('barang.index') }}"
+                                class="flex gap-1 items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 {{ Route::is('barang.index') ? 'bg-gray-300' : '' }}"><i
                                     class="fa-solid fa-folder-open"></i> Data
                                 Barang</a>
                         </li>
                         <li>
                             <a
-                                class="flex gap-1 items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 {{ Route::is('data-kategori') ? 'bg-gray-300' : '' }}"><i
+                                class="flex gap-1 items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 {{ Route::is('data-kategori.index') ? 'bg-gray-300' : '' }}"><i
                                     class="fa-solid fa-folder-open"></i> Data
                                 Kategori</a>
                         </li>
                         <li>
                             <a
-                                class="flex gap-1 items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 {{ Route::is('data-satuan') ? 'bg-gray-300' : '' }}"><i
+                                class="flex gap-1 items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700 {{ Route::is('data-satuan.index') ? 'bg-gray-300' : '' }}"><i
                                     class="fa-solid fa-folder-open"></i> Data
                                 Satuan</a>
                         </li>
@@ -164,21 +166,21 @@
                 </li>
                 <li>
                     <a
-                        class="flex items-center p-2  rounded-lg dark:text-gray-100 hover:bg-green-800 hover:text-white group  {{ Route::is('data-ruangan') ? 'bg-green-500 text-white' : '' }}">
+                        class="flex items-center p-2  rounded-lg dark:text-gray-100 hover:bg-green-800 hover:text-white group  {{ Route::is('data-ruangan.index') ? 'bg-green-500 text-white' : '' }}">
                         <span class="flex-1 ms-3 whitespace-nowrap"><i class="fa-solid fa-house me-2"></i>Ruang
                             Laboratorium</span>
                     </a>
                 </li>
                 <li>
                     <a
-                        class="flex items-center p-2  rounded-lg dark:text-gray-100 hover:bg-green-800 hover:text-white group  {{ Route::is('verifikasi') ? 'bg-green-500 text-white' : '' }}">
+                        class="flex items-center p-2  rounded-lg dark:text-gray-100 hover:bg-green-800 hover:text-white group  {{ Route::is('verifikasi.index') ? 'bg-green-500 text-white' : '' }}">
                         <span class="flex-1 ms-3 whitespace-nowrap"><i
                                 class="fa-solid fa-square-check me-2"></i>Verifikasi Peminjaman</span>
                     </a>
                 </li>
                 <li>
                     <a
-                        class="flex items-center p-2  rounded-lg dark:text-gray-100 hover:bg-green-800 hover:text-white group  {{ Route::is('laporan') ? 'bg-green-500 text-white' : '' }}">
+                        class="flex items-center p-2  rounded-lg dark:text-gray-100 hover:bg-green-800 hover:text-white group  {{ Route::is('laporan.index') ? 'bg-green-500 text-white' : '' }}">
                         <span class="flex-1 ms-3 whitespace-nowrap"><i class="fa-solid fa-chart-simple"></i> Laporan
                             Peminjaman</span>
                     </a>

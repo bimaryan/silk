@@ -58,11 +58,11 @@ class LoginController extends Controller
         }
 
         if (Auth::guard('mahasiswa')->attempt(['nim' => $credentials['identifier'], 'password' => $request->password])) {
-            return redirect()->route('home');
+            return redirect()->route('beranda.index');
         }
 
         if (Auth::guard('dosen')->attempt(['username' => $credentials['identifier'], 'password' => $request->password])) {
-            return redirect()->route('home');
+            return redirect()->route('beranda.index');
         }
 
         return redirect()->back()->with('error', 'Username/NIM atau kata sandi salah')->withInput();
