@@ -27,7 +27,7 @@
                         </div>
                     </div>
                     <div>
-                        <form action="{{ route('detail.store', ['barang' => $view->id]) }}" method="POST">
+                        <form action="{{ route('keranjang.store', ['barang' => $view->id]) }}" method="POST">
                             @csrf
                             <div class="flex justify-between items-center">
                                 <div>

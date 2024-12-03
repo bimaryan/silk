@@ -75,11 +75,14 @@ Route::middleware(['multiGuard:dosen,mahasiswa'])->group(function () {
     Route::resource('beranda', BerandaController::class)->only('index');
     Route::resource('katalog', KatalogController::class);
     Route::resource('informasi', InformasiController::class);
-    Route::resource('detail', DetailController::class);
     Route::resource('riwayat', RiwayatController::class);
-    Route::resource('keranjang', KeranjangController::class);
     Route::resource('edit-profile', EditProfileController::class);
     Route::resource('edit-password', EditPasswordController::class);
+
+    Route::get('/detail/{id}', [DetailController::class, 'index'])->name('detail.index');
+    Route::get('/keranjang', [KeranjangController::class, 'index'])->name('keranjang.index');
+    Route::post('/keranjang/store/{barang}', [KeranjangController::class, 'store'])->name('keranjang.store');
+    Route::delete('/keranjang/{keranjang}', [KeranjangController::class, 'destroy'])->name('keranjang.destroy');
 
 
 });
