@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\WEB\Pengguna;
 
 use App\Http\Controllers\Controller;
+use App\Models\Dosen;
 use App\Models\Keranjang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,27 +42,29 @@ class KeranjangController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, $barang)
-    {
-        $users = Auth::user();
+    public function store(Request $request, Keranjang $keranjang)
+    { {
+            // Validasi input
+            $request->validate([
+                'dosen_id' => 'required|exists:dosens,id', // Pastikan dosen_id ada di tabel dosens
+            ]);
 
+            try {
+                // Simpan data ke tabel keranjangs
+                $keranjang = new Keranjang();
+                $keranjang->users_id = auth()->user()->id; // Mengambil ID pengguna yang login
+                $keranjang->dosen_id = $request->dosen_id; // Ambil dari form select
+                $keranjang->created_at = now(); // Waktu saat ini
+                $keranjang->updated_at = now(); // Waktu saat ini
+                $keranjang->save();
 
-        $totalBarang = Keranjang::where('users_id', $users->id)->count();
-
-        if ($totalBarang >= 10) {
-            return redirect()->route('keranjang.index')->with('error', 'Anda hanya dapat menambahkan maksimal 10 barang ke keranjang.');
+                // Redirect dengan pesan sukses
+                return redirect()->back()->with('success', 'Data berhasil ditambahkan ke keranjang!');
+            } catch (\Exception $e) {
+                // Tangani error
+                return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+            }
         }
-
-        if (!$barang) {
-            return redirect()->back()->with('error', 'Barang tidak ditemukan.');
-        }
-        Keranjang::create([
-            'users_id' => $users->id,
-            'barang_id' => $barang,
-            'stock_pinjam' => $request->stock_pinjam
-        ]);
-
-        return redirect()->route('beranda.index')->with('success', 'Barang berhasil ditambahkan ke keranjang.');
     }
 
     /**
@@ -100,7 +103,7 @@ class KeranjangController extends Controller
 
         $keranjang->delete();
 
-        return redirect()->route('beranda.index')
+        return redirect()->route('keranjang.index')
             ->with('success', 'Barang berhasil dihapus dari keranjang.');
     }
 }

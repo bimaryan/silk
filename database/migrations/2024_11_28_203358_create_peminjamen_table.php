@@ -11,20 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('peminjamen', function (Blueprint $table) {
+        Schema::create('peminjaman', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('users_id');
             $table->unsignedBigInteger('keranjang_id');
             $table->unsignedBigInteger('ruangan_id')->nullable();
-            $table->unsignedBigInteger('matkul_id');
-            $table->unsignedBigInteger('dosen_id');
-            $table->string('tgl_pinjam');
-            $table->string('waktu_pinjam');
-            $table->string('waktu_kembali');
-            $table->string('keterangan')->nullable();
+            $table->unsignedBigInteger('matkul_id')->nullable();
+            $table->unsignedBigInteger('dosen_id')->nullable();
+            $table->dateTime('tanggal_waktu_peminjaman');
+            $table->time('waktu_pengembalian');
+            $table->string('anggota_kelompok')->nullable();
             $table->enum('status_pengembalian', ['Belum', 'Diserahkan', 'Habis'])->default('Belum');
             $table->enum('aprovals', ['Ya', 'Tidak', 'Belum']);
-            $table->enum('status', ['Dipinjam', 'Dikembalikan', 'Menunggu Persetujuan']);
+            $table->enum('status', ['Dipinjamkan', 'Dikembalikan', 'Menunggu Persetujuan']);
             $table->timestamps();
 
             $table->foreign('keranjang_id')->references('id')->on('keranjangs');
