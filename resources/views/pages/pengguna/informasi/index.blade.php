@@ -33,7 +33,11 @@
                     class="text-xs bg-gray-300 text-gray-700 uppercase dark:text-gray-400 bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3">No</th>
-                        <th scope="col" class="px-6 py-3">Nama Mahasiswa</th>
+                        @if (Auth::guard('mahasiswa')->check())
+                            <th scope="col" class="px-6 py-3">Nama Mahasiswa</th>
+                        @elseif(Auth::guard('dosen')->check())
+                            <th scope="col" class="px-6 py-3">Nama Dosen</th>
+                        @endif
                         <th scope="col" class="px-6 py-3">Nama Barang</th>
                         <th scope="col" class="px-6 py-3">Jumlah Barang</th>
                         <th scope="col" class="px-6 py-3">Sisa Waktu</th>
@@ -55,14 +59,20 @@
                                     <td scope="col" class="px-6 py-3">
                                         {{ $loop->iteration }}
                                     </td>
+                                    @if (Auth::guard('mahasiswa')->check())
+                                        <td scope="col" class="px-6 py-3">
+                                            {{ $data->mahasiswa->nama }}
+                                        </td>
+                                    @elseif(Auth::guard('dosen')->check())
+                                        <td scope="col" class="px-6 py-3">
+                                            {{ $data->dosen->nama }}
+                                        </td>
+                                    @endif
                                     <td scope="col" class="px-6 py-3">
-                                        {{ $data->mahasiswa->nama }}
+                                        {{ $data->keranjang->barang->nama_barang }}
                                     </td>
                                     <td scope="col" class="px-6 py-3">
-                                        {{ $data->barang->nama_barang }}
-                                    </td>
-                                    <td scope="col" class="px-6 py-3">
-                                        {{ $data->stock_pinjam }}
+                                        {{ $data->keranjang->stock_pinjam }}
                                     </td>
                                     <td scope="col" class="px-6 py-3">
                                         <span id="time-remaining-{{ $data->id }}" class="text-red-500"></span>
@@ -84,16 +94,13 @@
 
                             <script>
                                 document.addEventListener('DOMContentLoaded', function() {
-                                    const waktuPinjam = {{ $data->waktu_pinjam_unix }} * 1000;
-                                    const waktuKembali = {{ $data->waktu_kembali_unix }} * 1000;
-
-                                    function updateTimeRemaining() {
+                                    function updateTimeRemaining(dataId, waktu_pengembalian) {
+                                        const timeElement = document.getElementById(`time-remaining-${dataId}`);
                                         const now = new Date().getTime();
-                                        let distance = waktuKembali - now;
+                                        let distance = waktu_pengembalian - now;
 
                                         if (distance < 0) {
-                                            document.getElementById('time-remaining-{{ $data->id }}').innerHTML =
-                                                "Waktu Kembali Sudah Lewat";
+                                            timeElement.innerHTML = "Waktu Kembali Sudah Lewat";
                                             return;
                                         }
 
@@ -101,11 +108,13 @@
                                         let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                                         let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-                                        document.getElementById('time-remaining-{{ $data->id }}').innerHTML =
-                                            `${hours} Jam ${minutes} Menit ${seconds} Detik`;
+                                        timeElement.innerHTML = `${hours} Jam ${minutes} Menit ${seconds} Detik`;
                                     }
 
-                                    setInterval(updateTimeRemaining, 1000);
+                                    @foreach ($peminjaman as $data)
+                                        const waktu_pengembalian = {{ $data->waktu_kembali_unix }} * 1000;
+                                        setInterval(() => updateTimeRemaining({{ $data->id }}, waktu_pengembalian), 1000);
+                                    @endforeach
                                 });
                             </script>
 
@@ -137,21 +146,29 @@
                                             </div>
                                             <div class="grid grid-cols-2 gap-2">
                                                 <div class="space-y-2">
-                                                    <p
-                                                        class="text-sm text-gray-900 dark:text-white font-medium flex justify-between">
-                                                        <span>Nim Mahasiswa</span>
-                                                        <span>:</span>
-                                                    </p>
-                                                    <p
-                                                        class="text-sm text-gray-900 dark:text-white font-medium flex justify-between">
-                                                        <span>Nama Mahasiswa</span>
-                                                        <span>:</span>
-                                                    </p>
-                                                    <p
-                                                        class="text-sm text-gray-900 dark:text-white font-medium flex justify-between">
-                                                        <span>Kelas Mahasiswa</span>
-                                                        <span>:</span>
-                                                    </p>
+                                                    @if (Auth::guard('mahasiswa')->check())
+                                                        <p
+                                                            class="text-sm text-gray-900 dark:text-white font-medium flex justify-between">
+                                                            <span>Nim Mahasiswa</span>
+                                                            <span>:</span>
+                                                        </p>
+                                                        <p
+                                                            class="text-sm text-gray-900 dark:text-white font-medium flex justify-between">
+                                                            <span>Nama Mahasiswa</span>
+                                                            <span>:</span>
+                                                        </p>
+                                                        <p
+                                                            class="text-sm text-gray-900 dark:text-white font-medium flex justify-between">
+                                                            <span>Kelas Mahasiswa</span>
+                                                            <span>:</span>
+                                                        </p>
+                                                    @elseif(Auth::guard('dosen')->check())
+                                                        <p
+                                                            class="text-sm text-gray-900 dark:text-white font-medium flex justify-between">
+                                                            <span>Nama Dosen</span>
+                                                            <span>:</span>
+                                                        </p>
+                                                    @endif
                                                     <p
                                                         class="text-sm text-gray-900 dark:text-white font-medium flex justify-between">
                                                         <span>Nama Ruangan</span>
@@ -169,12 +186,7 @@
                                                     </p>
                                                     <p
                                                         class="text-sm text-gray-900 dark:text-white font-medium flex justify-between">
-                                                        <span>Tanggal Pinjam</span>
-                                                        <span>:</span>
-                                                    </p>
-                                                    <p
-                                                        class="text-sm text-gray-900 dark:text-white font-medium flex justify-between">
-                                                        <span>Waktu Peminjaman</span>
+                                                        <span>Tanggal Peminjaman</span>
                                                         <span>:</span>
                                                     </p>
                                                     <p
@@ -184,7 +196,7 @@
                                                     </p>
                                                     <p
                                                         class="text-sm text-gray-900 dark:text-white font-medium flex justify-between">
-                                                        <span>Keterangan</span>
+                                                        <span>Tindakan SPO</span>
                                                         <span>:</span>
                                                     </p>
                                                     <p
@@ -194,37 +206,39 @@
                                                     </p>
                                                 </div>
                                                 <div class="space-y-2">
-                                                    <p class="text-sm text-gray-500 dark:text-gray-400">
-                                                        {{ $data->mahasiswa->nim }}
-                                                    </p>
-                                                    <p class="text-sm text-gray-500 dark:text-gray-400">
-                                                        {{ $data->mahasiswa->nama }}
-                                                    </p>
-                                                    <p class="text-sm text-gray-500 dark:text-gray-400">
-                                                        {{ Auth::user()->kelas->nama_kelas }}
-                                                    </p>
+                                                    @if (Auth::guard('mahasiswa')->check())
+                                                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                                                            {{ $data->mahasiswa->nim }}
+                                                        </p>
+                                                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                                                            {{ $data->mahasiswa->nama }}
+                                                        </p>
+                                                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                                                            {{ Auth::user()->kelas->nama_kelas }}
+                                                        </p>
+                                                    @elseif(Auth::guard('dosen')->check())
+                                                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                                                            {{ Auth::user()->dosen->nama }}
+                                                        </p>
+                                                    @endif
                                                     <p class="text-sm text-gray-500 dark:text-gray-400">
                                                         {{ $data->ruangan->nama_ruangan ?? 'null' }}
                                                     </p>
                                                     <p class="text-sm text-gray-500 dark:text-gray-400">
-                                                        {{ $data->barang->nama_barang }}
+                                                        {{ $data->keranjang->barang->nama_barang }}
                                                     </p>
                                                     <p class="text-sm text-gray-500 dark:text-gray-400">
-                                                        {{ $data->stock_pinjam }}
+                                                        {{ $data->keranjang->stock_pinjam }}
                                                     </p>
                                                     <p class="text-sm text-gray-500 dark:text-gray-400">
-                                                        {{ \Carbon\Carbon::parse($data->tgl_pinjam)->format('d M Y') }}
+                                                        {{ \Carbon\Carbon::parse($data->tanggal_waktu_peminjaman)->format('d M Y') }}
                                                     </p>
                                                     <p class="text-sm text-gray-500 dark:text-gray-400">
-                                                        {{ \Carbon\Carbon::parse($data->waktu_pinjam)->format('H:i') }}
+                                                        {{ \Carbon\Carbon::parse($data->waktu_pengembalian)->format('H:i') }}
                                                         WIB
                                                     </p>
                                                     <p class="text-sm text-gray-500 dark:text-gray-400">
-                                                        {{ \Carbon\Carbon::parse($data->waktu_kembali)->format('H:i') }}
-                                                        WIB
-                                                    </p>
-                                                    <p class="text-sm text-gray-500 dark:text-gray-400">
-                                                        {{ $data->keterangan ?? 'Tidak ada keterangan' }}
+                                                        {{ $data->keranjang->tindakan_spo ?? 'Tidak ada keterangan' }}
                                                     </p>
                                                     <p class="text-sm text-gray-500 dark:text-gray-400">
                                                         {{ $data->status }}

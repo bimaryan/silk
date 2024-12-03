@@ -15,14 +15,14 @@
                 class="flex items-center justify-center gap-2 mt-6 mb-4">
                 {{-- Tombol Semua Kategori --}}
                 <button type="submit" name="kategori" value="Semua"
-                    class="px-3 py-2 bg-white rounded-lg border shadow-xl {{ request('kategori') == 'Semua' ? 'bg-green-800 text-white' : 'border-green-500 hover:bg-green-800 hover:text-white' }}">
+                    class="px-3 py-2 rounded-lg border shadow-xl {{ request('kategori') == 'Semua' ? 'bg-green-800 text-white' : 'border-green-500 hover:bg-green-800 hover:text-white' }}">
                     Semua
                 </button>
 
                 {{-- Tombol untuk setiap kategori --}}
                 @foreach ($kategoris as $kategori)
                     <button type="submit" name="kategori" value="{{ $kategori->kategori }}"
-                        class="px-3 py-2 bg-white rounded-lg border shadow-xl {{ request('kategori') == $kategori->kategori ? 'bg-green-800 text-white' : 'border-green-500 hover:bg-green-800 hover:text-white' }}">
+                        class="px-3 py-2 rounded-lg border shadow-xl {{ request('kategori') == $kategori->kategori ? 'bg-green-800 text-white' : 'border-green-500 hover:bg-green-800 hover:text-white' }}">
                         {{ $kategori->kategori }}
                     </button>
                 @endforeach

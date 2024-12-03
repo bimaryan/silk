@@ -17,10 +17,9 @@ class Peminjaman extends Model
         'ruangan_id',
         'matkul_id',
         'dosen_id',
-        'tgl_pinjam',
-        'waktu_pinjam',
-        'waktu_kembali',
-        'keterangan',
+        'waktu_pengembalian',
+        'tanggal_waktu_peminjaman',
+        'anggota_kelompok',
         'status_pengembalian',
         'aprovals',
         'status',
@@ -33,7 +32,7 @@ class Peminjaman extends Model
 
     public function mahasiswa()
     {
-        return $this->belongsTo(Mahasiswa::class, 'mahasiswa_id');
+    return $this->belongsTo(Mahasiswa::class, 'users_id');
     }
 
     public function barang()
@@ -62,6 +61,6 @@ class Peminjaman extends Model
     }
     public function dosen()
     {
-        return $this->belongsTo(Dosen::class, 'dosen_id');
+        return $this->belongsTo(Dosen::class, 'users_id');
     }
 }

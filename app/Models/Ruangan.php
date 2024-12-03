@@ -11,7 +11,7 @@ class Ruangan extends Model
 
     protected $table = 'ruangans';
 
-    protected $fillable = ['nama_ruangan'];
+    protected $fillable = ['nama_ruangan', 'stok_ruangan'];
 
     public function peminjaman()
     {

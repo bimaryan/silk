@@ -23,10 +23,10 @@ class InformasiController extends Controller
             ->take(5)
             ->get();
 
-        $peminjaman = Peminjaman::with(['mahasiswa', 'barang', 'stock', 'ruangan'])
-            ->whereHas('mahasiswa', function ($query) use ($user) {
-                $query->where('id', $user->id);
-            })->latest()->get();
+        $peminjaman = Peminjaman::with(['barang', 'stock', 'ruangan', 'keranjang'])
+            ->where('users_id', $user->id)
+            ->latest()
+            ->paginate(5);
 
 
         return view('pages.pengguna.informasi.index', compact('peminjaman', 'notifikasiKeranjang'));

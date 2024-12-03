@@ -5,6 +5,8 @@ namespace App\Http\Controllers\WEB\Pengguna;
 use App\Http\Controllers\Controller;
 use App\Models\Dosen;
 use App\Models\Keranjang;
+use App\Models\MataKuliah;
+use App\Models\Ruangan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,12 +25,16 @@ class KeranjangController extends Controller
             ->take(5)
             ->get();
 
-        $keranjang = Keranjang::with('barang')
+        $keranjang = Keranjang::with('mahasiswa', 'dosen', 'barang')
             ->where('users_id', $users->id)
             ->latest()
             ->get();
 
-        return view('pages.pengguna.keranjang.index', compact('keranjang', 'notifikasiKeranjang'));
+        $matkul = MataKuliah::all();
+        $ruangan = Ruangan::all();
+        $dosen = Dosen::all();
+
+        return view('pages.pengguna.keranjang.index', compact('keranjang', 'notifikasiKeranjang', 'matkul', 'ruangan', 'dosen'));
     }
 
     /**

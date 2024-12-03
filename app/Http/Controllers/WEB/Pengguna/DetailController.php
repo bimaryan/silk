@@ -76,7 +76,7 @@ class DetailController extends Controller
             'tindakan_spo' => $request->tindakan_spo
         ]);
 
-        return redirect()->route('beranda.index')->with('success', 'Barang berhasil ditambahkan ke keranjang.');
+        return redirect()->route('katalog.index')->with('success', 'Barang berhasil ditambahkan ke keranjang.');
     }
 
 
