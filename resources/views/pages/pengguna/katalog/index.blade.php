@@ -36,7 +36,7 @@
             @else
                 <div id="card-section" class="grid grid-cols-1 gap-2 md:grid-cols-3 animate-card">
                     @foreach ($barangs as $data)
-                        <a href="{{ route('katalog.index', ['nama_barang' => $data->nama_barang]) }}"
+                        <a href="{{ route('detail.index', $data->id, ['nama_barang' => $data->nama_barang]) }}"
                             class="w-full p-3 border border-green-500 bg-white rounded-lg shadow-lg max-w-m">
                             <div class="flex justify-center w-full">
                                 <img src="{{ asset($data->foto ?? 'image/barang.png') }}" class="object-cover zoom-image"

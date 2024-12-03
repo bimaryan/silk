@@ -55,7 +55,29 @@ class DetailController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {}
+    public function store(Request $request, $barang)
+    {
+        $users = Auth::user();
+
+
+        $totalBarang = Keranjang::where('users_id', $users->id)->count();
+
+        if ($totalBarang >= 10) {
+            return redirect()->route('keranjang.index')->with('error', 'Anda hanya dapat menambahkan maksimal 10 barang ke keranjang.');
+        }
+
+        if (!$barang) {
+            return redirect()->back()->with('error', 'Barang tidak ditemukan.');
+        }
+        Keranjang::create([
+            'users_id' => $users->id,
+            'barang_id' => $barang,
+            'stock_pinjam' => $request->stock_pinjam,
+            'tindakan_spo' => $request->tindakan_spo
+        ]);
+
+        return redirect()->route('beranda.index')->with('success', 'Barang berhasil ditambahkan ke keranjang.');
+    }
 
 
     /**

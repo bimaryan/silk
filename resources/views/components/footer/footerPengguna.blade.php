@@ -58,11 +58,10 @@
         <div class="sm:flex sm:items-center sm:justify-between">
             <div class="mb-6 md:mb-0">
                 <a href="{{ route('beranda.index') }}" class="flex items-center">
-                    <img src="{{ asset('logo/polindra.png') }}" style="width: 30%" alt="Logo Polindra" />
-                    <span class="self-center text-2xl font-semibold text-green-500 whitespace-nowrap">SILK</span>
+                    <img src="{{ asset('image/logo/silk.png') }}" style="width: 25%" alt="Logo Polindra" />
                 </a>
             </div>
-            <ul class="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400">
+            <ul class="flex  items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400">
                 <li>
                     <a href="{{ route('beranda.index') }}" class="hover:underline me-4 md:me-6">Beranda</a>
                 </li>

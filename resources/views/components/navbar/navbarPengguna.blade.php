@@ -1,9 +1,9 @@
 <nav class="fixed top-0 left-0 z-10 w-full bg-white border-gray-200 shadow-lg dark:bg-gray-900">
     <div class="flex flex-wrap items-center justify-between max-w-screen-xl p-4 mx-auto">
         <a href="{{ route('beranda.index') }}" class="flex flex-col items-center space-x-3 rtl:space-x-reverse">
-            <img src="{{ asset('logo/silk-transparant.png') }}" class="hidden w-24 md:block"
-                alt="{{ asset('logo/silk.png') }}" />
-            <img src="{{ asset('logo/polindra.png') }}" class="w-10 md:hidden" alt="{{ asset('logo/polindra.png') }}" />
+            <img src="{{ asset('image/logo/silk.png') }}" class="hidden w-24 md:block "
+                alt="{{ asset('image/logo/silk.png') }}" />
+            <img src="{{ asset('image/logo/polindra.png') }}" class="w-10 md:hidden" alt="{{ asset('image/logo/polindra.png') }}" />
         </a>
         <div class="flex items-center md:order-2 md:space-x-0 rtl:space-x-reverse">
             <button type="button"

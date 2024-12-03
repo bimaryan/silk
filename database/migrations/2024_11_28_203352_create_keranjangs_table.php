@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('users_id');
             $table->unsignedBigInteger('barang_id');
             $table->string('stock_pinjam');
+            $table->string('tindakan_spo');
             $table->timestamps();
 
             $table->foreign('barang_id')->references('id')->on('barangs');

@@ -80,8 +80,9 @@ Route::middleware(['multiGuard:dosen,mahasiswa'])->group(function () {
     Route::resource('edit-password', EditPasswordController::class);
 
     Route::get('/detail/{id}', [DetailController::class, 'index'])->name('detail.index');
+    Route::post('/detail/store/{barang}', [DetailController::class, 'store'])->name('detail.store');
     Route::get('/keranjang', [KeranjangController::class, 'index'])->name('keranjang.index');
-    Route::post('/keranjang/store/{barang}', [KeranjangController::class, 'store'])->name('keranjang.store');
+    Route::post('/keranjang/store/{keranjang}', [KeranjangController::class, 'store'])->name('keranjang.store');
     Route::delete('/keranjang/{keranjang}', [KeranjangController::class, 'destroy'])->name('keranjang.destroy');
 
 
