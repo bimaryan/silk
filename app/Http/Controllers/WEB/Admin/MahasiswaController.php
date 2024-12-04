@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\WEB\Admin;
 
+use App\Exports\MahasiswaExport;
 use App\Models\Kelas;
 use App\Models\Mahasiswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Imports\MahasiswaImport;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MahasiswaController extends Controller
 {
@@ -74,5 +77,17 @@ class MahasiswaController extends Controller
     {
         $data_mahasiswa->delete();
         return redirect()->back()->with('success', 'Mahasiswa berhasil di hapus!');
+    }
+
+    public function importMahasiswa(Request $request)
+    {
+        Excel::import(new MahasiswaImport(), $request->file('file'));
+
+        return redirect()->back()->with('success', 'Mahasiswa berhasil di import!');
+    }
+
+    public function exportMahasiswa()
+    {
+        return Excel::download(new MahasiswaExport, 'data_mahasiswa.xlsx');
     }
 }

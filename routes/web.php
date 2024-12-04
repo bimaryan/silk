@@ -5,6 +5,7 @@ use App\Http\Controllers\WEB\Admin\DashboardController;
 use App\Http\Controllers\WEB\Admin\DokumenSpoController;
 use App\Http\Controllers\WEB\Admin\DosenController;
 use App\Http\Controllers\WEB\Admin\KelasController;
+use App\Http\Controllers\WEB\Admin\LaporanPeminjamanController;
 use App\Http\Controllers\WEB\Admin\MahasiswaController;
 use App\Http\Controllers\WEB\Admin\MataKuliahController;
 use App\Http\Controllers\WEB\Auth\ForgotPasswordController;
@@ -43,12 +44,14 @@ Route::post('reset-password/{token}', [ResetPasswordController::class, 'store'])
 Route::middleware(['auth:admin'])->group(function () {
     Route::resource('dashboard', DashboardController::class)->only('index');
     Route::resource('logout', LogoutController::class)->only('index');
-    Route::resource('laporan-peminjamandownloadSPO', LogoutController::class)->only('index');
+    Route::resource('laporan-peminjaman', LaporanPeminjamanController::class);
 
     Route::middleware(['UserAccess:Admin'])->group(function () {
         Route::prefix('pengguna')->group(function () {
             Route::resource('admin-dan-staff', AdminController::class);
             Route::resource('data-mahasiswa', MahasiswaController::class);
+            Route::post('import-mahasiswa', [MahasiswaController::class, 'importMahasiswa'])->name('import-mahasiswa');
+            Route::get('export-mahasiswa', [MahasiswaController::class, 'exportMahasiswa'])->name('export-mahasiswa');
             Route::resource('data-dosen', DosenController::class);
         });
 
@@ -63,8 +66,9 @@ Route::middleware(['auth:admin'])->group(function () {
             Route::resource('barang', BarangController::class);
             Route::resource('kategori', Kategoricontroller::class);
             Route::resource('satuan', SatuanController::class);
-            Route::resource('ruangan', RuanganController::class);
         });
+
+        Route::resource('ruangan', RuanganController::class);
 
         Route::resource('verifikasi-peminjaman', VerifikasiPeminjamanController::class);
     });

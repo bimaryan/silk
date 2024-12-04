@@ -13,38 +13,32 @@ class SatuanSeeder extends Seeder
      */
     public function run(): void
     {
-        $satuans = [
-            [
-                'satuan' => 'pcs',
-            ],
-            [
-                'satuan' => 'unit',
-            ],
-            [
-                'satuan' => 'kg',
-            ],
-            [
-                'satuan' => 'm',
-            ],
-            [
-                'satuan' => 'cm',
-            ],
-            [
-                'satuan' => 'ml',
-            ],
-            [
-                'satuan' => 'liter',
-            ],
-            [
-                'satuan' => 'box',
-            ],
-            [
-                'satuan' => 'pack',
-            ],
-        ];
-
-        foreach ($satuans as $satuan) {
-            Satuan::create($satuan);
-        }
+        Satuan::create([
+            'satuan' => 'pcs',
+        ]);
+        Satuan::create([
+            'satuan' => 'unit',
+        ]);
+        Satuan::create([
+            'satuan' => 'kg',
+        ]);
+        Satuan::create([
+            'satuan' => 'm',
+        ]);
+        Satuan::create([
+            'satuan' => 'cm',
+        ]);
+        Satuan::create([
+            'satuan' => 'ml',
+        ]);
+        Satuan::create([
+            'satuan' => 'liter',
+        ]);
+        Satuan::create([
+            'satuan' => 'box',
+        ]);
+        Satuan::create([
+            'satuan' => 'pack',
+        ]);
     }
 }

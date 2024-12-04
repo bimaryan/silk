@@ -10,7 +10,7 @@ class RuanganController extends Controller
 {
     public function index()
     {
-        $ruangan = Ruangan::get();
+        $ruangan = Ruangan::paginate(5);
         return view("pages.staff.ruangan.index", ["ruangan" => $ruangan]);
     }
 

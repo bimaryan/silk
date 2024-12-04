@@ -19,7 +19,8 @@
                     </div>
                     <div>
                         <div class="flex items-center space-x-2">
-                            <a href="" data-tooltip-target="export" data-tooltip-placement="left"
+                            <a href="{{ route('export-mahasiswa') }}" data-tooltip-target="export"
+                                data-tooltip-placement="left"
                                 class="justify-center px-4 py-2 text-white bg-green-500 rounded hover:bg-green-800">
                                 <i class="fa-solid fa-file-arrow-down"></i>
                             </a>

@@ -22,45 +22,27 @@ class BarangController extends Controller
 
         $query = Barang::query();
 
-        if ($request->has('nama_barang') && $request->name != '') {
-            $query->where('nama_barang', 'LIKE', '%' . $request->name . '%');
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where('nama_barang', 'LIKE', "%{$search}%")
+                ->orWhereHas('kategori', function ($q) use ($search) {
+                    $q->where('kategori', 'LIKE', "%{$search}%");
+                })
+                ->orWhereHas('satuan', function ($q) use ($search) {
+                    $q->where('satuan', 'LIKE', "%{$search}%");
+                })
+                ->orWhereHas('stock', function ($q) use ($search) {
+                    $q->where('stock', 'LIKE', "%{$search}%");
+                });
         }
 
-        if ($request->has('kategori_id') && $request->kategori_id != '') {
-            $query->where('kategori_id', $request->kategori_id);
-        }
-
-        // if ($request->has('kondisi') && $request->kondisi != '') {
-        //     $query->whereHas('stock', function ($q) use ($request) {
-        //         if ($request->kondisi == 'habis') {
-        //             $q->where('stock', 0);
-        //         } elseif ($request->kondisi == 'terpakai') {
-        //             $q->where('is_stock_reduced', true);
-        //         } elseif ($request->kondisi == 'hilang') {
-        //             $q->where('is_stock_lost', true);
-        //         } else {
-        //             $q->where('stock', '>', 0);
-        //         }
-        //     });
-        // }
-
-        if ($request->has('stock') && $request->stock != '') {
-            $query->whereHas('stock', function ($q) use ($request) {
-                $q->where('stock', '>=', $request->stock);
-            });
-        }
-
-        if ($request->has('satuan_id') && $request->satuan_id != '') {
-            $query->where('satuan_id', $request->satuan_id);
-        }
-
-        $barangs = $query->get();
+        $barangs = $query->paginate(5)->appends($request->all());
 
         $kategoris = Kategori::all();
         $satuans = Satuan::all();
         $stocks = Stock::all();
 
-        return view('pages.staff.barang.index', compact('barangs', 'kategoris',  'satuans', 'stocks', 'notifikasiPeminjaman'));
+        return view('pages.staff.barang.index', compact('barangs', 'kategoris', 'satuans', 'stocks', 'notifikasiPeminjaman'));
     }
 
     public function store(Request $request)

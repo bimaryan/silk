@@ -19,14 +19,12 @@ class BarangImport implements ToCollection, WithHeadingRow
         foreach ($rows as $row) {
             // Cari atau buat kategori, kondisi, dan satuan berdasarkan nama dari Excel
             $kategori = Kategori::firstOrCreate(['kategori' => $row['kategori']]);
-            $kondisi = Kondisi::firstOrCreate(['kondisi' => $row['kondisi'] ?? 'baik']);
             $satuan = Satuan::firstOrCreate(['satuan' => $row['satuan']]);
 
             // Buat barang baru dengan relasi yang benar
             $barang = Barang::create([
                 'nama_barang' => $row['nama_barang'],
                 'kategori_id' => $kategori->id,
-                'kondisi_id' => $kondisi->id,
                 'satuan_id' => $satuan->id,
             ]);
 

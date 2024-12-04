@@ -10,7 +10,7 @@ class SatuanController extends Controller
 {
     public function index()
     {
-        $satuan = Satuan::get();
+        $satuan = Satuan::paginate(5);
         return view('pages.staff.satuan.index', ['satuan' => $satuan]);
     }
 

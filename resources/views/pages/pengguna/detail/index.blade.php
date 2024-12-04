@@ -6,7 +6,7 @@
             <div class="space-y-3 grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div class="w-full flex justify-center items-center">
                     <img src="{{ asset($view->foto ?? 'image/barang.png') }}" alt="{{ asset($view->foto) }}"
-                        class="object-cover rounded-lg image " style=" height: 80%;">
+                        class="object-cover rounded-lg" style=" width: 80%;">
                 </div>
                 <div class="space-y-3">
                     <div>

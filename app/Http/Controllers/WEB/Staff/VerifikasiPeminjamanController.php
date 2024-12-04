@@ -10,7 +10,7 @@ class VerifikasiPeminjamanController extends Controller
 {
     public function index()
     {
-        $peminjamans = Peminjaman::get();
+        $peminjamans = Peminjaman::paginate(5);
         return view('pages.staff.verifikasi-peminjaman.index', compact('peminjamans'));
     }
 

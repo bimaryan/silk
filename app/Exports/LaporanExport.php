@@ -16,7 +16,7 @@ class LaporanExport implements FromCollection, WithHeadings, ShouldAutoSize
      */
     public function collection()
     {
-        return Peminjaman::with(['mahasiswa', 'barang.kondisi'])
+        return Peminjaman::with(['mahasiswa', 'dosen'])
             ->get()
             ->map(function ($data) {
                 return [
