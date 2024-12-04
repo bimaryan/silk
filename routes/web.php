@@ -32,7 +32,7 @@ use Illuminate\Support\Facades\Route;
 Route::resource('login', LoginController::class);
 
 // ROUTE BERANDA
-Route::resource('/', BerandaController::class);
+Route::resource('/', BerandaController::class)->only('index');
 
 // ROUTE FORGOT PASSWORD
 Route::resource('forgot-password', ForgotPasswordController::class);
