@@ -70,6 +70,13 @@ Route::middleware(['auth:admin'])->group(function () {
 
         Route::resource('ruangan', RuanganController::class);
 
+        Route::post('import-barang', [BarangController::class, 'importBarang'])->name('import-barang');
+        Route::post('import-kategori', [KategoriController::class, 'importKategori'])->name('import-kategori');
+        Route::post('import-satuan', [SatuanController::class, 'importSatuan'])->name('import-satuan');
+        Route::post('import-ruangan', [RuanganController::class, 'importRuangan'])->name('import-ruangan');
+
+
+
         Route::resource('verifikasi-peminjaman', VerifikasiPeminjamanController::class);
     });
 });

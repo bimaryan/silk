@@ -18,6 +18,7 @@ class RuanganImport implements ToCollection, WithHeadingRow
         foreach ($collection as $row) {
             Ruangan::create([
                 'nama_ruangan' => $row['ruangan'],
+                'stok_ruangan' => isset($row['stok']) && is_numeric($row['stok']) ? $row['stok'] : 1,
             ]);
         }
     }
