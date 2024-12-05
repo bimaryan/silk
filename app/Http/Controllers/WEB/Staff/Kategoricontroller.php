@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\WEB\Staff;
 
 use App\Http\Controllers\Controller;
+use App\Imports\KategoriImport;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class Kategoricontroller extends Controller
 {
@@ -45,5 +47,21 @@ class Kategoricontroller extends Controller
         $kategori->delete();
 
         return redirect()->back()->with('success', 'Kategori deleted successfully.');
+    }
+
+    public function importKategori(Request $request)
+    {
+        $request->validate(
+            [
+                'file' => 'required|mimes:xlsx,xls,csv',
+            ],
+            [
+                'file.mimes' => 'File harus berupa .xlsx, .xls, .csv',
+            ]
+        );
+
+        Excel::import(new KategoriImport(), $request->file('file'));
+
+        return redirect()->back()->with('success','Kategori berhasil di import');
     }
 }

@@ -5,7 +5,6 @@ namespace App\Imports;
 use App\Models\Stock;
 use App\Models\Barang;
 use App\Models\Satuan;
-use App\Models\Kondisi;
 use App\Models\Kategori;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -36,4 +35,3 @@ class BarangImport implements ToCollection, WithHeadingRow
         }
     }
 }
-

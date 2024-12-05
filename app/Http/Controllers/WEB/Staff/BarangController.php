@@ -9,6 +9,8 @@ use App\Models\Kategori;
 use App\Models\Peminjaman;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Imports\BarangImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class BarangController extends Controller
 {
@@ -124,5 +126,17 @@ class BarangController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Barang berhasil diperbarui!');
+    }
+
+    public function importBarang(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xls,xlsx'
+        ], [
+            'file.mimes' => 'File harus berupa .xls, .xlsx'
+        ]);
+
+        Excel::import(new BarangImport, $request->file('file'));
+        return redirect()->back()->with('success', 'Barang Berhasil di import');
     }
 }

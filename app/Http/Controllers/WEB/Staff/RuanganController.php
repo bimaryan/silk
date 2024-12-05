@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\WEB\Staff;
 
 use App\Http\Controllers\Controller;
+use App\Imports\RuanganImport;
 use App\Models\Ruangan;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class RuanganController extends Controller
 {
@@ -45,5 +47,17 @@ class RuanganController extends Controller
         $ruangan->delete();
 
         return redirect()->back()->with('success', 'Ruangan berhasil dihapus!');
+    }
+
+    public function importRuangan(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv',
+        ], [
+            'file.mimes' => 'File harus berupa .xlsx, .xls, .csv',
+        ]);
+
+        Excel::import(new RuanganImport(), $request->file('file'));
+        return redirect()->back()->with('success', 'Ruangan berhasil diimport!');
     }
 }
