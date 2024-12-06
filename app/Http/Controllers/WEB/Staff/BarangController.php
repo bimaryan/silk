@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\WEB\Staff;
 
+use App\Exports\BarangExport;
 use App\Models\Stock;
 use App\Models\Barang;
 use App\Models\Satuan;
@@ -138,5 +139,10 @@ class BarangController extends Controller
 
         Excel::import(new BarangImport, $request->file('file'));
         return redirect()->back()->with('success', 'Barang Berhasil di import');
+    }
+
+    public function exportBarang()
+    {
+        return Excel::download(new BarangExport, 'data_barang.xlsx');
     }
 }

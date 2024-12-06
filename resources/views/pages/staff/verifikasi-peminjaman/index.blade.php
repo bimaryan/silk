@@ -27,7 +27,7 @@
             <div class="p-4 bg-white rounded-lg shadow-lg">
                 <div class="flex items-center justify-between">
                     <div>
-                        <h3 class="text-2xl font-semibold text-green-500">Verifikasi Peminjaman</h3>
+                        <h3 class="text-2xl font-semibold text-green-500">Verifikasi Peminjaman Barang</h3>
                     </div>
                 </div>
             </div>

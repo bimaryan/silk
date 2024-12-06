@@ -17,16 +17,37 @@
                     <div>
                         <h3 class="text-2xl font-semibold text-green-500">Data Barang</h3>
                     </div>
-                    <div>
+                    <div class="flex items-center gap-2">
+                        {{-- START : MODAL EXPORT BARANG --}}
+                        <a href="{{ route('export-barang') }}" data-tooltip-target="export" data-tooltip-placement="left"
+                            class="justify-center px-4 py-2 text-white bg-green-500 rounded hover:bg-green-800">
+                            <i class="fa-solid fa-file-arrow-down"></i>
+                        </a>
+
+                        <div id="export" role="tooltip"
+                            class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                            Export
+                            <div class="tooltip-arrow" data-popper-arrow></div>
+                        </div>
+                        {{-- END : MODAL EXPORT BARANG --}}
+
                         <button data-modal-target="import-barang" data-modal-toggle="import-barang"
-                            class="px-3 py-2 text-white bg-green-500 rounded hover:bg-green-800">
-                            <i class="fa-solid fa-upload"></i>
+                            data-tooltip-target="import" data-tooltip-placement="left"
+                            class="justify-center px-4 py-2 text-white bg-green-500 rounded hover:bg-green-800">
+                            <i class="fa-solid fa-file-arrow-up"></i>
                         </button>
+
+                        <div id="import" role="tooltip"
+                            class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                            Export
+                            <div class="tooltip-arrow" data-popper-arrow></div>
+                        </div>
+
                         {{-- MODAL IMPORT BARANG --}}
                         @include('components.modal.modalimportBarang')
 
                         <button data-modal-target="tambah-barang" data-modal-toggle="tambah-barang"
-                            class="px-3 py-2 text-white bg-green-500 rounded hover:bg-green-800">
+                            class="justify-center px-4 py-2 text-white bg-green-500 rounded hover:bg-green-800">
                             <i class="fa-solid fa-plus"></i>
                         </button>
                         {{-- MODAL TAMBAH BARANG --}}

@@ -2,12 +2,8 @@
 
 @section('content')
     <div class="max-w-screen-xl mx-auto p-6 mt-14">
-        <div class="flex justify-center items-center mt-6">
-            <div>
-                <p class="text-2xl text-green-500 font-semibold">
-                    Informasi Peminjaman
-                </p>
-            </div>
+        <div class="max-w-screen-xl mx-auto mt-14 bg-white p-4 text-green-500 rounded-xl text-2xl font-semibold text-center">
+            Informasi Peminjaman
         </div>
 
         <hr class="my-3">

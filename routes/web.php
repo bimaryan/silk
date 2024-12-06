@@ -21,6 +21,7 @@ use App\Http\Controllers\WEB\Pengguna\KatalogController;
 use App\Http\Controllers\WEB\Pengguna\KeranjangController;
 use App\Http\Controllers\WEB\Pengguna\PeminjamanController;
 use App\Http\Controllers\WEB\Pengguna\RiwayatController;
+use App\Http\Controllers\WEB\Pengguna\RuanganController as PenggunaRuanganController;
 use App\Http\Controllers\WEB\Staff\BarangController;
 use App\Http\Controllers\WEB\Staff\Kategoricontroller;
 use App\Http\Controllers\WEB\Staff\RuanganController;
@@ -47,16 +48,27 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::resource('laporan-peminjaman', LaporanPeminjamanController::class);
 
     Route::middleware(['UserAccess:Admin'])->group(function () {
-        Route::prefix('pengguna')->group(function () {
+        Route::prefix('pengguna/')->group(function () {
             Route::resource('admin-dan-staff', AdminController::class);
             Route::resource('data-mahasiswa', MahasiswaController::class);
+            Route::resource('data-dosen', DosenController::class);
+
             Route::post('import-mahasiswa', [MahasiswaController::class, 'importMahasiswa'])->name('import-mahasiswa');
             Route::get('export-mahasiswa', [MahasiswaController::class, 'exportMahasiswa'])->name('export-mahasiswa');
-            Route::resource('data-dosen', DosenController::class);
+
+            Route::post('import-dosen', [DosenController::class, 'importDosen'])->name('import-dosen');
+            Route::get('export-dosen', [DosenController::class, 'exportDosen'])->name('export-dosen');
+
+            Route::post('import-kelas', [KelasController::class, 'importKelas'])->name('import-kelas');
+            Route::get('export-kelas', [KelasController::class, 'exportKelas'])->name('export-kelas');
         });
 
         Route::resource('data-kelas', KelasController::class);
+
         Route::resource('data-mata-kuliah', MataKuliahController::class);
+        Route::post('import-mata-kuliah', [MataKuliahController::class, 'importMataKuliah'])->name('import-mata-kuliah');
+        Route::get('export-mata-kuliah', [MataKuliahController::class, 'exportMataKuliah'])->name('export-mata-kuliah');
+
         Route::resource('data-spo', DokumenSpoController::class);
         Route::get('download-spo/{data_spo}', [DokumenSpoController::class, 'downloadSPO'])->name('download.spo');
     });
@@ -64,20 +76,21 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::middleware(['UserAccess:Staff'])->group(function () {
         Route::prefix('data/')->group(function () {
             Route::resource('barang', BarangController::class);
+            Route::post('import-barang', [BarangController::class, 'importBarang'])->name('import-barang');
+            Route::get('export-barang', [BarangController::class, 'exportBarang'])->name('export-barang');
+
             Route::resource('kategori', Kategoricontroller::class);
+            Route::post('import-kategori', [KategoriController::class, 'importKategori'])->name('import-kategori');
+
             Route::resource('satuan', SatuanController::class);
+            Route::post('import-satuan', [SatuanController::class, 'importSatuan'])->name('import-satuan');
         });
 
         Route::resource('ruangan', RuanganController::class);
-
-        Route::post('import-barang', [BarangController::class, 'importBarang'])->name('import-barang');
-        Route::post('import-kategori', [KategoriController::class, 'importKategori'])->name('import-kategori');
-        Route::post('import-satuan', [SatuanController::class, 'importSatuan'])->name('import-satuan');
         Route::post('import-ruangan', [RuanganController::class, 'importRuangan'])->name('import-ruangan');
+        Route::get('export-ruangan', [RuanganController::class, 'exportRuangan'])->name('export-ruangan');
 
-
-
-        Route::resource('verifikasi-peminjaman', VerifikasiPeminjamanController::class);
+        Route::resource('verifikasi-peminjaman-barang', VerifikasiPeminjamanController::class);
     });
 });
 
@@ -86,6 +99,7 @@ Route::middleware(['multiGuard:dosen,mahasiswa'])->group(function () {
 
     Route::resource('beranda', BerandaController::class)->only('index');
     Route::resource('katalog', KatalogController::class);
+    Route::resource('ruangan', PenggunaRuanganController::class);
     Route::resource('informasi', InformasiController::class);
     Route::resource('riwayat', RiwayatController::class);
     Route::resource('edit-profile', EditProfileController::class);
@@ -93,9 +107,8 @@ Route::middleware(['multiGuard:dosen,mahasiswa'])->group(function () {
 
     Route::get('/detail/{id}', [DetailController::class, 'index'])->name('detail.index');
     Route::post('/detail/store/{barang}', [DetailController::class, 'store'])->name('detail.store');
-    Route::get('/keranjang', [KeranjangController::class, 'index'])->name('keranjang.index');
-    Route::post('/keranjang/store/{keranjang}', [KeranjangController::class, 'store'])->name('keranjang.store');
-    Route::delete('/keranjang/{keranjang}', [KeranjangController::class, 'destroy'])->name('keranjang.destroy');
+    Route::resource('keranjang', KeranjangController::class);
+
 
     Route::resource('/peminjaman', PeminjamanController::class);
 });

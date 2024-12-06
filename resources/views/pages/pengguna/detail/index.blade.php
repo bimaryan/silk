@@ -1,12 +1,34 @@
 @extends('pengguna')
 
 @section('content')
-    <div class="space-y-3 p-4">
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+                confirmButtonColor: "#3085d6",
+            });
+        </script>
+    @endif
+
+    @if (session('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                text: '{{ session('error') }}',
+                confirmButtonColor: "#3085d6",
+            });
+        </script>
+    @endif
+
+    <div class="space-y-3 p-4 mt-5">
         <div class="max-w-screen-xl p-6 mx-auto mt-14 bg-white rounded-xl">
             <div class="space-y-3 grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div class="w-full flex justify-center items-center">
                     <img src="{{ asset($view->foto ?? 'image/barang.png') }}" alt="{{ asset($view->foto) }}"
-                        class="object-cover rounded-lg" style=" width: 80%;">
+                        class="object-cover rounded-lg zoom-image" style=" width: 80%;">
                 </div>
                 <div class="space-y-3">
                     <div>
@@ -39,8 +61,9 @@
                                         <i class="fa-solid fa-minus"></i>
                                     </button>
                                     <!-- Input Kuantitas -->
-                                    <input type="number" name="stock_pinjam" id="stock_pinjam" class="w-15 auto text-center font-bold "
-                                        value="1" min="1" max="{{ $view->stock->stock }}" readonly>
+                                    <input type="number" name="stock_pinjam" id="stock_pinjam"
+                                        class="w-15 auto text-center font-bold " value="1" min="1"
+                                        max="{{ $view->stock->stock }}" readonly>
                                     <!-- Tombol Plus -->
                                     <button type="button" class="p-2 text-white" onclick="increment()">
                                         <i class="fa-solid fa-plus"></i>
@@ -49,7 +72,8 @@
                             </div>
                             <div class="mt-4">
                                 <label for="tindakan_spo"
-                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tindakan SPO</label>
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tindakan
+                                    SPO</label>
                                 <textarea id="tindakan_spo" rows="4" name="tindakan_spo"
                                     class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-green-500 focus:border-green-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="Tulis tindakan SPO"></textarea>
@@ -91,24 +115,5 @@
                 input.value = currentValue - 1;
             }
         }
-
-        @if (session('success'))
-            Swal.fire({
-                icon: 'success',
-                title: 'Success!',
-                text: '{{ session('success') }}',
-                confirmButtonColor: "#3085d6",
-            });
-        @endif
-
-        // Display error message using SweetAlert2
-        @if (session('error'))
-            Swal.fire({
-                icon: 'error',
-                title: 'Error!',
-                text: '{{ session('error') }}',
-                confirmButtonColor: "#3085d6",
-            });
-        @endif
     </script>
 @endsection

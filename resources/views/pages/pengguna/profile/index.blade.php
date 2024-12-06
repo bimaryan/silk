@@ -43,7 +43,7 @@
     </style>
 </head>
 
-<body class="bg-gray-200">
+<body class="bg-gray-100">
     @include('components.navbar.navbarPengguna')
     <div>
         <div class="max-w-screen-xl p-6 mx-auto mt-14">

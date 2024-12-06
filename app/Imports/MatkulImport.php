@@ -16,8 +16,8 @@ class MatkulImport implements ToCollection, WithHeadingRow
     {
         foreach ($collection as $row) {
             MataKuliah::create([
-                "kode_mata_kuliah"=> $row["kd_matkul"],
-                "mata_kuliah"=> $row["matkul"],
+                "kode_mata_kuliah" => $row["kode_mata_kuliah"],
+                "mata_kuliah" => $row["mata_kuliah"],
             ]);
         }
     }

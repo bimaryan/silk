@@ -3,7 +3,8 @@
         <a href="{{ route('beranda.index') }}" class="flex flex-col items-center space-x-3 rtl:space-x-reverse">
             <img src="{{ asset('image/logo/silk.png') }}" class="hidden w-24 md:block "
                 alt="{{ asset('image/logo/silk.png') }}" />
-            <img src="{{ asset('image/logo/polindra.png') }}" class="w-10 md:hidden" alt="{{ asset('image/logo/polindra.png') }}" />
+            <img src="{{ asset('image/logo/polindra.png') }}" class="w-10 md:hidden"
+                alt="{{ asset('image/logo/polindra.png') }}" />
         </a>
         <div class="flex items-center md:order-2 md:space-x-0 rtl:space-x-reverse">
             <button type="button"
@@ -13,11 +14,11 @@
                 <span class="sr-only">Notifications</span>
                 <div
                     class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-green-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900">
-                    {{ $notifikasiKeranjang->count() }}
+                    {{-- {{ $notifikasiKeranjang->count() }} --}}
                 </div>
             </button>
 
-            <div class="z-50 hidden my-4 w-64 p-2 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700"
+            {{-- <div class="z-50 hidden my-4 w-64 p-2 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700"
                 id="dropdown-cart">
                 <div role="none">
                     @if ($notifikasiKeranjang->isEmpty())
@@ -55,7 +56,7 @@
                         </div>
                     @endif
                 </div>
-            </div>
+            </div> --}}
 
             @if (Route::has('login.index'))
                 @auth
@@ -117,14 +118,14 @@
            {{ Route::is('katalog.index') ? 'text-white bg-green-700 md:text-green-700 md:bg-transparent' : 'text-gray-900 md:hover:text-green-700 dark:text-white dark:hover:bg-gray-700' }}">Katalog</a>
                 </li>
                 <li>
+                    <a href="{{ route('ruangan.index') }}"
+                        class="block py-2 px-3 rounded md:border-0 md:p-0
+           {{ Route::is('ruangan.index') ? 'text-white bg-green-700 md:text-green-700 md:bg-transparent' : 'text-gray-900 md:hover:text-green-700 dark:text-white dark:hover:bg-gray-700' }}">Ruangan</a>
+                </li>
+                <li>
                     <a href="{{ route('informasi.index') }}"
                         class="block py-2 px-3 rounded md:border-0 md:p-0
            {{ Route::is('informasi.index') ? 'text-white bg-green-700 md:text-green-700 md:bg-transparent' : 'text-gray-900 md:hover:text-green-700 dark:text-white dark:hover:bg-gray-700' }}">Informasi</a>
-                </li>
-                <li>
-                    <a href="{{ route('riwayat.index') }}"
-                        class="block py-2 px-3 rounded md:border-0 md:p-0
-           {{ Route::is('riwayat.index') ? 'text-white bg-green-700 md:text-green-700 md:bg-transparent' : 'text-gray-900 md:hover:text-green-700 dark:text-white dark:hover:bg-gray-700' }}">Riwayat</a>
                 </li>
             </ul>
         </div>

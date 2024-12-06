@@ -19,6 +19,19 @@
                     </div>
                     <div>
                         <div class="flex items-center space-x-2">
+                            {{-- START : MODAL EXPORT RUANGAN --}}
+                            <a href="{{ route('export-ruangan') }}" data-tooltip-target="export" data-tooltip-placement="left"
+                                class="justify-center px-4 py-2 text-white bg-green-500 rounded hover:bg-green-800">
+                                <i class="fa-solid fa-file-arrow-down"></i>
+                            </a>
+
+                            <div id="export" role="tooltip"
+                                class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                                Export
+                                <div class="tooltip-arrow" data-popper-arrow></div>
+                            </div>
+                            {{-- END : MODAL EXPORT RUANGAN --}}
+
                             <button class="justify-center px-4 py-2 text-white bg-green-500 rounded hover:bg-green-800"
                                 data-modal-target="import-ruangan" data-modal-toggle="import-ruangan"
                                 data-tooltip-target="import" data-tooltip-placement="left"><i

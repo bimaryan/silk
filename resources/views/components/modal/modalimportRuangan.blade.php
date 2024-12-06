@@ -22,7 +22,7 @@
             <!-- Modal body -->
 
             <div class="p-4">
-                <form action="" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('import-ruangan') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="gap-2">
                         <div class="mb-2">

@@ -4,109 +4,83 @@ namespace App\Http\Controllers\WEB\Pengguna;
 
 use App\Http\Controllers\Controller;
 use App\Models\Dosen;
-use App\Models\Keranjang;
 use App\Models\MataKuliah;
+use App\Models\Peminjaman;
 use App\Models\Ruangan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class KeranjangController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Peminjaman $keranjang)
     {
-        $users = Auth::user();
+        // Identifikasi pengguna yang login
+        $mahasiswaId = Auth::guard('mahasiswa')->user();
+        $dosenId = Auth::guard('dosen')->user();
 
-        $notifikasiKeranjang = Keranjang::with(['mahasiswa', 'dosen', 'barang'])
-            ->where('users_id', $users->id)
-            ->latest()
-            ->take(5)
-            ->get();
-
-        $keranjang = Keranjang::with('mahasiswa', 'dosen', 'barang')
-            ->where('users_id', $users->id)
-            ->latest()
-            ->get();
+        if ($mahasiswaId) {
+            $keranjang = Peminjaman::where('mahasiswa_id', $mahasiswaId->id)->with('barang')->get();
+        } elseif ($dosenId) {
+            $keranjang = Peminjaman::where('dosen_id', $dosenId->id)->with('barang')->get();
+        } else {
+            // Redirect jika tidak ada pengguna yang login
+            return redirect()->route('login.index')->with('error', 'Silakan login terlebih dahulu.');
+        }
 
         $matkul = MataKuliah::all();
         $ruangan = Ruangan::all();
         $dosen = Dosen::all();
 
-        return view('pages.pengguna.keranjang.index', compact('keranjang', 'notifikasiKeranjang', 'matkul', 'ruangan', 'dosen'));
+        return view('pages.pengguna.keranjang.index', compact('keranjang', 'matkul', 'ruangan', 'dosen'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function update(Request $request, Peminjaman $keranjang)
     {
-        //
-    }
+        $request->validate([
+            'ruangan_id' => 'nullable|exists:ruangans,id',
+            'matkul_id' => 'nullable|exists:mata_kuliahs,id',
+            'tanggal_waktu_peminjaman' => 'nullable|date',
+            'waktu_pengembalian' => 'nullable|date_format:H:i',
+            'anggota_kelompok' => 'nullable|string',
+            'nama_dosen' => 'nullable|string'
+        ]);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request, Keranjang $keranjang)
-    { {
-            // Validasi input
-            $request->validate([
-                'dosen_id' => 'required|exists:dosens,id', // Pastikan dosen_id ada di tabel dosens
+        $mahasiswa_id = $keranjang->mahasiswa_id;
+        $dosen_id = $keranjang->dosen_id;
+
+        $peminjaman = Peminjaman::where('mahasiswa_id', $mahasiswa_id)
+            ->orWhere('dosen_id', $dosen_id)
+            ->get();
+
+        foreach ($peminjaman as $item) {
+            $item->update([
+                'nama_dosen' => $request->nama_dosen ?? $item->nama_dosen,
+                'ruangan_id' => $request->ruangan_id ?? $item->ruangan_id,
+                'matkul_id' => $request->matkul_id ?? $item->matkul_id,
+                'tanggal_waktu_peminjaman' => $request->tanggal_waktu_peminjaman ?? $item->tanggal_waktu_peminjaman,
+                'waktu_pengembalian' => $request->waktu_pengembalian ?? $item->waktu_pengembalian,
+                'anggota_kelompok' => $request->anggota_kelompok ?? $item->anggota_kelompok,
+                'stock_pinjam_ruangan' => '1',
             ]);
-
-            try {
-                // Simpan data ke tabel keranjangs
-                $keranjang = new Keranjang();
-                $keranjang->users_id = auth()->user()->id; // Mengambil ID pengguna yang login
-                $keranjang->dosen_id = $request->dosen_id; // Ambil dari form select
-                $keranjang->created_at = now(); // Waktu saat ini
-                $keranjang->updated_at = now(); // Waktu saat ini
-                $keranjang->save();
-
-                // Redirect dengan pesan sukses
-                return redirect()->back()->with('success', 'Data berhasil ditambahkan ke keranjang!');
-            } catch (\Exception $e) {
-                // Tangani error
-                return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
-            }
-        }
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Keranjang $keranjang)
-    {
-        // Pastikan mahasiswa hanya dapat menghapus barang miliknya
-        if ($keranjang->users_id !== Auth::id()) {
-            abort(403, 'Akses tidak diizinkan');
         }
 
+        return redirect()->back()->with('success', 'Permintaan peminjaman berhasil diperbarui. Silakan menunggu persetujuan dari staf.');
+    }
+
+    public function destroy(Peminjaman $keranjang)
+    {
+        // Ambil pengguna yang sedang login
+        $mahasiswa = Auth::guard('mahasiswa')->user();
+        $dosen = Auth::guard('dosen')->user();
+
+        // Validasi apakah pengguna yang login adalah pemilik keranjang
+        if (($mahasiswa && $keranjang->mahasiswa_id !== $mahasiswa->id) ||
+            ($dosen && $keranjang->dosen_id !== $dosen->id)
+        ) {
+            return redirect()->route('keranjang.index')->with('error', 'Akses tidak diizinkan.');
+        }
+
+        // Hapus keranjang
         $keranjang->delete();
 
         return redirect()->route('keranjang.index')

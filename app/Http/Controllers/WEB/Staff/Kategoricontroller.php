@@ -42,7 +42,7 @@ class Kategoricontroller extends Controller
         return redirect()->back()->with('success', 'Kategori updated successfully.');
     }
 
-    public function deleteKategori(Kategori $kategori)
+    public function destroy(Kategori $kategori)
     {
         $kategori->delete();
 

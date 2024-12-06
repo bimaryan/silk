@@ -4,11 +4,14 @@
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
                 <th scope="col" class="px-6 py-3">
-                    Kategori
+                    No
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Aksi
+                    Kategori
                 </th>
+                {{-- <th scope="col" class="px-6 py-3">
+                    Aksi
+                </th> --}}
             </tr>
         </thead>
         <tbody>
@@ -16,9 +19,12 @@
                 <tr
                     class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <td scope="col" class="px-6 py-3">
+                        {{ $loop->iteration }}
+                    </td>
+                    <td scope="col" class="px-6 py-3">
                         {{ $data->kategori }}
                     </td>
-                    <td scope="col" class="flex items-center gap-2 px-6 py-3">
+                    {{-- <td scope="col" class="flex items-center gap-2 px-6 py-3">
                         <div>
                             <form id="delete-form-{{ $data->id }}"
                                 action="{{ route('kategori.destroy', $data->id) }}" method="POST">
@@ -30,7 +36,7 @@
                                 </button>
                             </form>
                         </div>
-                    </td>
+                    </td> --}}
                 </tr>
             @endforeach
         </tbody>

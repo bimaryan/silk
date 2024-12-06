@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\WEB\Admin;
 
+use App\Exports\KelasExport;
 use App\Http\Controllers\Controller;
+use App\Imports\KelasImport;
 use App\Models\Kelas;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class KelasController extends Controller
 {
@@ -46,5 +49,17 @@ class KelasController extends Controller
     {
         $data_kelas->delete();
         return redirect()->back()->with('success', 'Kelas berhasil di hapus!');
+    }
+
+    public function importKelas(Request $request)
+    {
+        Excel::import(new KelasImport(), $request->file('file'));
+
+        return redirect()->back()->with('success', 'Kelas berhasil di import!');
+    }
+
+    public function exportKelas()
+    {
+        return Excel::download(new KelasExport, 'data_kelas.xlsx');
     }
 }

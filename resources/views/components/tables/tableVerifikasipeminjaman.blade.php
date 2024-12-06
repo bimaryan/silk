@@ -6,7 +6,10 @@
                     No
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Nim
+                    Nama Mahasiswa
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Nama Dosen
                 </th>
                 <th scope="col" class="px-6 py-3">
                     Nama Barang

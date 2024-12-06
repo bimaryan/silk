@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\WEB\Admin;
 
+use App\Exports\DosenExport;
 use App\Http\Controllers\Controller;
+use App\Imports\DosenImport;
 use App\Models\Dosen;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DosenController extends Controller
 {
@@ -58,5 +61,20 @@ class DosenController extends Controller
         $data_dosen->delete();
 
         return redirect()->back()->with('success', 'Mahasiswa berhasil di hapus!');
+    }
+
+    public function importDosen(Request $request)
+    {
+        $request->validate([
+            "file" => "required|mimes:xlsx,xls,csv",
+        ]);
+
+        Excel::import(new DosenImport, $request->file('file'));
+        return redirect()->back()->with('success', 'Dosen berhasil di import');
+    }
+
+    public function exportDosen()
+    {
+        return Excel::download(new DosenExport, 'data_dosen.xlsx');
     }
 }

@@ -21,6 +21,13 @@
             font-style: normal;
         }
 
+        .zoom-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
         .background {
             position: relative;
             width: 100%;
@@ -43,7 +50,7 @@
     </style>
 </head>
 
-<body>
+<body class="bg-gray-100">
     @include('components.navbar.navbarPengguna')
     <div class="flex flex-col min-h-screen">
 

@@ -13,23 +13,28 @@ return new class extends Migration
     {
         Schema::create('peminjaman', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('users_id');
-            $table->unsignedBigInteger('keranjang_id');
+            $table->unsignedBigInteger('mahasiswa_id')->nullable();
+            $table->unsignedBigInteger('dosen_id')->nullable();
+            $table->string('nama_dosen')->nullable();
             $table->unsignedBigInteger('ruangan_id')->nullable();
             $table->unsignedBigInteger('matkul_id')->nullable();
-            $table->unsignedBigInteger('dosen_id')->nullable();
-            $table->dateTime('tanggal_waktu_peminjaman');
-            $table->time('waktu_pengembalian');
+            $table->unsignedBigInteger('barang_id');
+            $table->string('stock_pinjam');
+            $table->string('stock_pinjam_ruangan')->nullable();
+            $table->dateTime('tanggal_waktu_peminjaman')->nullable();
+            $table->time('waktu_pengembalian')->nullable();
             $table->string('anggota_kelompok')->nullable();
             $table->enum('status_pengembalian', ['Belum', 'Diserahkan', 'Habis'])->default('Belum');
-            $table->enum('aprovals', ['Ya', 'Tidak', 'Belum']);
-            $table->enum('status', ['Dipinjamkan', 'Dikembalikan', 'Menunggu Persetujuan']);
+            $table->enum('aprovals', ['Ya', 'Tidak', 'Belum'])->default('Belum');
+            $table->enum('status', ['Dipinjamkan', 'Dikembalikan', 'Menunggu Persetujuan'])->default('Menunggu Persetujuan');
+            $table->string('tindakan_spo');
             $table->timestamps();
 
-            $table->foreign('keranjang_id')->references('id')->on('keranjangs');
-            $table->foreign('matkul_id')->references('id')->on('mata_kuliahs')->onDelete('cascade');
-            $table->foreign('dosen_id')->references('id')->on('dosens')->onDelete('cascade');
-            $table->foreign('ruangan_id')->references('id')->on('ruangans')->onDelete('cascade');
+            $table->foreign('barang_id')->references('id')->on('barangs');
+            $table->foreign('mahasiswa_id')->references('id')->on('mahasiswas');
+            $table->foreign('matkul_id')->references('id')->on('mata_kuliahs');
+            $table->foreign('dosen_id')->references('id')->on('dosens');
+            $table->foreign('ruangan_id')->references('id')->on('ruangans');
         });
     }
 

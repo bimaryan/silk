@@ -21,7 +21,7 @@ class DosenImport implements ToCollection, WithHeadingRow
                 'nip' => $row['nip'],
                 'email' => $row['email'],
                 'username' => $row['username'],
-                'password' => Hash::make('polindra'),
+                'password' => Hash::make('@Poli' . $row['nama']),
             ]);
         }
     }

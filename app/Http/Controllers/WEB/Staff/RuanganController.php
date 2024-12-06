@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\WEB\Staff;
 
+use App\Exports\RuanganExport;
 use App\Http\Controllers\Controller;
 use App\Imports\RuanganImport;
 use App\Models\Ruangan;
@@ -23,7 +24,7 @@ class RuanganController extends Controller
         ]);
 
         Ruangan::create([
-            'nama_ruangan' => $request->nama_ruangan
+            'nama_ruangan' => $request->nama_ruangan,
         ]);
 
         return redirect()->back()->with('success', 'Ruangan berhasil ditambahkan!');
@@ -59,5 +60,10 @@ class RuanganController extends Controller
 
         Excel::import(new RuanganImport(), $request->file('file'));
         return redirect()->back()->with('success', 'Ruangan berhasil diimport!');
+    }
+
+    public function exportRuangan()
+    {
+        return Excel::download(new RuanganExport, 'data_ruangan.xlsx');
     }
 }

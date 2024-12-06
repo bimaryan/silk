@@ -12,27 +12,26 @@ class Peminjaman extends Model
     protected $table = 'peminjaman';
 
     protected $fillable = [
-        'users_id',
-        'keranjang_id',
+        'mahasiswa_id',
         'ruangan_id',
         'matkul_id',
         'dosen_id',
-        'waktu_pengembalian',
+        'nama_dosen',
+        'barang_id',
+        'stock_pinjam',
+        'stock_pinjam_ruangan',
         'tanggal_waktu_peminjaman',
+        'waktu_pengembalian',
         'anggota_kelompok',
         'status_pengembalian',
         'aprovals',
         'status',
+        'tindakan_spo',
     ];
-
-    public function keranjang()
-    {
-        return $this->belongsTo(Keranjang::class, 'keranjang_id');
-    }
 
     public function mahasiswa()
     {
-    return $this->belongsTo(Mahasiswa::class, 'users_id');
+        return $this->belongsTo(Mahasiswa::class, 'users_id');
     }
 
     public function barang()

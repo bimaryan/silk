@@ -172,8 +172,8 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('verifikasi-peminjaman.index') }}"
-                        class="flex items-center p-2  rounded-lg dark:text-gray-100 hover:bg-green-800 hover:text-white group  {{ Route::is('verifikasi-peminjaman.index') ? 'bg-green-500 text-white' : '' }}">
+                    <a href="{{ route('verifikasi-peminjaman-barang.index') }}"
+                        class="flex items-center p-2  rounded-lg dark:text-gray-100 hover:bg-green-800 hover:text-white group  {{ Route::is('verifikasi-peminjaman-barang.index') ? 'bg-green-500 text-white' : '' }}">
                         <span class="flex-1 ms-3 whitespace-nowrap"><i
                                 class="fa-solid fa-square-check me-2"></i>Verifikasi Peminjaman</span>
                     </a>

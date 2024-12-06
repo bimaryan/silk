@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\WEB\Admin;
 
+use App\Exports\MataKuliahExport;
 use App\Http\Controllers\Controller;
+use App\Imports\MatkulImport;
 use App\Models\MataKuliah;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MataKuliahController extends Controller
 {
@@ -51,5 +54,17 @@ class MataKuliahController extends Controller
         $data_mata_kuliah->delete();
 
         return redirect()->back()->with('success', 'Mata kuliah berhasil di hapus!');
+    }
+
+    public function importMataKuliah(Request $request)
+    {
+        Excel::import(new MatkulImport(), $request->file('file'));
+
+        return redirect()->back()->with('success', 'Kelas berhasil di import!');
+    }
+
+    public function exportMataKuliah()
+    {
+        return Excel::download(new MataKuliahExport, 'data_mata_kuliah.xlsx');
     }
 }
