@@ -19,7 +19,6 @@ class Peminjaman extends Model
         'nama_dosen',
         'barang_id',
         'stock_pinjam',
-        'stock_pinjam_ruangan',
         'tanggal_waktu_peminjaman',
         'waktu_pengembalian',
         'anggota_kelompok',
@@ -27,11 +26,13 @@ class Peminjaman extends Model
         'aprovals',
         'status',
         'tindakan_spo',
+        'keterangan',
+        'jenis_peminjaman',
     ];
 
     public function mahasiswa()
     {
-        return $this->belongsTo(Mahasiswa::class, 'users_id');
+        return $this->belongsTo(Mahasiswa::class, 'mahasiswa_id');
     }
 
     public function barang()
@@ -51,7 +52,7 @@ class Peminjaman extends Model
 
     public function stock()
     {
-        return $this->belongsTo(Stock::class, 'stock_id');
+        return $this->hasOne(Stock::class, 'barang_id');
     }
 
     public function matkul()
@@ -60,6 +61,6 @@ class Peminjaman extends Model
     }
     public function dosen()
     {
-        return $this->belongsTo(Dosen::class, 'users_id');
+        return $this->belongsTo(Dosen::class, 'dosen_id');
     }
 }

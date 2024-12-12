@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\WEB\Pengguna;
 
 use App\Http\Controllers\Controller;
+use App\Models\Peminjaman;
+use App\Models\PeminjamanRuangan;
 use App\Models\Ruangan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,26 +26,34 @@ class RuanganController extends Controller
         ]);
     }
 
-    public function show($ruangan)
+    public function store(Request $request, Ruangan $ruangan)
     {
-        $ruangans = Ruangan::where('nama_ruangan', $ruangan)->first();
+        $request->validate([
+            'ruangan_id' => 'required|exists:ruangans,id',
+        ]);
 
-        if (!$ruangans) {
-            return redirect()->route('ruangan.index')->with('error', 'Ruangan tidak ditemukan.');
+        $dosen = Auth::guard('dosen')->user();
+
+        if (!$dosen) {
+            return back()->withErrors([
+                'auth' => 'Anda harus login sebagai dosen untuk melakukan peminjaman ruangan.',
+            ])->withInput();
         }
 
-        return view('pages.pengguna.ruangan.detail.index', [
-            'ruangans' => $ruangans,
+        if ($ruangan->stok_ruangan < 0) {
+            return back()->withErrors([
+                'stok' => 'Stok ruangan tidak mencukupi untuk melakukan peminjaman.',
+            ])->withInput();
+        }
+
+        $ruangan = Ruangan::find($request['ruangan_id']);
+
+        Peminjaman::create([
+            'dosen_id' => $dosen ? $dosen->id : null,
+            'ruangan_id' => $ruangan->id,
+            'jenis_peminjaman' => 'Ruangan',
         ]);
-    }
 
-    public function store()
-    {
-        //INI BUAT PEMINJAMAN RUANGAN
-    }
-
-    public function update()
-    {
-        //INI BUAT UPDATE DARI PEMINJAMAN RUANGAN
+        return redirect()->route('katalog-ruangan.index')->with('success', 'Ruangan berhasil ditambahkan ke keranjang.');
     }
 }

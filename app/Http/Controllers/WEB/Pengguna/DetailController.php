@@ -32,6 +32,10 @@ class DetailController extends Controller
 
     public function store(Request $request, Barang $barang)
     {
+        $request->validate([
+            'tindakan_spo' => 'required|string',
+        ]);
+
         $mahasiswa = Auth::guard('mahasiswa')->user();
         $dosen = Auth::guard('dosen')->user();
 
@@ -71,14 +75,10 @@ class DetailController extends Controller
         Peminjaman::create([
             'mahasiswa_id' => $mahasiswa ? $mahasiswa->id : null,
             'dosen_id' => $dosen ? $dosen->id : null,
-            'ruangan_id' => $request->ruangan_id,
-            'matkul_id' => $request->matkul_id,
             'barang_id' => $barang->id,
             'stock_pinjam' => $request->stock_pinjam,
-            'tanggal_waktu_peminjaman' => $request->tanggal_waktu_peminjaman,
-            'waktu_pengembalian' => $request->waktu_pengembalian,
-            'anggota_kelompok' => $request->anggota_kelompok,
             'tindakan_spo' => $request->tindakan_spo,
+            'jenis_peminjaman' => 'Barang',
         ]);
 
         return redirect()->route('katalog.index')->with('success', 'Barang berhasil ditambahkan ke keranjang.');

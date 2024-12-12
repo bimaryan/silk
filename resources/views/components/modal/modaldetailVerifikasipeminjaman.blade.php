@@ -20,83 +20,54 @@
                 </button>
             </div>
             <!-- Modal body -->
-            <div class="p-4 flex flex-col md:flex-row items-center gap-5">
-                <div class="w-44 flex justify-center rounded-lg">
-                    <img src="{{ asset($data->foto ?? 'image/barang.png') }}" alt="">
-                </div>
-                <div class="grid grid-cols-2 gap-2">
-                    <!-- Labels -->
-                    <div class="space-y-2">
-                        <p class="flex justify-between text-sm font-medium text-gray-900 dark:text-white">
-                            <span>NIM</span>
-                            <span>:</span>
-                        </p>
-                        <p class="flex justify-between text-sm font-medium text-gray-900 dark:text-white">
-                            <span>Nama Mahasiswa</span>
-                            <span>:</span>
-                        </p>
-                        <p class="flex justify-between text-sm font-medium text-gray-900 dark:text-white">
-                            <span>Kelas</span>
-                            <span>:</span>
-                        </p>
-                        <p class="flex justify-between text-sm font-medium text-gray-900 dark:text-white">
-                            <span>Mata Kuliah</span>
-                            <span>:</span>
-                        </p>
-                        <p class="flex justify-between text-sm font-medium text-gray-900 dark:text-white">
-                            <span>Dosen Pengampu</span>
-                            <span>:</span>
-                        </p>
-                        <p class="flex justify-between text-sm font-medium text-gray-900 dark:text-white">
-                            <span>Ruangan</span>
-                            <span>:</span>
-                        </p>
-                        <p class="flex justify-between text-sm font-medium text-gray-900 dark:text-white">
-                            <span>Barang</span>
-                            <span>:</span>
-                        </p>
-                        <p class="flex justify-between text-sm font-medium text-gray-900 dark:text-white">
-                            <span>Jumlah Pinjam</span>
-                            <span>:</span>
-                        </p>
-                        <p class="flex justify-between text-sm font-medium text-gray-900 dark:text-white">
-                            <span>Tanggal Waktu Peminjaman</span>
-                            <span>:</span>
-                        </p>
-                        <p class="flex justify-between text-sm font-medium text-gray-900 dark:text-white">
-                            <span>Waktu Pengembalian</span>
-                            <span>:</span>
-                        </p>
-                        <p class="flex justify-between text-sm font-medium text-gray-900 dark:text-white">
-                            <span>Keterangan</span>
-                            <span>:</span>
-                        </p>
-                        <p class="flex justify-between text-sm font-medium text-gray-900 dark:text-white">
-                            <span>Status Peminjaman</span>
-                            <span>:</span>
-                        </p>
-                    </div>
-                    <!-- Values -->
-                    <div class="space-y-2">
-                        <p class="text-sm text-gray-500 dark:text-gray-400">{{ $item->mahasiswa->nim }}</p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">{{ $item->mahasiswa->nama }}</p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">
-                            {{ $item->mahasiswa->kelas->nama_kelas }}
-                        </p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">{{ $item->matkul->mata_kuliah }}</p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">{{ $item->dosen->nama_dosen }}</p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">
-                            {{ $item->ruangan->nama_ruangan ?? '-' }}
-                        </p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">{{ $item->keranjang->barang->nama_barang }}
-                        </p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">{{ $item->keranjang->stock_pinjam }}</p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">{{ $item->tanggal_waktu_peminjaman }}</p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">{{ $item->waktu_pengembalian }}</p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">
-                            {{ $item->keterangan ?? 'Tidak Keterangan' }}</p>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">{{ $item->status }}</p>
-                    </div>
+            <div class="p-4">
+                <div class="relative overflow-x-auto rounded-lg">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">
+                                    Mata Kuliah
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Kelas
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Nama Ruangan
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Nama Barang
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Jumlah Pinjam
+                                </th>
+                                <th scope="col" class="px-6 py-3">
+                                    Anggota Kelompok
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td scope="col" class="px-6 py-3">
+                                    {{ $item->matkul->mata_kuliah ?? 'Tidak ada mata kuliah' }}
+                                </td>
+                                <td scope="col" class="px-6 py-3">
+                                    {{ $item->kelas->nama_kelas ?? 'Tidak ada kelas' }}
+                                </td>
+                                <td scope="col" class="px-6 py-3">
+                                    {{ $item->ruangan->nama_ruangan ?? 'Tidak ada ruangan' }}
+                                </td>
+                                <td scope="col" class="px-6 py-3">
+                                    {{ $item->barang->nama_barang ?? 'Tidak ada barang' }}
+                                </td>
+                                <td scope="col" class="px-6 py-3">
+                                    {{ $item->stock_pinjam ?? 'Tidak ada jumlah pinjam' }}
+                                </td>
+                                <td scope="col" class="px-6 py-3">
+                                    {{ $item->anggota_kelompok ?? 'Tidak ada anggota kelompok' }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

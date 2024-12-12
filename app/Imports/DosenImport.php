@@ -17,11 +17,11 @@ class DosenImport implements ToCollection, WithHeadingRow
     {
         foreach ($rows as $row) {
             Dosen::create([
-                'nama' => $row['nama'],
+                'nama' => $row['nama'] . '(Dosen)',
                 'nip' => $row['nip'],
                 'email' => $row['email'],
                 'username' => $row['username'],
-                'password' => Hash::make('@Poli' . $row['nama']),
+                'password' => Hash::make('@Poli' . $row['username']),
             ]);
         }
     }

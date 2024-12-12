@@ -27,22 +27,10 @@
             <div class="p-4 bg-white rounded-lg shadow-lg">
                 <div class="flex items-center justify-between">
                     <div>
-                        <h3 class="text-2xl font-semibold text-green-500">Verifikasi Peminjaman</h3>
+                        <h3 class="text-2xl font-semibold text-green-500">Verifikasi Pengembalian</h3>
                     </div>
-                </div>
-            </div>
-
-            <div class="p-4 bg-white rounded-lg shadow-lg">
-
-                <div id="tablePeminjaman">
-                    @include('components.tables.tableVerifikasipeminjaman', ['peminjamans' => $peminjamans])
-                </div>
-
-                <div class="mt-4">
-                    {{ $peminjamans->links() }}
                 </div>
             </div>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @endsection

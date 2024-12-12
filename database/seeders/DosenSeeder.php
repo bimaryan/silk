@@ -15,7 +15,7 @@ class DosenSeeder extends Seeder
     public function run(): void
     {
         Dosen::create([
-            'nama' => 'Muhammad Anis Al Hilmi',
+            'nama' => 'Muhammad Anis Al Hilmi(Dosen)',
             'nip' => '199002282019031012',
             'username' => 'anis',
             'email' => 'anis@gmail.com',

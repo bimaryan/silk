@@ -121,7 +121,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{route('laporan-peminjaman.index')}}"
+                    <a href="{{ route('laporan-peminjaman.index') }}"
                         class="flex items-center p-2  rounded-lg dark:text-gray-100 hover:bg-green-800 hover:text-white group  {{ Route::is('laporan-peminjaman.index') ? 'bg-green-500 text-white' : '' }}">
                         <span class="flex-1 ms-3 whitespace-nowrap"><i class="fa-solid fa-chart-simple me-2"></i>Laporan
                             Peminjaman</span>
@@ -172,11 +172,29 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('verifikasi-peminjaman-barang.index') }}"
-                        class="flex items-center p-2  rounded-lg dark:text-gray-100 hover:bg-green-800 hover:text-white group  {{ Route::is('verifikasi-peminjaman-barang.index') ? 'bg-green-500 text-white' : '' }}">
-                        <span class="flex-1 ms-3 whitespace-nowrap"><i
-                                class="fa-solid fa-square-check me-2"></i>Verifikasi Peminjaman</span>
+                    <a id="verifikasi" data-collapse-toggle="dropdownVerifikasi"
+                        class="flex items-center p-2  rounded-lg dark:text-gray-100 hover:bg-green-800 hover:text-white group  {{ Request::is('verifikasi/*') ? 'bg-green-500 text-white' : '' }}">
+                        <span class="flex-1 ms-3 whitespace-nowrap"><i class="fa-solid fa-square-check me-2"></i>
+                            Verifikasi</span>
+                        <i class="fa-solid fa-chevron-down"></i>
                     </a>
+
+                    <ul id="dropdownVerifikasi" class="hidden py-2 space-y-2" aria-labelledby="verifikasi">
+                        <li>
+                            <a href="{{ route('peminjaman.index') }}"
+                                class="flex gap-1 items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700  {{ Route::is('peminjaman.index') ? 'bg-gray-300' : '' }}">
+                                <span class="flex-1 ms-3 whitespace-nowrap"><i class="fa-solid fa-box"></i>
+                                    Peminjaman</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('pengembalian.index') }}"
+                                class="flex gap-1 items-center w-full p-2  transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700  {{ Route::is('pengembalian.index') ? 'bg-gray-300' : '' }}">
+                                <span class="flex-1 ms-3 whitespace-nowrap"><i class="fa-solid fa-box-open"></i>
+                                    Pengembalian</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
                 <li>
                     <a href="{{ route('laporan-peminjaman.index') }}"

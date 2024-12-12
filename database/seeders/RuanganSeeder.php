@@ -15,7 +15,9 @@ class RuanganSeeder extends Seeder
     {
         Ruangan::create([
             'nama_ruangan' => 'HPC',
-            'stok_ruangan' => 1
+        ]);
+        Ruangan::create([
+            'nama_ruangan' => 'Animasi',
         ]);
     }
 }

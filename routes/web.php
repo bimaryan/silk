@@ -24,9 +24,10 @@ use App\Http\Controllers\WEB\Pengguna\RiwayatController;
 use App\Http\Controllers\WEB\Pengguna\RuanganController as PenggunaRuanganController;
 use App\Http\Controllers\WEB\Staff\BarangController;
 use App\Http\Controllers\WEB\Staff\Kategoricontroller;
-use App\Http\Controllers\WEB\Staff\RuanganController;
+use App\Http\Controllers\WEB\Staff\RuanganController as StaffRuanganController;
 use App\Http\Controllers\WEB\Staff\SatuanController;
 use App\Http\Controllers\WEB\Staff\VerifikasiPeminjamanController;
+use App\Http\Controllers\WEB\Staff\VerifikasiPengembaliancontroller;
 use Illuminate\Support\Facades\Route;
 
 // ROUTE LOGIN
@@ -86,11 +87,14 @@ Route::middleware(['auth:admin'])->group(function () {
             Route::post('import-satuan', [SatuanController::class, 'importSatuan'])->name('import-satuan');
         });
 
-        Route::resource('ruangan', RuanganController::class);
-        Route::post('import-ruangan', [RuanganController::class, 'importRuangan'])->name('import-ruangan');
-        Route::get('export-ruangan', [RuanganController::class, 'exportRuangan'])->name('export-ruangan');
+        Route::resource('ruangan', StaffRuanganController::class);
+        Route::post('import-ruangan', [StaffRuanganController::class, 'importRuangan'])->name('import-ruangan');
+        Route::get('export-ruangan', [StaffRuanganController::class, 'exportRuangan'])->name('export-ruangan');
 
-        Route::resource('verifikasi-peminjaman-barang', VerifikasiPeminjamanController::class);
+        Route::prefix('verifikasi/')->group(function () {
+            Route::resource('peminjaman', VerifikasiPeminjamanController::class);
+            Route::resource('pengembalian', VerifikasiPengembaliancontroller::class);
+        });
     });
 });
 
@@ -99,7 +103,7 @@ Route::middleware(['multiGuard:dosen,mahasiswa'])->group(function () {
 
     Route::resource('beranda', BerandaController::class)->only('index');
     Route::resource('katalog', KatalogController::class);
-    Route::resource('ruangan', PenggunaRuanganController::class);
+    Route::resource('katalog-ruangan', PenggunaRuanganController::class);
     Route::resource('informasi', InformasiController::class);
     Route::resource('riwayat', RiwayatController::class);
     Route::resource('edit-profile', EditProfileController::class);
@@ -110,5 +114,5 @@ Route::middleware(['multiGuard:dosen,mahasiswa'])->group(function () {
     Route::resource('keranjang', KeranjangController::class);
 
 
-    Route::resource('/peminjaman', PeminjamanController::class);
+    // Route::resource('/peminjaman', PeminjamanController::class);
 });

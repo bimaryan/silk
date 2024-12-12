@@ -18,16 +18,17 @@ return new class extends Migration
             $table->string('nama_dosen')->nullable();
             $table->unsignedBigInteger('ruangan_id')->nullable();
             $table->unsignedBigInteger('matkul_id')->nullable();
-            $table->unsignedBigInteger('barang_id');
-            $table->string('stock_pinjam');
-            $table->string('stock_pinjam_ruangan')->nullable();
+            $table->unsignedBigInteger('barang_id')->nullable();
+            $table->string('stock_pinjam')->nullable();
             $table->dateTime('tanggal_waktu_peminjaman')->nullable();
             $table->time('waktu_pengembalian')->nullable();
             $table->string('anggota_kelompok')->nullable();
             $table->enum('status_pengembalian', ['Belum', 'Diserahkan', 'Habis'])->default('Belum');
             $table->enum('aprovals', ['Ya', 'Tidak', 'Belum'])->default('Belum');
             $table->enum('status', ['Dipinjamkan', 'Dikembalikan', 'Menunggu Persetujuan'])->default('Menunggu Persetujuan');
-            $table->string('tindakan_spo');
+            $table->string('tindakan_spo')->nullable();
+            $table->string('keterangan')->nullable();
+            $table->enum('jenis_peminjaman', ['Ruangan', 'Barang']);
             $table->timestamps();
 
             $table->foreign('barang_id')->references('id')->on('barangs');

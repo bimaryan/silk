@@ -24,7 +24,8 @@
     @endif
 
     <div class="p-4 space-y-3 mt-5">
-        <div class="max-w-screen-xl mx-auto mt-14 bg-white p-4 text-green-500 rounded-xl text-2xl font-semibold text-center shadow-lg">
+        <div
+            class="max-w-screen-xl mx-auto mt-14 bg-white p-4 text-green-500 rounded-xl text-2xl font-semibold text-center shadow-lg">
             Keranjang
         </div>
 
@@ -43,8 +44,17 @@
                             <div class="flex justify-between items-center">
                                 <div class="flex items-center">
                                     <div class="flex items-center gap-2">
-                                        <img src="{{ $data->barang->foto }}" class="w-12" alt="{{ $data->barang->foto }}">
-                                        <p class="text-sm">{{ $data->barang->nama_barang }}</p>
+                                        @if (!empty($data->barang))
+                                            <!-- Tampilkan Barang -->
+                                            <img src="{{ asset($data->barang->foto ?? 'image/barang.png') }}" class="w-12"
+                                                alt="{{ $data->barang->foto }}">
+                                            <p class="text-sm">{{ $data->barang->nama_barang }}</p>
+                                        @elseif (!empty($data->ruangan))
+                                            <!-- Tampilkan Ruangan -->
+                                            <img src="{{ asset($data->ruangan->foto ?? 'image/barang.png') }}"
+                                                class="w-12" alt="{{ $data->ruangan->foto }}">
+                                            <p class="text-sm">{{ $data->ruangan->nama_ruangan }}</p>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="flex justify-center items-center text-center">
@@ -149,6 +159,24 @@
                                 @endif
                             </select>
                         </div>
+
+                        <div class="mb-5">
+                            <label for="tanggal_waktu_peminjaman"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                Tanggal & Waktu Peminjaman
+                            </label>
+                            <input type="datetime-local" name="tanggal_waktu_peminjaman" id="tanggal_waktu_peminjaman"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                        </div>
+
+                        <div class="mb-5">
+                            <label for="waktu_pengembalian"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                Waktu Pengembalian
+                            </label>
+                            <input type="time" name="waktu_pengembalian" id="waktu_pengembalian"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                        </div>
                     @elseif(Auth::guard('dosen')->check())
                         <div class="mb-5">
                             <label for="nama" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
@@ -156,25 +184,32 @@
                             <input type="nama" id="nama" value="{{ auth()->user()->nama }}" disabled
                                 class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                         </div>
+
+                        <div class="mb-5">
+                            <label for="tanggal_waktu_peminjaman"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                Tanggal & Waktu Peminjaman
+                            </label>
+                            <input type="datetime-local" name="tanggal_waktu_peminjaman" id="tanggal_waktu_peminjaman"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                        </div>
+
+                        <div class="mb-5">
+                            <label for="waktu_pengembalian"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                                Waktu Pengembalian
+                            </label>
+                            <input type="time" name="waktu_pengembalian" id="waktu_pengembalian"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                        </div>
+
+                        <div class="mb-5">
+                            <label for="keterangan"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Keterangan</label>
+                            <input type="text"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
+                        </div>
                     @endif
-
-                    <div class="mb-5">
-                        <label for="tanggal_waktu_peminjaman"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                            Tanggal & Waktu Peminjaman
-                        </label>
-                        <input type="datetime-local" name="tanggal_waktu_peminjaman" id="tanggal_waktu_peminjaman"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
-                    </div>
-
-                    <div class="mb-5">
-                        <label for="waktu_pengembalian"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                            Waktu Pengembalian
-                        </label>
-                        <input type="time" name="waktu_pengembalian" id="waktu_pengembalian"
-                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
-                    </div>
 
                     <button type="submit"
                         class="text-white bg-green-500 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Submit</button>

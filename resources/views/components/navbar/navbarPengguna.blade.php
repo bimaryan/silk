@@ -118,12 +118,12 @@
            {{ Route::is('katalog.index') ? 'text-white bg-green-700 md:text-green-700 md:bg-transparent' : 'text-gray-900 md:hover:text-green-700 dark:text-white dark:hover:bg-gray-700' }}">Katalog</a>
                 </li>
                 <li>
-                    <a href="{{ route('ruangan.index') }}"
+                    <a href="{{ route('katalog-ruangan.index') }}"
                         class="block py-2 px-3 rounded md:border-0 md:p-0
-           {{ Route::is('ruangan.index') ? 'text-white bg-green-700 md:text-green-700 md:bg-transparent' : 'text-gray-900 md:hover:text-green-700 dark:text-white dark:hover:bg-gray-700' }}">Ruangan</a>
+           {{ Route::is('katalog-ruangan.index') ? 'text-white bg-green-700 md:text-green-700 md:bg-transparent' : 'text-gray-900 md:hover:text-green-700 dark:text-white dark:hover:bg-gray-700' }}">Ruangan</a>
                 </li>
                 <li>
-                    <a href="{{ route('informasi.index') }}"
+                    <a href=""
                         class="block py-2 px-3 rounded md:border-0 md:p-0
            {{ Route::is('informasi.index') ? 'text-white bg-green-700 md:text-green-700 md:bg-transparent' : 'text-gray-900 md:hover:text-green-700 dark:text-white dark:hover:bg-gray-700' }}">Informasi</a>
                 </li>

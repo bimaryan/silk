@@ -16,30 +16,50 @@ class VerifikasiPeminjamanController extends Controller
 
     public function update(Request $request, Peminjaman $verifikasi_peminjaman)
     {
-        $peminjaman = Peminjaman::with('stock')->findOrFail($verifikasi_peminjaman->id);
+        // Temukan peminjaman berdasarkan ID dengan relasi ruangan
+        $peminjaman = Peminjaman::with(['barang.stock', 'ruangan'])->findOrFail($verifikasi_peminjaman->id);
 
-        $currentStock = $peminjaman->stock->stock;
-
+        // Ambil nilai approval dari input request
         $approval = $request->input('aprovals');
-        $jumlahPinjam = $peminjaman->stock_pinjam;
 
-        if ($approval === 'Ya') {
-            $newStock = $currentStock - $jumlahPinjam;
+        // Logika untuk peminjaman barang
+        if ($peminjaman->jenis_peminjaman === 'Barang') {
+            $currentStock = $peminjaman->barang->stock->stock ?? null;
 
-            if ($newStock >= 0) {
-                $peminjaman->stock->update([
-                    'stock' => $newStock,
-                ]);
+            if (is_null($currentStock)) {
+                return redirect()->back()->with('error', 'Data stok tidak ditemukan.');
+            }
 
-                $peminjaman->status = 'Dipinjam';
-            } else {
-                return redirect()->back()->with('error', 'Stok tidak mencukupi.');
+            $jumlahPinjam = $peminjaman->stock_pinjam;
+
+            if ($approval === 'Ya') {
+                $newStock = $currentStock - $jumlahPinjam;
+
+                if ($newStock >= 0) {
+                    $peminjaman->barang->stock->update([
+                        'stock' => $newStock,
+                    ]);
+
+                    $peminjaman->status = 'Dipinjamkan';
+                } else {
+                    return redirect()->back()->with('error', 'Stok barang tidak mencukupi.');
+                }
             }
         }
 
+        // Logika untuk peminjaman ruangan
+        if ($peminjaman->jenis_peminjaman === 'Ruangan') {
+            if ($approval === 'Ya') {
+                $peminjaman->status = 'Dipinjamkan';
+            } elseif ($approval === 'Tidak') {
+                $peminjaman->status = 'Dipinjamkan';
+            }
+        }
+
+        // Update status dan approval
         $peminjaman->aprovals = $approval;
         $peminjaman->save();
 
-        return redirect()->back()->with('success', 'Status approval peminjaman berhasil diperbarui.');
+        return redirect()->back()->with('success', 'Status dan approval peminjaman berhasil diperbarui.');
     }
 }
