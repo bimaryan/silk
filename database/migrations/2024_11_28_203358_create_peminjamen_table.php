@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('ruangan_id')->nullable();
             $table->unsignedBigInteger('matkul_id')->nullable();
             $table->unsignedBigInteger('barang_id')->nullable();
+            $table->unsignedBigInteger('dokumenspo_id')->nullable();
             $table->string('stock_pinjam')->nullable();
             $table->dateTime('tanggal_waktu_peminjaman')->nullable();
             $table->time('waktu_pengembalian')->nullable();
@@ -36,6 +37,7 @@ return new class extends Migration
             $table->foreign('matkul_id')->references('id')->on('mata_kuliahs');
             $table->foreign('dosen_id')->references('id')->on('dosens');
             $table->foreign('ruangan_id')->references('id')->on('ruangans');
+            $table->foreign('dokumenspo_id')->references('id')->on('dokumen_spos');
         });
     }
 

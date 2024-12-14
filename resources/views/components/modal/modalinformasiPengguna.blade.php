@@ -22,48 +22,66 @@
             <!-- Modal body -->
             <div class="p-4 md:p-5 space-y-4">
                 <div class="max-w-screen-xl mx-auto">
-                    @foreach ($loans as $loan)
-                        @if ($loan->barang)
-                            <div class="w-full text-center bg-white border border-gray-200 rounded-lg shadow p-3 dark:bg-gray-800 dark:border-gray-700 mb-4">
-                                <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Barang</h4>
-                                <div class="flex justify-between items-center">
-                                    <div class="flex items-center gap-2">
-                                        <img src="{{ asset($loan->barang->foto ?? 'image/barang.png') }}"
-                                            class="w-12" alt="gambar barang">
-                                        <p class="text-sm ms-2">{{ $loan->barang->nama_barang ?? '-' }}</p>
-                                    </div>
-                                    <div class="px-4">
-                                        <p class="text-sm text-gray-900">
-                                            Jumlah: <span>{{ $loan->stock_pinjam }}</span>
-                                        </p>
-                                        <p class="text-sm text-gray-900">
-                                            <span
-                                                class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
-                                                {{ $loan->barang->kategori->kategori ?? 'Kategori Tidak Diketahui' }}
-                                            </span>verifikasi
-                                        </p>
-                                    </div>
-                                </div>
+                    <!-- Card for Barang -->
+                    @if ($loans->where('barang', '!=', null)->isNotEmpty())
+                        <div
+                            class="w-full text-center bg-white border border-gray-200 rounded-lg shadow p-3 dark:bg-gray-800 dark:border-gray-700 mb-4">
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Barang</h4>
+                            <div class="relative overflow-y-auto" style="height: 200px">
+                                @foreach ($loans as $loan)
+                                    @if ($loan->barang)
+                                        <div
+                                            class="flex justify-between items-center mb-1 bg-white p-2 border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700">
+                                            <div class="flex items-center gap-2">
+                                                <img src="{{ asset($loan->barang->foto ?? 'image/barang.png') }}"
+                                                    class="w-12" alt="gambar barang">
+                                                <p class="text-sm ms-2">{{ $loan->barang->nama_barang ?? '-' }}</p>
+                                            </div>
+                                            <div class="px-4">
+                                                <p class="text-sm text-gray-900">
+                                                    Jumlah: <span>{{ $loan->stock_pinjam }}</span>
+                                                </p>
+                                                <p class="text-sm text-gray-900">
+                                                    <span
+                                                        class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
+                                                        {{ $loan->barang->kategori->kategori ?? 'Kategori Tidak Diketahui' }}
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    @endif
+                                @endforeach
                             </div>
-                        @endif
+                        </div>
+                    @endif
 
-                        @if ($loan->ruangan)
-                            <div class="w-full text-center bg-white border border-gray-200 rounded-lg shadow p-3 dark:bg-gray-800 dark:border-gray-700">
-                                <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Ruangan</h4>
-                                <div class="flex justify-between items-center">
-                                    <div class="flex items-center gap-2">
-                                        <p class="text-sm ms-2">Nama Ruangan:</p>
-                                        <p class="text-sm font-medium">{{ $loverifikasian->ruangan->nama_ruangan ?? '-' }}</p>
-                                    </div>
-                                    <div class="px-4">
-                                        <p class="text-sm text-gray-900">
-                                            Kapasitas: <span>{{ $loan->ruangan->kapasitas ?? '-' }}</span>
-                                        </p>
-                                    </div>
-                                </div>
+                    <!-- Card for Ruangan (Positioned Below Barang Card) -->
+                    @if ($loans->where('ruangan', '!=', null)->isNotEmpty())
+                        <div
+                            class="w-full relative overflow-y-auto text-center bg-white border border-gray-200 rounded-lg shadow p-3 dark:bg-gray-800 dark:border-gray-700">
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Ruangan</h4>
+                            <div class="relative overflow-y-auto" style="height: 200px">
+                                @foreach ($loans as $loan)
+                                    @if ($loan->ruangan)
+                                        <div
+                                            class="flex w-full items-center justify-between gap-4 bg-white p-2 border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700 mb-2">
+                                            <div class="flex items-center gap-2">
+                                                <img src="{{ asset($loan->ruangan->foto ?? 'image/barang.png') }}"
+                                                    class="w-12" alt="gambar ruangan">
+                                                <p class="text-sm font-medium">{{ $loan->ruangan->nama_ruangan ?? '-' }}
+                                                </p>
+                                            </div>
+                                            <div>
+                                                <p class="text-sm text-gray-900">
+                                                    Kapasitas: <span>{{ $loan->ruangan->kapasitas ?? '-' }}</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    @endif
+                                @endforeach
                             </div>
-                        @endif
-                    @endforeach
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
