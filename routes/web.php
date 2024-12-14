@@ -19,7 +19,7 @@ use App\Http\Controllers\WEB\Pengguna\EditProfileController;
 use App\Http\Controllers\WEB\Pengguna\InformasiController;
 use App\Http\Controllers\WEB\Pengguna\KatalogController;
 use App\Http\Controllers\WEB\Pengguna\KeranjangController;
-use App\Http\Controllers\WEB\Pengguna\PeminjamanController;
+// use App\Http\Controllers\WEB\Pengguna\PeminjamanController;
 use App\Http\Controllers\WEB\Pengguna\RiwayatController;
 use App\Http\Controllers\WEB\Pengguna\RuanganController as PenggunaRuanganController;
 use App\Http\Controllers\WEB\Staff\BarangController;

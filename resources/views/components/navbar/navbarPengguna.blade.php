@@ -123,7 +123,7 @@
            {{ Route::is('katalog-ruangan.index') ? 'text-white bg-green-700 md:text-green-700 md:bg-transparent' : 'text-gray-900 md:hover:text-green-700 dark:text-white dark:hover:bg-gray-700' }}">Ruangan</a>
                 </li>
                 <li>
-                    <a href=""
+                    <a href="{{route('informasi.index')}}"
                         class="block py-2 px-3 rounded md:border-0 md:p-0
            {{ Route::is('informasi.index') ? 'text-white bg-green-700 md:text-green-700 md:bg-transparent' : 'text-gray-900 md:hover:text-green-700 dark:text-white dark:hover:bg-gray-700' }}">Informasi</a>
                 </li>

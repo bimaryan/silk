@@ -14,10 +14,10 @@ class VerifikasiPeminjamanController extends Controller
         return view('pages.staff.verifikasi-peminjaman.index', compact('peminjamans'));
     }
 
-    public function update(Request $request, Peminjaman $verifikasi_peminjaman)
+    public function update(Request $request, Peminjaman $peminjaman)
     {
         // Temukan peminjaman berdasarkan ID dengan relasi ruangan
-        $peminjaman = Peminjaman::with(['barang.stock', 'ruangan'])->findOrFail($verifikasi_peminjaman->id);
+        $peminjaman = Peminjaman::with(['barang.stock', 'ruangan'])->findOrFail($peminjaman->id);
 
         // Ambil nilai approval dari input request
         $approval = $request->input('aprovals');

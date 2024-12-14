@@ -31,6 +31,17 @@
                     </div>
                 </div>
             </div>
+
+            <div class="p-4 bg-white rounded-lg shadow-lg">
+
+                <div id="tablePeminjaman">
+                    @include('components.tables.tableVerifikasipengembalian')
+                </div>
+
+                {{-- <div class="mt-4">
+                    {{ $peminjamans->links() }}
+                </div> --}}
+            </div>
         </div>
     </div>
 @endsection

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('pengembalians', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('peminjaman_id');
+            $table->string('keterangan');
             $table->timestamps();
 
             $table->foreign('peminjaman_id')->references('id')->on('peminjaman');

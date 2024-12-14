@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Pengembalian extends Model
 {
     use HasFactory;
+
+    protected $table = 'pengembalians';
+
+    protected $fillable = ['peminjaman_id', 'keterangan'];
+
+    public function peminjaman()
+    {
+        return $this->belongsTo(Peminjaman::class, 'peminjaman_id');
+    }
 }
