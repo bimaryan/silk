@@ -53,7 +53,7 @@
                                 <div class="flex justify-between items-center">
                                     <div class="flex items-center gap-2">
                                         <p class="text-sm ms-2">Nama Ruangan:</p>
-                                        <p class="text-sm font-medium">{{ $loan->ruangan->nama_ruangan ?? '-' }}</p>
+                                        <p class="text-sm font-medium">{{ $loverifikasian->ruangan->nama_ruangan ?? '-' }}</p>
                                     </div>
                                     <div class="px-4">
                                         <p class="text-sm text-gray-900">
