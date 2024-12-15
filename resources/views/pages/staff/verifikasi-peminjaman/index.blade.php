@@ -35,11 +35,7 @@
             <div class="p-4 bg-white rounded-lg shadow-lg">
 
                 <div id="tablePeminjaman">
-                    @include('components.tables.tableVerifikasipeminjaman', ['peminjamans' => $peminjamans])
-                </div>
-
-                <div class="mt-4">
-                    {{ $peminjamans->links() }}
+                    @include('components.tables.tableVerifikasipeminjaman')
                 </div>
             </div>
         </div>

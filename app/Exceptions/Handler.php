@@ -63,9 +63,9 @@ class Handler extends ExceptionHandler
             }
         }
 
-        elseif ($exception instanceof \Illuminate\Database\QueryException) {
-            return response()->view('pages.errors.database', [], 500);
-        }
+        // elseif ($exception instanceof \Illuminate\Database\QueryException) {
+        //     return response()->view('pages.errors.database', [], 500);
+        // }
 
         return parent::render($request, $exception);
     }

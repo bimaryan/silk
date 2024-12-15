@@ -1,5 +1,6 @@
-<div class="relative overflow-x-auto rounded-lg shadow-lg">
-    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" id="data-barang">
+<div class="relative overflow-x-auto shadow-lg rounded-lg mt-4">
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" style="100%"
+        id="data-barang">
         <thead class=" text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
                 <th scope="col" class="px-6 py-3">
@@ -29,15 +30,15 @@
             </tr>
         </thead>
         <tbody>
-            @if ($peminjamans->isEmpty())
+            @if ($riwayat->isEmpty())
                 <tr>
                     <td colspan="8" class="px-6 py-3 text-center text-gray-500 border">
-                        Tidak ada peminjaman
+                        Tidak ada riwayat peminjaman
                     </td>
                 </tr>
             @else
-                @if ($peminjamans->first()->first()->status != 'Dipinjamkan')
-                    @foreach ($peminjamans as $userId => $loans)
+                @if ($riwayat->first()->first()->status_pengambalian != 'Diserahkan')
+                    @foreach ($riwayat as $userId => $loans)
                         <tr
                             class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                             <td class="px-6 py-3">{{ $loop->iteration }}</td>
@@ -75,16 +76,10 @@
                                     class="flex items-center px-2 py-2 text-sm text-white bg-yellow-400 rounded">
                                     <i class="fa-solid fa-eye"></i>
                                 </button>
-                                <button type="button" data-modal-target="pengembalian{{ $userId }}"
-                                    data-modal-toggle="pengembalian{{ $userId }}"
-                                    class="flex items-center px-2 py-2 text-sm text-white bg-purple-500 rounded">
-                                    <i class="fa-solid fa-boxes-packing"></i>
-                                </button>
                             </td>
                         </tr>
                     @endforeach
-                    @include('components.modal.modalinformasiPengguna')
-                    @include('components.modal.modalpengembalianPengguna')
+                    @include('components.modal.modalriwayatPengguna')
                 @endif
             @endif
         </tbody>

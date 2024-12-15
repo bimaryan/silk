@@ -19,8 +19,9 @@ use App\Http\Controllers\WEB\Pengguna\EditProfileController;
 use App\Http\Controllers\WEB\Pengguna\InformasiController;
 use App\Http\Controllers\WEB\Pengguna\KatalogController;
 use App\Http\Controllers\WEB\Pengguna\KeranjangController;
-// use App\Http\Controllers\WEB\Pengguna\PeminjamanController;
+use App\Http\Controllers\WEB\Pengguna\PengembalianController;
 use App\Http\Controllers\WEB\Pengguna\RiwayatController;
+// use App\Http\Controllers\WEB\Pengguna\PeminjamanController;
 use App\Http\Controllers\WEB\Pengguna\RuanganController as PenggunaRuanganController;
 use App\Http\Controllers\WEB\Staff\BarangController;
 use App\Http\Controllers\WEB\Staff\Kategoricontroller;
@@ -112,6 +113,7 @@ Route::middleware(['multiGuard:dosen,mahasiswa'])->group(function () {
     Route::get('/detail/{id}', [DetailController::class, 'index'])->name('detail.index');
     Route::post('/detail/store/{barang}', [DetailController::class, 'store'])->name('detail.store');
     Route::resource('keranjang', KeranjangController::class);
+    Route::resource('pengembalians', PengembalianController::class);
 
 
     // Route::resource('/peminjaman', PeminjamanController::class);

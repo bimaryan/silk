@@ -5,6 +5,7 @@ namespace App\Http\Controllers\WEB\Pengguna;
 use App\Http\Controllers\Controller;
 use App\Models\Kelas;
 use App\Models\Keranjang;
+use App\Models\Peminjaman;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -17,11 +18,14 @@ class EditPasswordController extends Controller
     public function index()
     {
         $users = Auth::user();
-        $notifikasiKeranjang = Keranjang::with(['mahasiswa', 'dosen', 'barang'])
-            ->where('users_id', $users->id)
-            ->latest()
-            ->take(5)
-            ->get();
+
+        $notifikasiKeranjang = null;
+
+        if (Auth::guard('mahasiswa')->check()) {
+            $notifikasiKeranjang = Peminjaman::where('mahasiswa_id', Auth::guard('mahasiswa')->id())->get();
+        } elseif (Auth::guard('dosen')->check()) {
+            $notifikasiKeranjang = Peminjaman::where('dosen_id', Auth::guard('dosen')->id())->get();
+        }
 
         if (Auth::guard('mahasiswa')->check()) {
             $user = Auth::guard('mahasiswa')->user();

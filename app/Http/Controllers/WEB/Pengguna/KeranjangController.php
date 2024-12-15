@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\WEB\Pengguna;
 
 use App\Http\Controllers\Controller;
+use App\Models\DokumenSpo;
 use App\Models\Dosen;
 use App\Models\MataKuliah;
 use App\Models\Peminjaman;
@@ -27,11 +28,20 @@ class KeranjangController extends Controller
             return redirect()->route('login.index')->with('error', 'Silakan login terlebih dahulu.');
         }
 
+        $notifikasiKeranjang = null;
+
+        if (Auth::guard('mahasiswa')->check()) {
+            $notifikasiKeranjang = Peminjaman::where('mahasiswa_id', Auth::guard('mahasiswa')->id())->get();
+        } elseif (Auth::guard('dosen')->check()) {
+            $notifikasiKeranjang = Peminjaman::where('dosen_id', Auth::guard('dosen')->id())->get();
+        }
+
         $matkul = MataKuliah::all();
         $ruangan = Ruangan::all();
         $dosen = Dosen::all();
+        $dokumenspo = DokumenSpo::all();
 
-        return view('pages.pengguna.keranjang.index', compact('keranjang', 'matkul', 'ruangan', 'dosen'));
+        return view('pages.pengguna.keranjang.index', compact('keranjang', 'matkul', 'ruangan', 'dosen', 'dokumenspo', 'notifikasiKeranjang'));
     }
 
     public function update(Request $request, Peminjaman $keranjang)
@@ -61,10 +71,11 @@ class KeranjangController extends Controller
                 'waktu_pengembalian' => $request->waktu_pengembalian ?? $item->waktu_pengembalian,
                 'anggota_kelompok' => $request->anggota_kelompok ?? $item->anggota_kelompok,
                 'stock_pinjam_ruangan' => '1',
+                'dokumenspo_id' => $request->dokumenspo_id ?? $item->dokumenspo_id,
             ]);
         }
 
-        return redirect()->back()->with('success', 'Permintaan peminjaman berhasil diperbarui. Silakan menunggu persetujuan dari staf.');
+        return redirect()->route('informasi.index')->with('success', 'Permintaan peminjaman berhasil diperbarui. Silakan menunggu persetujuan dari staf.');
     }
 
     public function destroy(Peminjaman $keranjang)

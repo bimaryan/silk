@@ -25,6 +25,7 @@ class Peminjaman extends Model
         'anggota_kelompok',
         'status_pengembalian',
         'aprovals',
+        'aprovals_pengembalian',
         'status',
         'tindakan_spo',
         'keterangan',
@@ -60,6 +61,7 @@ class Peminjaman extends Model
     {
         return $this->belongsTo(MataKuliah::class, 'matkul_id');
     }
+
     public function dosen()
     {
         return $this->belongsTo(Dosen::class, 'dosen_id');

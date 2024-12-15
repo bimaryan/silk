@@ -52,11 +52,7 @@
 
 <body class="bg-gray-100">
     @include('components.navbar.navbarPengguna')
-    <div class="flex flex-col min-h-screen">
-
-        @yield('content')
-
-    </div>
+    @yield('content')
     @include('components.footer.footerPengguna')
 
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>

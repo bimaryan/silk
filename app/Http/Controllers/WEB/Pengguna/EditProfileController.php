@@ -7,6 +7,7 @@ use App\Models\Dosen;
 use App\Models\Kelas;
 use App\Models\Keranjang;
 use App\Models\Mahasiswa;
+use App\Models\Peminjaman;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -19,11 +20,15 @@ class EditProfileController extends Controller
     public function index()
     {
         $users = Auth::user();
-        $notifikasiKeranjang = Keranjang::with(['mahasiswa', 'dosen', 'barang'])
-            ->where('users_id', $users->id)
-            ->latest()
-            ->take(5)
-            ->get();
+
+        $notifikasiKeranjang = null;
+
+        if (Auth::guard('mahasiswa')->check()) {
+            $notifikasiKeranjang = Peminjaman::where('mahasiswa_id', Auth::guard('mahasiswa')->id())->get();
+        } elseif (Auth::guard('dosen')->check()) {
+            $notifikasiKeranjang = Peminjaman::where('dosen_id', Auth::guard('dosen')->id())->get();
+        }
+
         $kelas = Kelas::all();
 
         if (Auth::guard('mahasiswa')->check()) {
@@ -73,8 +78,7 @@ class EditProfileController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $user)
-    {
-        {
+    { {
             if (Auth::guard('dosen')->check()) {
                 $user = Auth::guard('dosen')->user();
 

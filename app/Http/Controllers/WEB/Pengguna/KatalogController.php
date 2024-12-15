@@ -9,6 +9,7 @@ use App\Models\Kategori;
 use App\Models\Kelas;
 use App\Models\Keranjang;
 use App\Models\MataKuliah;
+use App\Models\Peminjaman;
 use App\Models\Ruangan;
 use App\Models\Stock;
 use Illuminate\Http\Request;
@@ -25,11 +26,13 @@ class KatalogController extends Controller
 
         $kategori = $request->input('kategori');
 
-        $notifikasiKeranjang = Keranjang::with(['mahasiswa', 'dosen', 'barang'])
-            ->where('users_id', $user->id)
-            ->latest()
-            ->take(5)
-            ->get();
+        $notifikasiKeranjang = null;
+
+        if (Auth::guard('mahasiswa')->check()) {
+            $notifikasiKeranjang = Peminjaman::where('mahasiswa_id', Auth::guard('mahasiswa')->id())->get();
+        } elseif (Auth::guard('dosen')->check()) {
+            $notifikasiKeranjang = Peminjaman::where('dosen_id', Auth::guard('dosen')->id())->get();
+        }
 
         $validCategories = ['Alat', 'Bahan'];
 

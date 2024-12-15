@@ -9,6 +9,7 @@ use App\Models\Kategori;
 use App\Models\Kelas;
 use App\Models\Keranjang;
 use App\Models\MataKuliah;
+use App\Models\Peminjaman;
 use App\Models\Ruangan;
 use App\Models\Stock;
 use Illuminate\Http\Request;
@@ -25,11 +26,11 @@ class BerandaController extends Controller
             return redirect()->route('login.index')->with('error', 'Anda harus login.');
         }
 
-        $notifikasiKeranjang = Keranjang::with(['mahasiswa', 'dosen', 'barang'])
-            ->where('users_id', $users->id)
-            ->latest()
-            ->take(5)
-            ->get();
+        if(Auth::guard('mahasiswa')->check()) {
+            $notifikasiKeranjang = Peminjaman::get();
+        } elseif(Auth::guard('dosen')->check()) {
+            $notifikasiKeranjang = Peminjaman::get();
+        }
 
         $validCategories = ['Alat', 'Bahan'];
 
@@ -60,6 +61,6 @@ class BerandaController extends Controller
     }
 
     public function show(string $nama_barang) {
-       
+
     }
 }

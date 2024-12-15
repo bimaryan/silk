@@ -3,63 +3,43 @@
 namespace App\Http\Controllers\WEB\Pengguna;
 
 use App\Http\Controllers\Controller;
+use App\Models\Peminjaman;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RiwayatController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
-    }
+        // Check if the authenticated user is a 'mahasiswa' or 'dosen'
+        if (Auth::guard('mahasiswa')->check()) {
+            $user = Auth::guard('mahasiswa')->user();
+            $riwayat = Peminjaman::with(['mahasiswa', 'barang.kategori', 'ruangan', 'matkul', 'dosen'])
+                ->where('mahasiswa_id', $user->id)
+                ->get()
+                ->groupBy(function ($data) {
+                    return $data->mahasiswa_id;
+                });
+        } elseif (Auth::guard('dosen')->check()) {
+            $user = Auth::guard('dosen')->user();
+            $riwayat = Peminjaman::with(['mahasiswa', 'barang.kategori', 'ruangan', 'matkul', 'dosen'])
+                ->where('dosen_id', $user->id)
+                ->get()
+                ->groupBy(function ($data) {
+                    return $data->dosen_id;
+                });
+        } else {
+            return redirect()->route('login');
+        }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+        $notifikasiKeranjang = null;
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        if (Auth::guard('mahasiswa')->check()) {
+            $notifikasiKeranjang = Peminjaman::where('mahasiswa_id', Auth::guard('mahasiswa')->id())->get();
+        } elseif (Auth::guard('dosen')->check()) {
+            $notifikasiKeranjang = Peminjaman::where('dosen_id', Auth::guard('dosen')->id())->get();
+        }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return view('pages.pengguna.riwayat.index', compact('riwayat', 'notifikasiKeranjang'));
     }
 }

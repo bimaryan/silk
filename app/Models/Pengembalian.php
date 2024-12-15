@@ -11,7 +11,7 @@ class Pengembalian extends Model
 
     protected $table = 'pengembalians';
 
-    protected $fillable = ['peminjaman_id', 'keterangan'];
+    protected $fillable = ['peminjaman_id', 'catatan', 'kondisi'];
 
     public function peminjaman()
     {

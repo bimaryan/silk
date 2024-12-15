@@ -21,4 +21,9 @@ class Dosen extends Model
         'jenis_kelamin',
         'foto',
     ];
+
+    public function dosen()
+    {
+        return $this->hasMany(Peminjaman::class, 'dosen_id');
+    }
 }

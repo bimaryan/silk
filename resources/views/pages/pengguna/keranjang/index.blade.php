@@ -38,36 +38,38 @@
                 </div>
             @else
                 @foreach ($keranjang as $data)
-                    <div class="max-w-screen-xl p-1 mx-auto">
-                        <div
-                            class="w-full text-center bg-white border border-gray-200 rounded-lg shadow p-2 dark:bg-gray-800 dark:border-gray-700">
-                            <div class="flex justify-between items-center">
-                                <div class="flex items-center">
-                                    <div class="flex items-center gap-2">
-                                        @if (!empty($data->barang))
-                                            <!-- Tampilkan Barang -->
-                                            <img src="{{ asset($data->barang->foto ?? 'image/barang.png') }}" class="w-12"
-                                                alt="{{ $data->barang->foto }}">
-                                            <p class="text-sm">{{ $data->barang->nama_barang }}</p>
-                                        @elseif (!empty($data->ruangan))
-                                            <!-- Tampilkan Ruangan -->
-                                            <img src="{{ asset($data->ruangan->foto ?? 'image/barang.png') }}"
-                                                class="w-12" alt="{{ $data->ruangan->foto }}">
-                                            <p class="text-sm">{{ $data->ruangan->nama_ruangan }}</p>
-                                        @endif
+                    <div class="relative overflow-y-auto" style="max-height: 200px">
+                        <div class="max-w-screen-xl p-1 mx-auto">
+                            <div
+                                class="w-full text-center bg-white border border-gray-200 rounded-lg shadow p-2 dark:bg-gray-800 dark:border-gray-700">
+                                <div class="flex justify-between items-center">
+                                    <div class="flex items-center">
+                                        <div class="flex items-center gap-2">
+                                            @if (!empty($data->barang))
+                                                <!-- Tampilkan Barang -->
+                                                <img src="{{ asset($data->barang->foto ?? 'image/barang.png') }}"
+                                                    class="w-12" alt="{{ $data->barang->foto }}">
+                                                <p class="text-sm">{{ $data->barang->nama_barang }}</p>
+                                            @elseif (!empty($data->ruangan))
+                                                <!-- Tampilkan Ruangan -->
+                                                <img src="{{ asset($data->ruangan->foto ?? 'image/barang.png') }}"
+                                                    class="w-12" alt="{{ $data->ruangan->foto }}">
+                                                <p class="text-sm">{{ $data->ruangan->nama_ruangan }}</p>
+                                            @endif
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="flex justify-center items-center text-center">
-                                    <div class="px-4">
-                                        <p class="text-sm text-gray-900">{{ $data->stock_pinjam }}</p>
-                                    </div>
-                                    <div class="px-4">
-                                        <form action="{{ route('keranjang.destroy', $data->id) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit"
-                                                class="text-sm text-red-500 hover:underline">Hapus</button>
-                                        </form>
+                                    <div class="flex justify-center items-center text-center">
+                                        <div class="px-4">
+                                            <p class="text-sm text-gray-900">{{ $data->stock_pinjam }}</p>
+                                        </div>
+                                        <div class="px-4">
+                                            <form action="{{ route('keranjang.destroy', $data->id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit"
+                                                    class="text-sm text-red-500 hover:underline">Hapus</button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -177,9 +179,33 @@
                             <input type="time" name="waktu_pengembalian" id="waktu_pengembalian"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                         </div>
+
+                        <div class="mb-5">
+                            <label for="dokumenspo_id"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Dokumen SPO</label>
+                            <select id="dokumenspo_id" name="dokumenspo_id"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option selected>--- Pilih Dokumen SPO ---</option>
+                                @if ($dokumenspo->isEmpty())
+                                    <option>Tidak ada Mata Kuliah</option>
+                                @else
+                                    @foreach ($dokumenspo as $data)
+                                        <option value="{{ $data->id }}" data-url="{{ asset($data->file) }}">
+                                            {{ $data->nama_dokumen }}
+                                        </option>
+                                    @endforeach
+                                @endif
+                            </select>
+                        </div>
+
+                        <div id="dokumenLink" class="mb-4 hidden">
+                            <a id="dokumenLinkText" href="#" class="text-blue-600 underline" target="_blank">Download
+                                Dokumen SPO</a>
+                        </div>
                     @elseif(Auth::guard('dosen')->check())
                         <div class="mb-5">
-                            <label for="nama" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
+                            <label for="nama"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
                                 Dosen</label>
                             <input type="nama" id="nama" value="{{ auth()->user()->nama }}" disabled
                                 class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
@@ -217,4 +243,21 @@
             @endif
         </div>
     </div>
+
+    <script>
+        document.getElementById('dokumenspo_id').addEventListener('change', function() {
+            var selectedOption = this.options[this.selectedIndex];
+            var fileUrl = selectedOption.getAttribute('data-url');
+
+            var linkContainer = document.getElementById('dokumenLink');
+            var linkText = document.getElementById('dokumenLinkText');
+
+            if (fileUrl) {
+                linkText.href = fileUrl;
+                linkContainer.classList.remove('hidden');
+            } else {
+                linkContainer.classList.add('hidden');
+            }
+        });
+    </script>
 @endsection

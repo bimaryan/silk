@@ -26,7 +26,9 @@ return new class extends Migration
             $table->string('anggota_kelompok')->nullable();
             $table->enum('status_pengembalian', ['Belum', 'Diserahkan', 'Habis'])->default('Belum');
             $table->enum('aprovals', ['Ya', 'Tidak', 'Belum'])->default('Belum');
+            $table->enum('aprovals_pengembalian', ['Ya', 'Tidak', 'Belum'])->default('Belum');
             $table->enum('status', ['Dipinjamkan', 'Dikembalikan', 'Menunggu Persetujuan'])->default('Menunggu Persetujuan');
+            $table->enum('kondisi', ['Baik', 'Rusak'])->default('Baik');
             $table->string('tindakan_spo')->nullable();
             $table->string('keterangan')->nullable();
             $table->enum('jenis_peminjaman', ['Ruangan', 'Barang']);

@@ -14,11 +14,11 @@
                 <span class="sr-only">Notifications</span>
                 <div
                     class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-green-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900">
-                    {{-- {{ $notifikasiKeranjang->count() }} --}}
+                    {{ $notifikasiKeranjang->count() }}
                 </div>
             </button>
 
-            {{-- <div class="z-50 hidden my-4 w-64 p-2 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700"
+            <div class="z-50 hidden my-4 w-64 p-2 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700"
                 id="dropdown-cart">
                 <div role="none">
                     @if ($notifikasiKeranjang->isEmpty())
@@ -32,13 +32,25 @@
                         @foreach ($notifikasiKeranjang as $data)
                             <div class="my-2">
                                 <div class="text-xs flex gap-2 items-center overflow-y-auto max-h-60">
-                                    <div>
-                                        <img src="{{ $data->barang->foto }}" class="w-10"
-                                            alt="{{ $data->barang->foto }}">
-                                    </div>
-                                    <div>
-                                        <p>{{ $data->barang->nama_barang }}</p>
-                                    </div>
+                                    @if (!empty($data->barang))
+                                        <!-- Tampilkan Barang -->
+                                        <div>
+                                            <img src="{{ $data->barang->foto }}" class="w-10"
+                                                alt="{{ $data->barang->foto }}">
+                                        </div>
+                                        <div>
+                                            <p>{{ $data->barang->nama_barang }}</p>
+                                        </div>
+                                    @elseif (!empty($data->ruangan))
+                                        <!-- Tampilkan Ruangan -->
+                                        <div>
+                                            <img src="{{ asset($data->ruangan->foto  ?? 'image/barang.png')}}" class="w-10"
+                                                alt="{{ $data->ruangan->foto }}">
+                                        </div>
+                                        <div>
+                                            <p>{{ $data->ruangan->nama_ruangan }}</p>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         @endforeach
@@ -56,7 +68,7 @@
                         </div>
                     @endif
                 </div>
-            </div> --}}
+            </div>
 
             @if (Route::has('login.index'))
                 @auth
@@ -72,14 +84,21 @@
                                 <a href="{{ route('edit-profile.index') }}"
                                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white {{ Route::is('profile') ? 'bg-gray-200' : '' }}"
                                     role="menuitem">
-                                    <i class="fa-solid fa-user me-3"></i>Profil
+                                    <i class="fa-solid fa-user me-3"></i> Profil
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('riwayat.index') }}"
+                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white {{ Route::is('profile') ? 'bg-gray-200' : '' }}"
+                                    role="menuitem">
+                                    <i class="fa-solid fa-clock-rotate-left"></i> Riwayat
                                 </a>
                             </li>
                             <li>
                                 <a href="{{ route('logout.index') }}"
                                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
                                     role="menuitem">
-                                    <i class="fa-solid fa-right-from-bracket me-3"></i>Keluar
+                                    <i class="fa-solid fa-right-from-bracket me-3"></i> Keluar
                                 </a>
                             </li>
                         </ul>
@@ -117,13 +136,15 @@
                         class="block py-2 px-3 rounded md:border-0 md:p-0
            {{ Route::is('katalog.index') ? 'text-white bg-green-700 md:text-green-700 md:bg-transparent' : 'text-gray-900 md:hover:text-green-700 dark:text-white dark:hover:bg-gray-700' }}">Katalog</a>
                 </li>
-                <li>
-                    <a href="{{ route('katalog-ruangan.index') }}"
-                        class="block py-2 px-3 rounded md:border-0 md:p-0
+                @if (Auth::guard('dosen')->check())
+                    <li>
+                        <a href="{{ route('katalog-ruangan.index') }}"
+                            class="block py-2 px-3 rounded md:border-0 md:p-0
            {{ Route::is('katalog-ruangan.index') ? 'text-white bg-green-700 md:text-green-700 md:bg-transparent' : 'text-gray-900 md:hover:text-green-700 dark:text-white dark:hover:bg-gray-700' }}">Ruangan</a>
-                </li>
+                    </li>
+                @endif
                 <li>
-                    <a href="{{route('informasi.index')}}"
+                    <a href="{{ route('informasi.index') }}"
                         class="block py-2 px-3 rounded md:border-0 md:p-0
            {{ Route::is('informasi.index') ? 'text-white bg-green-700 md:text-green-700 md:bg-transparent' : 'text-gray-900 md:hover:text-green-700 dark:text-white dark:hover:bg-gray-700' }}">Informasi</a>
                 </li>

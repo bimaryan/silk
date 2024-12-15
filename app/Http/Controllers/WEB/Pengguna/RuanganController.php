@@ -17,12 +17,21 @@ class RuanganController extends Controller
 
         $ruangans = Ruangan::paginate(6);
 
+        $notifikasiKeranjang = null;
+
+        if (Auth::guard('mahasiswa')->check()) {
+            $notifikasiKeranjang = Peminjaman::where('mahasiswa_id', Auth::guard('mahasiswa')->id())->get();
+        } elseif (Auth::guard('dosen')->check()) {
+            $notifikasiKeranjang = Peminjaman::where('dosen_id', Auth::guard('dosen')->id())->get();
+        }
+
         $ruanganKosong = $ruangans->isEmpty();
 
         return view('pages.pengguna.ruangan.index', [
             'user' => $user,
             'ruangans' => $ruangans,
             'ruanganKosong' => $ruanganKosong,
+            'notifikasiKeranjang' => $notifikasiKeranjang,
         ]);
     }
 

@@ -1,12 +1,11 @@
 <div id="detail{{ $userId }}" tabindex="-1" aria-hidden="true"
-    class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
-    <div class="relative w-full max-w-4xl max-h-full">
-        <!-- Modal content -->
+    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative w-full max-w-2xl max-h-full p-4">
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <!-- Modal header -->
             <div class="flex items-center justify-between p-4 border-b rounded-t md:p-5 dark:border-gray-600">
                 <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
-                    Detail Informasi Peminjaman
+                    Detail Verifikasi Pengembalian
                 </h3>
                 <button type="button"
                     class="inline-flex items-center justify-center w-8 h-8 text-sm text-gray-400 bg-transparent rounded-lg hover:bg-gray-200 hover:text-gray-900 ms-auto dark:hover:bg-gray-600 dark:hover:text-white"
@@ -61,20 +60,14 @@
                             class="w-full relative overflow-y-auto text-center bg-white border border-gray-200 rounded-lg shadow p-3 dark:bg-gray-800 dark:border-gray-700">
                             <h4 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">Ruangan</h4>
                             <div class="relative overflow-y-auto" style="max-height: 200px">
-                                @foreach ($loans as $loan)
+                                @foreach ($loans->where('ruangan', '!=', null)->unique('ruangan_id') as $loan)
                                     @if ($loan->ruangan)
                                         <div
                                             class="flex w-full items-center justify-between gap-4 bg-white p-2 border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700 mb-2">
                                             <div class="flex items-center gap-2">
                                                 <img src="{{ asset($loan->ruangan->foto ?? 'image/barang.png') }}"
                                                     class="w-12" alt="gambar ruangan">
-                                                <p class="text-sm font-medium">{{ $loan->ruangan->nama_ruangan ?? '-' }}
-                                                </p>
-                                            </div>
-                                            <div>
-                                                <p class="text-sm text-gray-900">
-                                                    Kapasitas: <span>{{ $loan->ruangan->kapasitas ?? '-' }}</span>
-                                                </p>
+                                                <p class="text-sm font-medium">{{ $loan->ruangan->nama_ruangan }}</p>
                                             </div>
                                         </div>
                                     @endif

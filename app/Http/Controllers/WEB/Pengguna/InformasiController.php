@@ -11,7 +11,6 @@ class InformasiController extends Controller
 {
     public function index()
     {
-        // Check if the authenticated user is a 'mahasiswa' or 'dosen'
         if (Auth::guard('mahasiswa')->check()) {
             $user = Auth::guard('mahasiswa')->user();
             $peminjamans = Peminjaman::with(['mahasiswa', 'barang.kategori', 'ruangan', 'matkul', 'dosen'])
@@ -29,10 +28,17 @@ class InformasiController extends Controller
                     return $data->dosen_id;
                 });
         } else {
-            // Handle case if user is not authenticated
             return redirect()->route('login'); // or any other route
         }
 
-        return view('pages.pengguna.informasi.index', compact('peminjamans'));
+        $notifikasiKeranjang = null;
+
+        if (Auth::guard('mahasiswa')->check()) {
+            $notifikasiKeranjang = Peminjaman::where('mahasiswa_id', Auth::guard('mahasiswa')->id())->get();
+        } elseif (Auth::guard('dosen')->check()) {
+            $notifikasiKeranjang = Peminjaman::where('dosen_id', Auth::guard('dosen')->id())->get();
+        }
+
+        return view('pages.pengguna.informasi.index', compact('peminjamans', 'notifikasiKeranjang'));
     }
 }

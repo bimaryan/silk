@@ -21,12 +21,21 @@ class DetailController extends Controller
     {
         $view = Barang::find($id);
 
+        $notifikasiKeranjang = null;
+
+        if (Auth::guard('mahasiswa')->check()) {
+            $notifikasiKeranjang = Peminjaman::where('mahasiswa_id', Auth::guard('mahasiswa')->id())->get();
+        } elseif (Auth::guard('dosen')->check()) {
+            $notifikasiKeranjang = Peminjaman::where('dosen_id', Auth::guard('dosen')->id())->get();
+        }
+
         if (!$view) {
             return redirect('katalog.index')->with('error', 'Data barang tidak ditemukan.');
         }
 
         return view('pages.pengguna.detail.index', [
             'view' => $view,
+            'notifikasiKeranjang' => $notifikasiKeranjang,
         ]);
     }
 
