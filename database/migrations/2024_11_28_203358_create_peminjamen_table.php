@@ -21,16 +21,18 @@ return new class extends Migration
             $table->unsignedBigInteger('barang_id')->nullable();
             $table->unsignedBigInteger('dokumenspo_id')->nullable();
             $table->string('stock_pinjam')->nullable();
+            $table->string('barang_rusak_atau_hilang')->nullable();
             $table->dateTime('tanggal_waktu_peminjaman')->nullable();
             $table->time('waktu_pengembalian')->nullable();
             $table->string('anggota_kelompok')->nullable();
-            $table->enum('status_pengembalian', ['Belum', 'Diserahkan', 'Habis'])->default('Belum');
             $table->enum('aprovals', ['Ya', 'Tidak', 'Belum'])->default('Belum');
             $table->enum('aprovals_pengembalian', ['Ya', 'Tidak', 'Belum'])->default('Belum');
             $table->enum('status', ['Dipinjamkan', 'Dikembalikan', 'Menunggu Persetujuan'])->default('Menunggu Persetujuan');
-            $table->enum('kondisi', ['Baik', 'Rusak'])->default('Baik');
+            $table->enum('status_pengembalian', ['Belum', 'Diserahkan'])->default('Belum');
+            $table->enum('kondisi', ['Baik', 'Rusak', 'Hilang'])->nullable();
             $table->string('tindakan_spo')->nullable();
             $table->string('keterangan')->nullable();
+            $table->string('catatan')->nullable();
             $table->enum('jenis_peminjaman', ['Ruangan', 'Barang']);
             $table->timestamps();
 

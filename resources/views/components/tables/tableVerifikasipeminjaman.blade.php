@@ -34,7 +34,7 @@
                 </tr>
             @else
                 @foreach ($peminjaman as $userId => $loans)
-                    @if ($loans->first()->status !== 'Dikembalikan')
+                    @if ($loans->first()->status === 'Menunggu Persetujuan' || $loans->first()->status === 'Dipinjamkan')
                         <!-- Kondisi untuk mengecek status -->
                         <tr
                             class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">

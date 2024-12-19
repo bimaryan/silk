@@ -15,14 +15,13 @@ class RuanganExport implements FromCollection, WithHeadings, ShouldAutoSize
     public function collection()
     {
         // Ambil semua data dan tambahkan nomor urut
-        $ruangans = Ruangan::select('nama_ruangan', 'stok_ruangan')->get();
+        $ruangans = Ruangan::select('nama_ruangan')->get();
 
         // Transformasi data untuk menambahkan nomor urut
         return $ruangans->map(function ($item, $index) {
             return [
                 'No' => $index + 1, // Tambahkan nomor urut
                 'Nama Ruangan' => $item->nama_ruangan,
-                'Stok Ruangan' => $item->stok_ruangan,
             ];
         });
     }

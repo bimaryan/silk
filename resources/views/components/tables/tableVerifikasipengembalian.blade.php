@@ -21,7 +21,7 @@
                     @php
                         $status = $loans->first()->status;
                     @endphp
-                    @if ($status !== 'Dipinjamkan')
+                    @if ($status === 'Menunggu Persetujuan' || $status === 'Dipinjamkan')
                         <!-- Exclude rows where status is 'Dipinjamkan' -->
                         <tr
                             class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">

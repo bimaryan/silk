@@ -28,7 +28,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('{{ asset('image/gedungGSC.jpg') }}');
+            background-image: url('{{ asset('image/foto-lapterpadu.jpg') }}');
             background-size: cover;
             background-position: center;
             filter: blur(3px);

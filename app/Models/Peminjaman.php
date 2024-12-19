@@ -20,16 +20,19 @@ class Peminjaman extends Model
         'nama_dosen',
         'barang_id',
         'stock_pinjam',
+        'barang_rusak_atau_hilang',
         'tanggal_waktu_peminjaman',
         'waktu_pengembalian',
         'anggota_kelompok',
-        'status_pengembalian',
         'aprovals',
         'aprovals_pengembalian',
         'status',
+        'status_pengembalian',
         'tindakan_spo',
         'keterangan',
         'jenis_peminjaman',
+        'catatan',
+        'kondisi',
     ];
 
     public function mahasiswa()

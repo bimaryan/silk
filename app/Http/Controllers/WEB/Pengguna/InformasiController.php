@@ -28,7 +28,7 @@ class InformasiController extends Controller
                     return $data->dosen_id;
                 });
         } else {
-            return redirect()->route('login'); // or any other route
+            return redirect()->route('login');
         }
 
         $notifikasiKeranjang = null;

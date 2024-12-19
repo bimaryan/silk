@@ -70,7 +70,6 @@ class KeranjangController extends Controller
                 'tanggal_waktu_peminjaman' => $request->tanggal_waktu_peminjaman ?? $item->tanggal_waktu_peminjaman,
                 'waktu_pengembalian' => $request->waktu_pengembalian ?? $item->waktu_pengembalian,
                 'anggota_kelompok' => $request->anggota_kelompok ?? $item->anggota_kelompok,
-                'stock_pinjam_ruangan' => '1',
                 'dokumenspo_id' => $request->dokumenspo_id ?? $item->dokumenspo_id,
             ]);
         }
