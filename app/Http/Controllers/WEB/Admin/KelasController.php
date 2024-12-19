@@ -11,9 +11,18 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class KelasController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $kelas = Kelas::get();
+        $query = Kelas::query();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $query->where('nama_kelas', 'LIKE', "%{$search}%");
+        }
+
+        $kelas = $query->paginate(5)->appends($request->all());
+
         return view('pages.admin.kelas.index', ['kelas' => $kelas]);
     }
 

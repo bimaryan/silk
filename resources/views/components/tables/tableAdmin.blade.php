@@ -1,27 +1,36 @@
 <div class="relative overflow-x-auto sm:rounded-lg">
-    <table class="w-full text-sm text-gray-500 display dark:text-gray-400" style="100%" id="data-admin-dan-staff">
-        <thead class="uppercase text-cen-gray-700 dark:text-gray-400">
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" style="100%">
+        <thead class=" text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
                 <th scope="col" class="px-6 py-3">
                     No
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Nama Lengkap
+                    Nama Admin/Staff
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    NIP/NIDN
+                    NIDN/NIP
                 </th>
                 <th scope="col" class="px-6 py-3">
                     Username
                 </th>
                 <th scope="col" class="px-6 py-3">
+                    Role
+                </th>
+                <th scope="col" class="px-6 py-3 text-center">
                     Aksi
                 </th>
             </tr>
         </thead>
         <tbody>
+            @if($users->isEmpty())
+            <tr class="bg-white border-b dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 dark:border-gray-700">
+                <td colspan="6" class="px-6 py-4 text-center">Tidak ada data</td>
+            </tr>
+            @endif
             @foreach ($users as $data)
-                <tr>
+                <tr
+                class="bg-white border-b dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 dark:border-gray-700">
                     <td scope="col" class="px-6 py-3">
                         {{ $loop->iteration }}
                     </td>
@@ -34,14 +43,10 @@
                     <td scope="col" class="px-6 py-3">
                         {{ $data->username }}
                     </td>
+                    <td scope="col" class="px-6 py-3">
+                        {{ $data->role->nama_role }}
+                    </td>
                     <td scope="col" class="flex items-center justify-center gap-2 px-6 py-3">
-                        <div>
-                            <button type="button" data-modal-target="detail{{ $data->id }}"
-                                data-modal-toggle="detail{{ $data->id }}"
-                                class="flex items-center px-2 py-2 text-sm text-white bg-yellow-400 rounded">
-                                <i class="fa-solid fa-eye"></i>
-                            </button>
-                        </div>
                         <div>
                             <form id="delete-form-{{ $data->id }}"
                                 action="{{ route('admin-dan-staff.destroy', $data->id) }}" method="POST">
@@ -62,9 +67,6 @@
                         </div>
                     </td>
                 </tr>
-
-                {{-- MODAL DETAIL ADMIN DAN STAFF --}}
-                @include('components.modal.modaldetailAdmin')
 
                 {{-- MODAL EDIT BARANG --}}
                 @include('components.modal.modaleditAdmin')

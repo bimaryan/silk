@@ -2,61 +2,39 @@
 @section('content')
     <div class="p-4 mt-3 sm:ml-64">
         <div class="space-y-4 rounded-lg mt-14">
-            <div class="p-4 bg-white rounded-lg shadow-lg">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h3 class="text-2xl font-semibold text-green-500">Laporan Peminjaman</h3>
-                    </div>
-                    <div>
-                        <div class="flex items-center space-x-2">
-                            <a href="" data-tooltip-target="export" data-tooltip-placement="left"
-                                class="justify-center px-4 py-2
-                            text-white bg-green-500 rounded hover:bg-green-800">
-                                <i class="fa-solid fa-file-arrow-down"></i>
-                            </a>
-
-                            <div id="export" role="tooltip"
-                                class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
-                                Export
-                                <div class="tooltip-arrow" data-popper-arrow></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="p-4 bg-white rounded-lg shadow-lg flex items-center">
+                <p class="text-lg font-semibold text-green-500">Laporan</p>
             </div>
-
             <div class="p-4 bg-white rounded-lg shadow-lg">
-                <form method="GET" action="{{ route('laporan-peminjaman.index') }}" class="mb-4 mt-2">
-                    <div class="flex gap-4 items-center">
-                        <!-- Filter Bulan -->
-                        <select name="bulan"
-                            class="p-2 border-gray-300 rounded-lg shadow-sm focus:border-green-500 focus:ring focus:ring-green-500 focus:ring-opacity-50">
-                            <option value="">Pilih Bulan</option>
-                            @for ($i = 1; $i <= 12; $i++)
-                                <option value="{{ $i }}" {{ request('bulan') == $i ? 'selected' : '' }}>
-                                    {{ \Carbon\Carbon::createFromDate(null, $i, 1)->format('F') }}
-                                </option>
-                            @endfor
-                        </select>
-
-                        <!-- Filter Tahun -->
-                        <select name="tahun"
-                            class="p-2 border-gray-300 rounded-lg shadow-sm focus:border-green-500 focus:ring focus:ring-green-500 focus:ring-opacity-50">
-                            <option value="">Pilih Tahun</option>
-                            @for ($year = date('Y'); $year >= 2000; $year--)
-                                <option value="{{ $year }}" {{ request('tahun') == $year ? 'selected' : '' }}>
-                                    {{ $year }}
-                                </option>
-                            @endfor
-                        </select>
-
-                        <!-- Tombol Submit -->
-                        <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-md">
-                            Filter
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-2">
+                        <button class="justify-center px-4 py-2 text-white bg-green-500 rounded hover:bg-green-800"
+                            data-modal-target="import-mahasiswa" data-tooltip-target="import" data-tooltip-placement="left"
+                            data-modal-toggle="import-mahasiswa"><i class="fa-solid fa-file-arrow-up"></i>
                         </button>
                     </div>
-                </form>
-                
+                    <div class="flex items-center gap-2">
+                        <form method="GET" action="" class="flex items-center gap-2">
+                            <!-- Input pencarian -->
+                            <input type="text" name="search" placeholder="Pencarian" value="{{ request('search') }}"
+                                class="p-2 border rounded-md w-full focus:outline-none focus:ring-2 focus:ring-green-500">
+
+                            <!-- Tombol submit -->
+                            <button type="submit" class="p-2 text-white bg-green-500 rounded-md hover:bg-green-800">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <path fill="currentColor"
+                                        d="m19.6 21l-6.3-6.3q-.75.6-1.725.95T9.5 16q-2.725 0-4.612-1.888T3 9.5t1.888-4.612T9.5 3t4.613 1.888T16 9.5q0 1.1-.35 2.075T14.7 13.3l6.3 6.3zM9.5 14q1.875 0 3.188-1.312T14 9.5t-1.312-3.187T9.5 5T6.313 6.313T5 9.5t1.313 3.188T9.5 14" />
+                                </svg>
+                            </button>
+
+                            <!-- Tombol reset -->
+                            <a href="" class="p-2 text-white bg-gray-500 rounded-md hover:bg-gray-600">
+                                Reset
+                            </a>
+                        </form>
+                    </div>
+                </div>
+
                 <div id="tableLaporan">
                     @include('components.tables.tableLaporanpeinjaman', ['peminjamans' => $peminjamans])
                 </div>

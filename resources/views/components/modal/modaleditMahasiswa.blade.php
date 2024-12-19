@@ -28,15 +28,6 @@
                     @method('PUT')
                     <div class="gap-2">
                         <div class="mb-2">
-                            <label for="foto" class="block text-sm font-medium text-gray-700">Foto
-                                Mahasiswa</label>
-                            <input type="file" name="foto" id="foto"
-                                class="block w-full mt-2 border border-gray-300 rounded-lg shadow-sm focus:border-green-500 focus:ring focus:ring-green-500 focus:ring-opacity-50">
-                            @error('foto')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-                        <div class="mb-2">
                             <label for="nama"
                                 class="block text-sm font-medium text-gray-700">Nama</label>
                             <input type="text" name="nama" id="nama"
@@ -56,7 +47,7 @@
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
-                        {{-- <div class="mb-2">
+                        <div class="mb-2">
                             <label for="kelas_id"
                                 class="block text-sm font-medium text-gray-700">Pilih
                                 Kelas</label>
@@ -68,7 +59,7 @@
                             @error('kelas_id')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
-                        </div> --}}
+                        </div>
 
                         <button type="submit"
                             class="text-white bg-green-500 mt-4 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Simpan</button>

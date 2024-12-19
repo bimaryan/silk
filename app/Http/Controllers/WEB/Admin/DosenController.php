@@ -12,9 +12,19 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class DosenController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $dosen = Dosen::get();
+        $query = Dosen::query();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $query->where('nama', 'LIKE', "%{$search}%")
+                ->orWhere('nip', 'LIKE', "%{$search}%")
+                ->orWhere('username', 'LIKE', "%{$search}%");
+        }
+
+        $dosen = $query->paginate(5)->appends($request->all());
 
         return view('pages.admin.pengguna.dosen.index', compact('dosen'));
     }

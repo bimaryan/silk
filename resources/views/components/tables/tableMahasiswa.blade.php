@@ -1,6 +1,6 @@
 <div class="relative overflow-x-auto sm:rounded-lg">
-    <table class="w-full text-sm text-gray-500 dark:text-gray-400 display" style="100%" id="data-mahasiswa">
-        <thead class="uppercase text-cen-gray-700 dark:text-gray-400">
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" style="100%">
+        <thead class=" text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
                 <th scope="col" class="px-6 py-3 ">
                     No
@@ -17,14 +17,20 @@
                 <th scope="col" class="px-6 py-3">
                     Email
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-6 py-3 text-center">
                     Aksi
                 </th>
             </tr>
         </thead>
         <tbody>
+            @if($mahasiswa->isEmpty())
+            <tr class="bg-white border-b dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 dark:border-gray-700">
+                <td colspan="6" class="px-6 py-4 text-center">Tidak ada data</td>
+            </tr>
+            @endif
             @foreach ($mahasiswa as $data)
-                <tr>
+                <tr
+                class="bg-white border-b dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 dark:border-gray-700">
                     <td scope="col" class="px-6 py-3">
                         {{ $loop->iteration }}
                     </td>
@@ -38,11 +44,7 @@
                         {{ $data->kelas->nama_kelas ?? '-' }}
                     </td>
                     <td scope="col" class="px-6 py-3">
-                        @if ($data->email)
-                            {{ $data->email }}
-                        @else
-                            -
-                        @endif
+                        {{ $data->email ?? '-' }}
                     </td>
                     <td scope="col" class="flex items-center justify-center gap-2 px-6 py-3">
                         <div>

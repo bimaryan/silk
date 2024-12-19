@@ -10,12 +10,20 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $admin = Admin::query();
-
-        $users = $admin->get();
         $role = Role::all();
+        $query = Admin::query();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $query->where('nama', 'LIKE', "%{$search}%")
+                ->orWhere('nip', 'LIKE', "%{$search}%")
+                ->orWhere('username', 'LIKE', "%{$search}%");
+        }
+
+        $users = $query->paginate(5)->appends($request->all());
 
         return view('pages.admin.pengguna.admindanstaff.index', ['users' => $users], ['role' => $role]);
     }

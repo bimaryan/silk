@@ -1,37 +1,39 @@
 <div class="relative overflow-x-auto sm:rounded-lg">
-    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" id="data-laporan">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" style="100%">
+        <thead class=" text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
                 <th scope="col" class="px-6 py-3">
                     No
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Nama Mahasiswa
+                    Nama Peminjam
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Nama Barang
+                    Kelas
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Jumlah Pinjam
+                    Mata Kuliah
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Tanggal Dipinjam
+                    Dosen Pengampu
                 </th>
                 <th scope="col" class="px-6 py-3">
-                    Jam Pinjam
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Jam Kembali
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Kondisi
+                    Tanggal Peminjaman dan Pengembalian
                 </th>
                 <th scope="col" class="px-6 py-3">
                     Status
                 </th>
+                <th scope="col" class="px-6 py-3 text-center">
+                    Aksi
+                </th>
             </tr>
         </thead>
         <tbody>
+            @if($peminjamans->isEmpty())
+            <tr class="bg-white border-b dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 dark:border-gray-700">
+                <td colspan="8" class="px-6 py-4 text-center">Tidak ada data</td>
+            </tr>
+            @endif
             @foreach ($peminjamans as $data)
                 @if ($data->status_pengembalian == 'Diserahkan')
                     <tr
@@ -43,25 +45,28 @@
                             {{ $data->mahasiswa->nama }}
                         </td>
                         <td scope="col" class="px-6 py-3">
-                            {{ $data->barang->nama_barang }}
+                            {{ $data->kelas->nama_kelas }}
                         </td>
                         <td scope="col" class="px-6 py-3">
-                            {{ $data->stock_pinjam }}
+                            {{ $data->matkul->mata_kuliah }}
                         </td>
                         <td scope="col" class="px-6 py-3">
-                            {{ $data->tgl_pinjam }}
+                            {{ $data->dosen->nama }}
                         </td>
                         <td scope="col" class="px-6 py-3">
-                            {{ $data->waktu_pinjam }}
-                        </td>
-                        <td scope="col" class="px-6 py-3">
-                            {{ $data->waktu_pinjam }}
-                        </td>
-                        <td scope="col" class="px-6 py-3">
-                            {{ $data->barang->kondisi->kondisi }}
+                            {{ $data->created_at }} / {{ $data->waktu_pengembalian }}
                         </td>
                         <td scope="col" class="px-6 py-3">
                             {{ $data->status }}
+                        </td>
+                        <td scope="col" class="px-6 py-3 text-center">
+                            <form action="" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="flex items-center px-2 py-2 text-sm text-white bg-red-500 rounded">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </form>
                         </td>
                     </tr>
                 @endif

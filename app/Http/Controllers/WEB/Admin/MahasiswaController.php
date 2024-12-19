@@ -14,10 +14,22 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class MahasiswaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $mahasiswa = Mahasiswa::get();
         $kelas = Kelas::all();
+        $query = Mahasiswa::query();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $query->where('nama', 'LIKE', "%{$search}%")
+                ->orWhere('nim', 'LIKE', "%{$search}%")
+                ->orWhere('email', 'LIKE', "%{$search}%")
+                ->orWhere('jenis_kelamin', 'LIKE', "%{$search}%");
+        }
+
+        $mahasiswa = $query->paginate(5)->appends($request->all());
+
         return view('pages.admin.pengguna.mahasiswa.index', ['mahasiswa' => $mahasiswa], ['kelas' => $kelas]);
     }
 

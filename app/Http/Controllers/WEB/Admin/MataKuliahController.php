@@ -11,9 +11,19 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class MataKuliahController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $matakuliah = MataKuliah::get();
+        $query = MataKuliah::query();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $query->where('kode_mata_kuliah', 'LIKE', "%{$search}%")
+                ->orWhere('mata_kuliah', 'LIKE', "%{$search}%");
+        }
+
+        $matakuliah = $query->paginate(5)->appends($request->all());
+
         return view('pages.admin.matakuliah.index', ['matakuliah' => $matakuliah]);
     }
 

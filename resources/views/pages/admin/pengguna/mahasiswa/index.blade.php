@@ -2,65 +2,51 @@
 @section('content')
     <div class="p-4 mt-3 sm:ml-64">
         <div class="space-y-4 rounded-lg mt-14">
-            @if (session('success'))
-                <script>
-                    Swal.fire({
-                        title: "Success",
-                        text: "{{ session('success') }}",
-                        icon: "success",
-                        confirmButtonColor: "#3085d6",
-                    });
-                </script>
-            @endif
-            <div class="p-4 bg-white rounded-lg shadow-lg">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h3 class="text-2xl font-semibold text-green-500">Mahasiswa</h3>
-                    </div>
-                    <div>
-                        <div class="flex items-center space-x-2">
-                            <a href="{{ route('export-mahasiswa') }}" data-tooltip-target="export"
-                                data-tooltip-placement="left"
-                                class="justify-center px-4 py-2 text-white bg-green-500 rounded hover:bg-green-800">
-                                <i class="fa-solid fa-file-arrow-down"></i>
-                            </a>
-
-                            <div id="export" role="tooltip"
-                                class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
-                                Export
-                                <div class="tooltip-arrow" data-popper-arrow></div>
-                            </div>
-
-                            <button class="justify-center px-4 py-2 text-white bg-green-500 rounded hover:bg-green-800"
-                                data-modal-target="import-mahasiswa" data-tooltip-target="import"
-                                data-tooltip-placement="left" data-modal-toggle="import-mahasiswa"><i
-                                    class="fa-solid fa-file-arrow-up"></i>
-                            </button>
-
-                            <div id="import" role="tooltip"
-                                class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
-                                Import
-                                <div class="tooltip-arrow" data-popper-arrow></div>
-                            </div>
-
-                            @include('components.modal.modalimportMahasiswa')
-
-                            <button data-modal-target="barang" data-modal-toggle="barang"
-                                class="justify-center px-4 py-2 text-white bg-green-500 rounded hover:bg-green-800">
-                                <i class="fa-solid fa-plus"></i>
-                            </button>
-                        </div>
-
-                        {{-- MODAL TAMBAH MAHASISWA --}}
-                        @include('components.modal.modaltambahMahasiswa')
-                    </div>
-                </div>
+            <div class="p-4 bg-white rounded-lg shadow-lg flex items-center">
+                <p class="text-lg font-semibold text-green-500">Mahasiswa</p>
             </div>
 
             <div class="p-4 bg-white rounded-lg shadow-lg">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-2">
+                        <button class="justify-center px-4 py-2 text-white bg-green-500 rounded hover:bg-green-800"
+                            data-modal-target="import-mahasiswa" data-tooltip-target="import" data-tooltip-placement="left"
+                            data-modal-toggle="import-mahasiswa"><i class="fa-solid fa-file-arrow-up"></i>
+                        </button>
+                        @include('components.modal.modalimportMahasiswa')
 
+                        <button data-modal-target="barang" data-modal-toggle="barang"
+                            class="justify-center px-4 py-2 text-white bg-green-500 rounded hover:bg-green-800">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                        @include('components.modal.modaltambahMahasiswa')
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <form method="GET" action="{{ route('data-mahasiswa.index') }}" class="flex items-center gap-2">
+                            <!-- Input pencarian -->
+                            <input type="text" name="search" placeholder="Pencarian" value="{{ request('search') }}"
+                                class="p-2 border rounded-md w-full focus:outline-none focus:ring-2 focus:ring-green-500">
+
+                            <!-- Tombol submit -->
+                            <button type="submit" class="p-2 text-white bg-green-500 rounded-md hover:bg-green-800">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <path fill="currentColor"
+                                        d="m19.6 21l-6.3-6.3q-.75.6-1.725.95T9.5 16q-2.725 0-4.612-1.888T3 9.5t1.888-4.612T9.5 3t4.613 1.888T16 9.5q0 1.1-.35 2.075T14.7 13.3l6.3 6.3zM9.5 14q1.875 0 3.188-1.312T14 9.5t-1.312-3.187T9.5 5T6.313 6.313T5 9.5t1.313 3.188T9.5 14" />
+                                </svg>
+                            </button>
+
+                            <!-- Tombol reset -->
+                            <a href="{{ route('data-mahasiswa.index') }}" class="p-2 text-white bg-gray-500 rounded-md hover:bg-gray-600">
+                                Reset
+                            </a>
+                        </form>
+                    </div>
+                </div>
                 <div id="tableMahasiswa">
                     @include('components.tables.tableMahasiswa', ['mahasiswa' => $mahasiswa])
+                </div>
+                <div class="mt-3">
+                    {{ $mahasiswa->links() }}
                 </div>
             </div>
         </div>
@@ -86,48 +72,4 @@
     </script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // Load all results and paginate locally
-            function loadTable(page = 1) {
-                $.ajax({
-                    url: "{{ route('data-mahasiswa.index') }}",
-                    method: "GET",
-                    data: {
-                        nama_barang: $('#filterName').val(),
-                        kategori_id: $('#filterKategori').val(),
-                        kondisi: $('#filterKondisi').val(),
-                        stock: $('#filterStock').val(),
-                        satuan_id: $('#filterSatuan').val(),
-                        page: page
-                    },
-                    success: function(response) {
-                        // Replace table and pagination links
-                        $('#tableMahasiswa').html($(response).find('#tableMahasiswa').html());
-                    }
-                });
-            }
-
-            // Apply filters and load results
-            $('#applyFilter').on('click', function(e) {
-                e.preventDefault();
-                loadTable();
-            });
-
-            // Handle pagination click event
-            $(document).on('click', '.pagination a', function(e) {
-                e.preventDefault();
-                var page = $(this).attr('href').split('page=')[1];
-                loadTable(page);
-            });
-
-            $(document).ready(function() {
-                $('#data-mahasiswa').DataTable({
-                    paging: true,
-                    scrollCollapse: true,
-                    scrollY: '300px'
-                });
-            });
-        });
-    </script>
 @endsection

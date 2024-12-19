@@ -35,6 +35,27 @@
 
 <body class="bg-gray-100 dark:bg-gray-800">
     @include('components.navbar.navbarAdmin')
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+                confirmButtonColor: "#3085d6",
+            });
+        </script>
+    @endif
+
+    @if (session('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                text: '{{ session('error') }}',
+                confirmButtonColor: "#3085d6",
+            });
+        </script>
+    @endif
     @yield('content')
     @yield('scripts')
 
