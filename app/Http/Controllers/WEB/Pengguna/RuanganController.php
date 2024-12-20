@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\WEB\Pengguna;
 
 use App\Http\Controllers\Controller;
+use App\Models\Keranjang;
 use App\Models\Peminjaman;
 use App\Models\PeminjamanRuangan;
 use App\Models\Ruangan;
@@ -17,12 +18,13 @@ class RuanganController extends Controller
 
         $ruangans = Ruangan::paginate(6);
 
-        $notifikasiKeranjang = null;
+        if (auth()->check()) {
+            $dataKeranjang = Keranjang::where('user_id', auth()->id())
+                ->with('barang')
+                ->get();
 
-        if (Auth::guard('mahasiswa')->check()) {
-            $notifikasiKeranjang = Peminjaman::where('mahasiswa_id', Auth::guard('mahasiswa')->id())->get();
-        } elseif (Auth::guard('dosen')->check()) {
-            $notifikasiKeranjang = Peminjaman::where('dosen_id', Auth::guard('dosen')->id())->get();
+            // Hitung jumlah total item di keranjang
+            $notifikasiKeranjang = $dataKeranjang->sum('barang_id');
         }
 
         $ruanganKosong = $ruangans->isEmpty();
@@ -31,7 +33,7 @@ class RuanganController extends Controller
             'user' => $user,
             'ruangans' => $ruangans,
             'ruanganKosong' => $ruanganKosong,
-            'notifikasiKeranjang' => $notifikasiKeranjang,
+            'dataKeranjang' => $dataKeranjang,
         ]);
     }
 

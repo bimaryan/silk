@@ -13,11 +13,11 @@ class LaporanPeminjamanController extends Controller
         $bulan = $request->input('bulan');
         $tahun = $request->input('tahun');
 
-        $notifikasiPeminjaman = Peminjaman::with(['mahasiswa', 'dosen', 'barang'])
-            ->where('status', '!=', 'Dikembalikan')
-            ->latest()
-            ->take(5)
-            ->get();
+        // $notifikasiPeminjaman = Peminjaman::with(['mahasiswa', 'dosen', 'barang'])
+        //     ->where('status', '!=', 'Dikembalikan')
+        //     ->latest()
+        //     ->take(5)
+        //     ->get();
 
         $peminjamans = Peminjaman::with(['mahasiswa', 'dosen', 'barang'])
             ->when($bulan, function ($query, $bulan) {
@@ -29,7 +29,7 @@ class LaporanPeminjamanController extends Controller
             ->paginate(5);
 
         return view('pages.staff.laporan-peminjaman.index', [
-            'notifikasiPeminjaman' => $notifikasiPeminjaman,
+            // 'notifikasiPeminjaman' => $notifikasiPeminjaman,
             'peminjamans' => $peminjamans,
             'bulan' => $bulan,
             'tahun' => $tahun,

@@ -44,7 +44,7 @@
 </head>
 
 <body class="bg-gray-100">
-    @include('partials.navbar.pengguna-navbar')
+    @include('components.navbar.navbarPengguna')
     <div>
         @if (session('success'))
         <script>

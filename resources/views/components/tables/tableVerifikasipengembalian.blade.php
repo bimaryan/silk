@@ -66,7 +66,7 @@
                     </td>
                 </tr>
 
-                {{-- @include('partials.modals.detail.modal-verifikasi-pengembalian', [
+                {{-- @include('components.modal.', [
                     'pengembalan' => $pengembalian,
                 ]) --}}
                 @empty

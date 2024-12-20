@@ -35,9 +35,9 @@
         <div class="p-6 mx-auto ">
             <div class="flex items-center justify-center h-screen p-6">
                 <div class="max-w-md space-y-5 animate-slide">
-                    <h2 class="font-medium text-center text-green-500 text-8xl">SILK</h2>
+                    <h2 class="font-medium text-center text-green-500 text-8xl">SIPELAK</h2>
                     <p class="text-lg font-semibold text-center text-white">
-                        Sistem Laboratorium Kesehatan adalah sebuah sistem berbasis teknologi yang dirancang untuk
+                        Sistem Peminjaman Laboratorium Kesehatan adalah sebuah sistem berbasis teknologi yang dirancang untuk
                         mempermudah proses peminjaman, pengembalian, serta pengelolaan inventaris laboratorium secara
                         digital.
                     </p>

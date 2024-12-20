@@ -16,7 +16,7 @@
                             class="justify-center px-4 py-2 text-white bg-green-500 rounded hover:bg-green-800">
                             <i class="fa-solid fa-plus"></i>
                         </button>
-                        @include('components.modal.modaltambahDokumenSPO')
+                        @include('components.modal.modaltambahDokumenspo')
                     </div>
                     <div class="flex items-center gap-2">
                         <form method="GET" action="{{ route('data-spo.index') }}" class="flex items-center gap-2">
@@ -40,7 +40,7 @@
                     </div>
                 </div>
                 <div id='tableDokumenSpo'>
-                    @include('components.tables.tabledokumenspo', ['dokumen' => $dokumen])
+                    @include('components.tables.tableDokumenspo', ['dokumen' => $dokumen])
                 </div>
                 <div class="mt-3">
                     {{ $dokumen->links() }}

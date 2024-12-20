@@ -2,15 +2,14 @@
 
 @section('content')
 
-    <div class="p-4 space-y-3">
-        <div
-            class="max-w-screen-xl mx-auto mt-14 bg-white p-4 text-green-500 rounded-xl text-2xl font-semibold text-center shadow-lg">
+    <div class="max-w-screen-xl p-6 mx-auto">
+        <div class="bg-white p-4 text-green-500 rounded-xl text-2xl font-semibold text-center shadow-lg">
             Keranjang
         </div>
 
         <br>
 
-        <div class="max-w-screen-xl p-4 mx-auto mt-14 bg-white rounded-xl shadow-lg">
+        <div class="max-w-screen-xl p-4 mx-auto bg-white rounded-xl shadow-lg">
             @if (empty($dataKeranjang))
                 <div class="flex justify-center items-center text-center text-red-500 font-semibold">
                     <p>Keranjang Anda kosong, tambahkan barang terlebih dahulu sebelum melanjutkan.</p>

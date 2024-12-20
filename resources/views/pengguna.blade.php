@@ -73,9 +73,7 @@
             });
         </script>
     @endif
-    <div class="mt-7">
-        @yield('content')
-    </div>
+    @yield('content')
     @include('components.footer.footerPengguna')
 
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>

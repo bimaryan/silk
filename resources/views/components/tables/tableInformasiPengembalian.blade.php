@@ -37,7 +37,7 @@
                 @foreach ($pengembalian as $data)
                     <tr
                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        
+
                         <td scope="col" class="px-6 py-3">
                             {{ $data->user->nama }}
                         </td>
@@ -74,7 +74,6 @@
                     ])
                 @endforeach
             @endif
-
         </tbody>
     </table>
 </div>

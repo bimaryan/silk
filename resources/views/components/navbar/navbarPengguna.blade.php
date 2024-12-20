@@ -77,7 +77,7 @@
                         <span
                             class="block text-sm text-gray-900 dark:text-white">{{ Auth::guard('mahasiswa')->user()->nama }}</span>
                         <span
-                            class="block text-sm  text-gray-500 truncate dark:text-gray-400">{{ Auth::guard('mahasiswa')->user()->kelas ?? '-' }}</span>
+                            class="block text-sm  text-gray-500 truncate dark:text-gray-400">{{ Auth::user()->kelas->nama_kelas ?? '-' }}</span>
                     @elseif (Auth::guard('dosen')->check())
                         <span
                             class="block text-sm text-gray-900 dark:text-white">{{ Auth::guard('dosen')->user()->nama }}</span>
@@ -123,14 +123,14 @@
            {{ Route::is('katalog.index') ? 'text-white bg-green-700 md:text-green-700 md:bg-transparent' : 'text-gray-900 md:hover:text-green-700 dark:text-white dark:hover:bg-gray-700' }}">Katalog</a>
                 </li>
                 <li>
-                    <a href=""
+                    <a href="{{route('katalog-ruangan.index')}}"
                         class="block py-2 px-3 rounded md:border-0 md:p-0
            {{ Route::is('ruangan.index') ? 'text-white bg-green-700 md:text-green-700 md:bg-transparent' : 'text-gray-900 md:hover:text-green-700 dark:text-white dark:hover:bg-gray-700' }}">Ruangan</a>
                 </li>
-                
+
                 <li>
                     <button id="dropdownNavbarLink" data-dropdown-toggle="informasidropdown" class="flex items-center justify-between w-full py-2 px-3 rounded md:border-0 md:p-0
-           {{ Route::is('informasi.index') ? 'text-white bg-green-700 md:text-green-700 md:bg-transparent' : 'text-gray-900 md:hover:text-green-700 dark:text-white dark:hover:bg-gray-700' }}">Informasi 
+           {{ Route::is('informasi.index') ? 'text-white bg-green-700 md:text-green-700 md:bg-transparent' : 'text-gray-900 md:hover:text-green-700 dark:text-white dark:hover:bg-gray-700' }}">Informasi
                         <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
                         </svg>

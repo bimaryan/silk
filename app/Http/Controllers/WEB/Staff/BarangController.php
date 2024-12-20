@@ -17,11 +17,11 @@ class BarangController extends Controller
 {
     public function index(Request $request)
     {
-        $notifikasiPeminjaman = Peminjaman::with(['mahasiswa', 'barang'])
-            ->where('status', '!=', 'Dikembalikan')
-            ->latest()
-            ->take(5)
-            ->get();
+        // $notifikasiPeminjaman = Peminjaman::with(['mahasiswa', 'barang'])
+        //     ->where('status', '!=', 'Dikembalikan')
+        //     ->latest()
+        //     ->take(5)
+        //     ->get();
 
         $query = Barang::query();
 
@@ -45,9 +45,9 @@ class BarangController extends Controller
 
         $barangs = $query->paginate(5)->appends($request->all());
 
-        
 
-        return view('pages.staff.barang.index', compact('barangs', 'kategoris', 'satuans', 'stocks', 'notifikasiPeminjaman'));
+
+        return view('pages.staff.barang.index', compact('barangs', 'kategoris', 'satuans', 'stocks'));
     }
 
     public function store(Request $request)

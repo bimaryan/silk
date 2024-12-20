@@ -37,7 +37,7 @@
                 @foreach ($peminjaman as $data)
                     <tr
                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        
+
                         <td scope="col" class="px-6 py-3">
                             {{ $data->user->nama }}
                         </td>
@@ -66,22 +66,22 @@
                                     <i class="fa-solid fa-eye"></i>
                                 </button>
                             </div>
-                            <div>
+                            {{-- <div>
                                 <button type="button" data-modal-target="pengembalian{{ $data->id }}"
                                     data-modal-toggle="pengembalian{{ $data->id }}"
                                     class="flex items-center px-2 py-2 text-sm text-white bg-yellow-400 rounded">
                                     <i class="fa-solid fa-eye"></i>
                                 </button>
-                            </div>
+                            </div> --}}
                         </td>
                     </tr>
 
                     @include('components.modal.modalInformasiPeminjaman', [
                         'peminjaman' => $peminjaman,
                     ])
-                    @include('components.modal.modalPengembalian', [
+                    {{-- @include('components.modal.modalPengembalian', [
                         'peminjaman' => $peminjaman,
-                    ])
+                    ]) --}}
                 @endforeach
             @endif
 

@@ -1,12 +1,10 @@
 @extends('pengguna')
 
 @section('content')
-    <div class="w-full  p-6 mx-auto mt-14">
-        <div class="mt-5 bg-white p-4 text-green-500 rounded-xl text-2xl font-semibold text-center shadow-lg">
+    <div class="max-w-screen-xl p-6 mx-auto">
+        <div class="mb-4 bg-white p-4 text-green-500 rounded-xl text-2xl font-semibold text-center shadow-lg">
             Informasi Peminjaman
         </div>
-
-        <hr class="my-3">
 
         <div class="flex items-center p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300"
             role="alert">

@@ -123,6 +123,6 @@ class KeranjangController extends Controller
         }
 
         $dataKeranjang->delete();
-        return back()->with('success', 'Keranjang berhasil dihapus');
+        return redirect()->route('katalog.index')->with('success', 'Keranjang berhasil dihapus');
     }
 }

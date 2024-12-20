@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\WEB\Pengguna;
 
 use App\Http\Controllers\Controller;
-use App\Models\DokumenSPO;
+use App\Models\DokumenSpo;
 use App\Models\Dosen;
 use App\Models\Keranjang;
 use App\Models\MataKuliah;
@@ -33,7 +33,7 @@ class PeminjamanController extends Controller
         $dosen = Dosen::all();
         $matkul = MataKuliah::all();
         $ruangLaboratorium = Ruangan::all();
-        $dokumenSpo = DokumenSPO::all();
+        $dokumenSpo = DokumenSpo::all();
 
         $dataKeranjang = Keranjang::with('barang')->where('user_id', $userID)->get();
         if ($dataKeranjang->isEmpty()) {
@@ -107,7 +107,7 @@ class PeminjamanController extends Controller
             return redirect()->route('informasi.index')->with('success', 'Peminjaman berhasil dibuat.');
         } catch (Exception $e) {
             DB::rollBack();
-            return back()->with('error', 'Terjadi kesalahan saat memproses peminjaman: ' . $e->getMessage());
+            return redirect()->route('informasi.index')->with('error', 'Terjadi kesalahan saat memproses peminjaman: ' . $e->getMessage());
         }
     }
 }

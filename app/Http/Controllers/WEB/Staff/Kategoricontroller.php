@@ -15,12 +15,12 @@ class Kategoricontroller extends Controller
         $query = Kategori::query();
 
         if ($request->filled('search')) {
-        $search = $request->search;
+            $search = $request->search;
 
-        $query->where('kategori', 'LIKE', "%{$search}%");
-    }
+            $query->where('kategori', 'LIKE', "%{$search}%");
+        }
 
-    $kategori = $query->paginate(5)->appends($request->all());
+        $kategori = $query->paginate(5)->appends($request->all());
 
         return view('pages.staff.kategori.index', ['kategori' => $kategori]);
     }
@@ -71,6 +71,6 @@ class Kategoricontroller extends Controller
 
         Excel::import(new KategoriImport(), $request->file('file'));
 
-        return redirect()->back()->with('success','Kategori berhasil di import');
+        return redirect()->back()->with('success', 'Kategori berhasil di import');
     }
 }

@@ -1,8 +1,6 @@
 @extends('pengguna')
 
 @section('content')
-
-
     <div class="space-y-3 p-4 mt-5">
         <div class="max-w-screen-xl p-6 mx-auto mt-14 bg-white rounded-xl">
             <div class="space-y-3 grid grid-cols-1 md:grid-cols-2 gap-3">

@@ -1,136 +1,76 @@
-@extends('layouts.pengguna')
-
+@extends('index')
 @section('content')
-    @include('partials.navbar.pengguna-navbar')
-    <div class="w-full  p-6 mx-auto mt-14">
-        <div class="mt-5 bg-white p-4 text-green-500 rounded-xl text-2xl font-semibold text-center shadow-lg">
-            Katalog Alat dan Bahan Laboratorium
-        </div>
-
-        <form method="GET" action="{{ route('katalog.index') }}" class="flex items-center justify-center gap-2 mt-6 mb-4">
-            <button type="submit" name="kategori" value="semua"
-                class="px-3 py-2 rounded-lg border shadow-xl {{ request('kategori') == 'semua' ? 'bg-green-800 text-white' : 'border-green-500 hover:bg-green-800 hover:text-white bg-white' }}">
-                Semua
-            </button>
-
-            @foreach ($dataKategori as $kategori)
-                <button type="submit" name="kategori" value="{{ $kategori->id }}"
-                    class="px-3 py-2 rounded-lg border shadow-xl {{ request('kategori') == $kategori->id ? 'bg-green-800 text-white' : 'border-green-500 hover:bg-green-800 hover:text-white bg-white' }}">
-                    {{ $kategori->kategori }}
-                </button>
-            @endforeach
-        </form>
-
-        {{-- Bagian Kartu Barang --}}
-        @if ($barangKosong)
-            <div
-                class="align-center mx-auto block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-                <p class="mt-6 text-center text-gray-500">Tidak ada barang yang tersedia untuk kategori ini.</p>
+    <div class="p-4 mt-3 sm:ml-64">
+        <div class="space-y-4 rounded-lg mt-14">
+            <div class="p-4 bg-white rounded-lg shadow-lg flex items-center">
+                <p class="text-lg font-semibold text-green-500">Kategori</p>
             </div>
-        @else
-            <div id="card-section" class="grid grid-cols-1 gap-4 md:grid-cols-4 animate-card">
-                @foreach ($dataBarang as $data)
-                    <a href="{{ route('katalog.show', ['katalog' => $data->id]) }}"
-                        class="w-full p-3 border border-green-500 bg-white rounded-lg shadow-lg max-w-m">
-                        <div class="flex justify-center w-full">
-                            <img src="{{ asset($data->foto ?? 'image/barang.png') }}" class="object-cover zoom-image"
-                                alt="{{ $data->nama }}" />
-                        </div>
-                        <div class="mt-1">
-                            <span
-                                class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">
-                                {{ $data->kategori->kategori }}
-                            </span>
-                        </div>
-                        <div class="mt-1">
-                            <p class="font-normal">{{ Str::limit($data->nama, 50) }}</p>
-                            <p class="text-sm text-gray-500">Stok : <span>{{ $data->stok->stok }}</span></p>
-                        </div>
-                    </a>
-                @endforeach
-            </div>
-        @endif
 
-        <div class="mt-4">
-            {{ $dataBarang->links() }}
+            <div class="p-4 bg-white rounded-lg shadow-lg">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-2">
+                        <button data-modal-target="import-kategori" data-modal-toggle="import-kategori"
+                            data-tooltip-target="import" data-tooltip-placement="left"
+                            class="justify-center px-4 py-2 text-white bg-green-500 rounded hover:bg-green-800">
+                            <i class="fa-solid fa-file-arrow-up"></i>
+                        </button>
+                        @include('components.modal.modalimportKategori')
+
+                        <button data-modal-target="tambah-kategori" data-modal-toggle="tambah-kategori"
+                            class="justify-center px-4 py-2 text-white bg-green-500 rounded hover:bg-green-800">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                        @include('components.modal.modaltambahKategori')
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <form method="GET" action="{{ route('kategori.index') }}" class="flex items-center gap-2">
+                            <!-- Input pencarian -->
+                            <input type="text" name="search" placeholder="Pencarian" value="{{ request('search') }}"
+                                class="p-2 border rounded-md w-full focus:outline-none focus:ring-2 focus:ring-green-500">
+
+                            <!-- Tombol submit -->
+                            <button type="submit" class="p-2 text-white bg-green-500 rounded-md hover:bg-green-800">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                                    <path fill="currentColor"
+                                        d="m19.6 21l-6.3-6.3q-.75.6-1.725.95T9.5 16q-2.725 0-4.612-1.888T3 9.5t1.888-4.612T9.5 3t4.613 1.888T16 9.5q0 1.1-.35 2.075T14.7 13.3l6.3 6.3zM9.5 14q1.875 0 3.188-1.312T14 9.5t-1.312-3.187T9.5 5T6.313 6.313T5 9.5t1.313 3.188T9.5 14" />
+                                </svg>
+                            </button>
+
+                            <!-- Tombol reset -->
+                            <a href="{{ route('kategori.index') }}"
+                                class="p-2 text-white bg-gray-500 rounded-md hover:bg-gray-600">
+                                Reset
+                            </a>
+                        </form>
+                    </div>
+                </div>
+                <div id="tableSatuan">
+                    @include('components.tables.tableKategori', ['kategori' => $kategori])
+                </div>
+                <div class="mt-4">
+                    {{ $kategori->links() }}
+                </div>
+            </div>
         </div>
     </div>
 
-
     <script>
-        @if (session('success'))
+        function confirmDelete(id) {
             Swal.fire({
-                icon: 'success',
-                title: 'Success!',
-                text: '{{ session('success') }}',
-                confirmButtonColor: "#3085d6",
-            });
-        @endif
-
-        // Display error message using SweetAlert2
-        @if (session('error'))
-            Swal.fire({
-                icon: 'error',
-                title: 'Error!',
-                text: '{{ session('error') }}',
-                confirmButtonColor: "#3085d6",
-            });
-        @endif
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const scrollPosition = sessionStorage.getItem('scrollPosition');
-            if (scrollPosition) {
-                window.scrollTo(0, scrollPosition);
-                sessionStorage.removeItem('scrollPosition');
-            }
-        });
-
-        window.addEventListener('beforeunload', () => {
-            sessionStorage.setItem('scrollPosition', window.scrollY);
-        });
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const cards = document.querySelectorAll('.animate-card');
-
-            const observerOptions = {
-                threshold: 0.1,
-            };
-
-            const observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('in-view');
-                    } else {
-                        entry.target.classList.remove('in-view');
-                    }
-                });
-            }, observerOptions);
-
-            cards.forEach(card => {
-                observer.observe(card);
-            });
-        });
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const slides = document.querySelectorAll('.animate-slide');
-
-            const observerOptions = {
-                threshold: 0.1,
-            };
-
-            const observer = new IntersectionObserver((entries, observer) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('in-view');
-                    } else {
-                        entry.target.classList.remove('in-view');
-                    }
-                });
-            }, observerOptions);
-
-            slides.forEach(slide => {
-                observer.observe(slide);
-            });
-        });
+                title: 'Apakah Anda yakin?',
+                text: "Data yang dihapus tidak dapat dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
+                }
+            })
+        }
     </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 @endsection
