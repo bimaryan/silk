@@ -1,119 +1,105 @@
-<nav class="fixed top-0 left-0 z-10 w-full bg-white border-gray-200 shadow-lg dark:bg-gray-900">
-    <div class="flex flex-wrap items-center justify-between max-w-screen-xl p-4 mx-auto">
+<nav class="bg-white border-gray-200 dark:bg-gray-900">
+    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <a href="{{ route('beranda.index') }}" class="flex flex-col items-center space-x-3 rtl:space-x-reverse">
             <img src="{{ asset('image/logo/silk.png') }}" class="hidden w-24 md:block "
                 alt="{{ asset('image/logo/silk.png') }}" />
             <img src="{{ asset('image/logo/polindra.png') }}" class="w-10 md:hidden"
                 alt="{{ asset('image/logo/polindra.png') }}" />
         </a>
-        <div class="flex items-center md:order-2 md:space-x-0 rtl:space-x-reverse">
-            <button type="button"
-                class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-900 rounded-lg cursor-pointer dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
-                data-dropdown-toggle="dropdown-cart">
-                <i class="fa-solid fa-cart-shopping"></i>
-                <span class="sr-only">Notifications</span>
+        <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+            <button id="dropdownNotificationButton" data-dropdown-toggle="dropdownNotification"
+                class="me-4 relative inline-flex items-center text-sm font-medium text-center text-gray-500 hover:text-gray-900 focus:outline-none dark:hover:text-white dark:text-gray-400"
+                type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path fill="currentColor"
+                        d="M17 18c-1.11 0-2 .89-2 2a2 2 0 0 0 2 2a2 2 0 0 0 2-2a2 2 0 0 0-2-2M1 2v2h2l3.6 7.59l-1.36 2.45c-.15.28-.24.61-.24.96a2 2 0 0 0 2 2h12v-2H7.42a.25.25 0 0 1-.25-.25q0-.075.03-.12L8.1 13h7.45c.75 0 1.41-.42 1.75-1.03l3.58-6.47c.07-.16.12-.33.12-.5a1 1 0 0 0-1-1H5.21l-.94-2M7 18c-1.11 0-2 .89-2 2a2 2 0 0 0 2 2a2 2 0 0 0 2-2a2 2 0 0 0-2-2" />
+                </svg>
                 <div
-                    class="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-green-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900">
-                    {{ $notifikasiKeranjang->count() }}
+                    class="absolute block w-5 h-5 bg-red-500 border-2 border-white rounded-full -top-0.5 start-2.5 dark:border-gray-900">
+                    <p class="text-white text-xs">
+                        {{ $dataKeranjang->count() ?? 0 }}
+                    </p>
                 </div>
             </button>
 
-            <div class="z-50 hidden my-4 w-64 p-2 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700"
-                id="dropdown-cart">
-                <div role="none">
-                    @if ($notifikasiKeranjang->isEmpty())
-                        <div>
-                            <p class="block text-center text-sm text-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                                role="menuitem">
-                                Tidak ada barang.
-                            </p>
-                        </div>
-                    @else
-                        @foreach ($notifikasiKeranjang as $data)
-                            <div class="my-2">
-                                <div class="text-xs flex gap-2 items-center overflow-y-auto max-h-60">
-                                    @if (!empty($data->barang))
-                                        <!-- Tampilkan Barang -->
-                                        <div>
-                                            <img src="{{ $data->barang->foto }}" class="w-10"
-                                                alt="{{ $data->barang->foto }}">
-                                        </div>
-                                        <div>
-                                            <p>{{ $data->barang->nama_barang }}</p>
-                                        </div>
-                                    @elseif (!empty($data->ruangan))
-                                        <!-- Tampilkan Ruangan -->
-                                        <div>
-                                            <img src="{{ asset($data->ruangan->foto  ?? 'image/barang.png')}}" class="w-10"
-                                                alt="{{ $data->ruangan->foto }}">
-                                        </div>
-                                        <div>
-                                            <p>{{ $data->ruangan->nama_ruangan }}</p>
-                                        </div>
-                                    @endif
-                                </div>
-                            </div>
-                        @endforeach
-                        <hr class="my-2" />
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <p class="text-xs">
-                                    {{ $notifikasiKeranjang->count() }} Barang Lainnya
-                                </p>
-                            </div>
-                            <div>
-                                <a href="{{ route('keranjang.index') }}"
-                                    class="bg-green-500 hover:bg-green-800 text-white text-xs rounded px-2 py-1">Keranjang</a>
-                            </div>
-                        </div>
-                    @endif
+            <!-- Dropdown keranjang -->
+            <div id="dropdownNotification"
+                class="z-20 hidden w-full max-w-sm bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-800 dark:divide-gray-700"
+                aria-labelledby="dropdownNotificationButton">
+                <div
+                    class="block px-4 py-2 font-medium text-center text-gray-700 rounded-t-lg bg-gray-50 dark:bg-gray-800 dark:text-white">
+                    Keranjang
                 </div>
+                <div class="divide-y divide-gray-100 dark:divide-gray-700">
+                    <div class="divide-y divide-gray-100 dark:divide-gray-700">
+                        @if ($dataKeranjang->isNotEmpty())
+                            @foreach ($dataKeranjang as $item)
+                                <div class="flex items-center px-4 py-3">
+                                    <div class="flex-1">
+                                        <h4 class="text-sm font-medium text-gray-900 dark:text-white">
+                                            {{ $item->barang->nama_barang }}</h4>
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">Jumlah:
+                                            {{ $item->jumlah_pinjam }}
+                                        </p>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @else
+                            <p class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">Keranjang Anda kosong.</p>
+                        @endif
+                    </div>
+                </div>
+                <a href="{{ route('peminjaman.create') }}"
+                    class="block py-2 text-sm font-medium text-center text-gray-900 rounded-b-lg bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white">
+                    <div class="inline-flex items-center ">
+                        <svg class="w-4 h-4 me-2 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 14">
+                            <path
+                                d="M10 0C4.612 0 0 5.336 0 7c0 1.742 3.546 7 10 7 6.454 0 10-5.258 10-7 0-1.664-4.612-7-10-7Zm0 10a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z" />
+                        </svg>
+                        Lihat Semua
+                    </div>
+                </a>
             </div>
 
-            @if (Route::has('login.index'))
-                @auth
-                    <button type="button" data-dropdown-toggle="dropdown-menu"
-                        class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-900 rounded-lg cursor-pointer dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white">
-                        {{ Auth::user()->nama }}
-                    </button>
-                    <!-- Dropdown -->
-                    <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
-                        id="dropdown-menu">
-                        <ul class="py-2 font-medium" role="none">
-                            <li>
-                                <a href="{{ route('edit-profile.index') }}"
-                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white {{ Route::is('profile') ? 'bg-gray-200' : '' }}"
-                                    role="menuitem">
-                                    <i class="fa-solid fa-user me-3"></i> Profil
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('riwayat.index') }}"
-                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white {{ Route::is('profile') ? 'bg-gray-200' : '' }}"
-                                    role="menuitem">
-                                    <i class="fa-solid fa-clock-rotate-left"></i> Riwayat
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('logout.index') }}"
-                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-600 dark:hover:text-white"
-                                    role="menuitem">
-                                    <i class="fa-solid fa-right-from-bracket me-3"></i> Keluar
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                @else
-                    <a href="{{ route('login.index') }}"
-                        class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-gray-900 rounded-lg cursor-pointer dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 dark:hover:text-white">
-                        Login
-                    </a>
-                @endauth
-            @endif
-
-            <button data-collapse-toggle="navbar-default" type="button"
-                class="inline-flex items-center justify-center w-10 h-10 p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-                aria-controls="navbar-default" aria-expanded="false">
+            <button type="button"
+                class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown"
+                data-dropdown-placement="bottom">
+                <span class="sr-only">Open user menu</span>
+                <img class="w-8 h-8 rounded-full" src="/docs/images/people/profile-picture-3.jpg" alt="user photo">
+            </button>
+            <!-- Dropdown menu -->
+            <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600"
+                id="user-dropdown">
+                <div class="px-4 py-3">
+                    @if (Auth::guard('mahasiswa')->check())
+                        <span
+                            class="block text-sm text-gray-900 dark:text-white">{{ Auth::guard('mahasiswa')->user()->nama }}</span>
+                        <span
+                            class="block text-sm  text-gray-500 truncate dark:text-gray-400">{{ Auth::guard('mahasiswa')->user()->kelas ?? '-' }}</span>
+                    @elseif (Auth::guard('dosen')->check())
+                        <span
+                            class="block text-sm text-gray-900 dark:text-white">{{ Auth::guard('dosen')->user()->nama }}</span>
+                    @endif
+                </div>
+                <ul class="py-2" aria-labelledby="user-menu-button">
+                    <li>
+                        <a href="{{ route('edit-profile.index') }}"
+                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Profile</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('logout.index') }}"
+                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                            Keluar
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <button data-collapse-toggle="navbar-user" type="button"
+                class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                aria-controls="navbar-user" aria-expanded="false">
                 <span class="sr-only">Open main menu</span>
                 <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                     viewBox="0 0 17 14">
@@ -122,7 +108,7 @@
                 </svg>
             </button>
         </div>
-        <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+        <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-user">
             <ul
                 class="flex flex-col p-4 mt-4 font-medium border border-gray-100 rounded-lg md:p-0 bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                 <li>
@@ -136,19 +122,40 @@
                         class="block py-2 px-3 rounded md:border-0 md:p-0
            {{ Route::is('katalog.index') ? 'text-white bg-green-700 md:text-green-700 md:bg-transparent' : 'text-gray-900 md:hover:text-green-700 dark:text-white dark:hover:bg-gray-700' }}">Katalog</a>
                 </li>
-                @if (Auth::guard('dosen')->check())
-                    <li>
-                        <a href="{{ route('katalog-ruangan.index') }}"
-                            class="block py-2 px-3 rounded md:border-0 md:p-0
-           {{ Route::is('katalog-ruangan.index') ? 'text-white bg-green-700 md:text-green-700 md:bg-transparent' : 'text-gray-900 md:hover:text-green-700 dark:text-white dark:hover:bg-gray-700' }}">Ruangan</a>
-                    </li>
-                @endif
                 <li>
-                    <a href="{{ route('informasi.index') }}"
+                    <a href=""
                         class="block py-2 px-3 rounded md:border-0 md:p-0
-           {{ Route::is('informasi.index') ? 'text-white bg-green-700 md:text-green-700 md:bg-transparent' : 'text-gray-900 md:hover:text-green-700 dark:text-white dark:hover:bg-gray-700' }}">Informasi</a>
+           {{ Route::is('ruangan.index') ? 'text-white bg-green-700 md:text-green-700 md:bg-transparent' : 'text-gray-900 md:hover:text-green-700 dark:text-white dark:hover:bg-gray-700' }}">Ruangan</a>
+                </li>
+                
+                <li>
+                    <button id="dropdownNavbarLink" data-dropdown-toggle="informasidropdown" class="flex items-center justify-between w-full py-2 px-3 rounded md:border-0 md:p-0
+           {{ Route::is('informasi.index') ? 'text-white bg-green-700 md:text-green-700 md:bg-transparent' : 'text-gray-900 md:hover:text-green-700 dark:text-white dark:hover:bg-gray-700' }}">Informasi 
+                        <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                        </svg>
+                    </button>
+                    <!-- Dropdown menu -->
+                    <div id="informasidropdown" class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownLargeButton">
+                          <li>
+                            <a href="{{ route('informasi-peminjaman.index') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Peminjaman</a>
+                          </li>
+                          <li>
+                            <a href="{{ route('informasi-pengembalian.index') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Pengembalian</a>
+                          </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li>
+                    <a href=""
+                        class="block py-2 px-3 rounded md:border-0 md:p-0
+           {{ Route::is('') ? 'text-white bg-green-700 md:text-green-700 md:bg-transparent' : 'text-gray-900 md:hover:text-green-700 dark:text-white dark:hover:bg-gray-700' }}">Riwayat
+                        Peminjaman</a>
                 </li>
             </ul>
         </div>
     </div>
+
 </nav>

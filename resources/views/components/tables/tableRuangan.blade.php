@@ -9,7 +9,7 @@
                 <th scope="col" class="px-6 py-3">
                     Ruangan
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-6 py-3 text-center">
                     Aksi
                 </th>
             </tr>
@@ -24,7 +24,7 @@
                     <td scope="col" class="px-6 py-3">
                         {{ $data->nama_ruangan }}
                     </td>
-                    <td scope="col" class="flex items-center gap-2 px-6 py-3">
+                    <td scope="col" class="flex items-center gap-2 px-6 py-3 justify-center">
                         <div>
                             <form id="delete-form-{{ $data->id }}"
                                 action="{{ route('ruangan.destroy', $data->id) }}" method="POST">

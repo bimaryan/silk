@@ -9,9 +9,9 @@
                 <th scope="col" class="px-6 py-3">
                     Kategori
                 </th>
-                {{-- <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-6 py-3 text-center">
                     Aksi
-                </th> --}}
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -24,20 +24,17 @@
                     <td scope="col" class="px-6 py-3">
                         {{ $data->kategori }}
                     </td>
-                    {{-- <td scope="col" class="flex items-center gap-2 px-6 py-3">
+                    <td scope="col" class="flex items-center gap-2 px-6 py-3 justify-center">
                         <div>
-                            <form id="delete-form-{{ $data->id }}"
-                                action="{{ route('kategori.destroy', $data->id) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="button" onclick="confirmDelete({{ $data->id }})"
-                                    class="flex items-center px-2 py-2 text-sm text-white bg-red-500 rounded">
-                                    <i class="fa-solid fa-trash"></i>
-                                </button>
-                            </form>
+                            <button type="button" data-modal-target="edit{{ $data->id }}"
+                                data-modal-toggle="edit{{ $data->id }}"
+                                class="flex items-center px-2 py-2 text-sm text-white bg-blue-500 rounded">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
                         </div>
-                    </td> --}}
+                    </td>
                 </tr>
+                @include('components.modal.modaleditKategori')
             @endforeach
         </tbody>
     </table>

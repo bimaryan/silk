@@ -10,9 +10,18 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class Kategoricontroller extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $kategori = Kategori::paginate(5);
+        $query = Kategori::query();
+
+        if ($request->filled('search')) {
+        $search = $request->search;
+
+        $query->where('kategori', 'LIKE', "%{$search}%");
+    }
+
+    $kategori = $query->paginate(5)->appends($request->all());
+
         return view('pages.staff.kategori.index', ['kategori' => $kategori]);
     }
 

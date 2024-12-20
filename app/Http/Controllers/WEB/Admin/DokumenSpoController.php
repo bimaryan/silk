@@ -10,9 +10,18 @@ use Illuminate\Http\Request;
 
 class DokumenSpoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $dokumen = DokumenSpo::get();
+        $query = DokumenSpo::query();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $query->where('nama_dokumen', 'LIKE', "%{$search}%");
+        }
+
+        $dokumen = $query->paginate(5)->appends($request->all());
+
         return view('pages.admin.dokumenspo.index', ['dokumen' => $dokumen]);
     }
 

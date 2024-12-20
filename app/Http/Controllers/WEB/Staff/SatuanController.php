@@ -10,9 +10,18 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class SatuanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $satuan = Satuan::paginate(5);
+        $query = Satuan::query();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $query->where('satuan', 'LIKE', "%{$search}%");
+        }
+
+        $satuan = $query->paginate(5)->appends($request->all());
+
         return view('pages.staff.satuan.index', ['satuan' => $satuan]);
     }
 
@@ -49,11 +58,12 @@ class SatuanController extends Controller
         return redirect()->back()->with('success', 'Satuan berhasil diperbarui!');
     }
 
-    public function importSatuan(Request $request) {
+    public function importSatuan(Request $request)
+    {
         $request->validate([
-           'file' => 'required|mimes:xlsx,xls,csv',
+            'file' => 'required|mimes:xlsx,xls,csv',
         ], [
-            'file.mimes'=> 'File harus berupa .xlsx, .xls, .csv',
+            'file.mimes' => 'File harus berupa .xlsx, .xls, .csv',
         ]);
 
         Excel::import(new SatuanImport(), $request->file('file'));

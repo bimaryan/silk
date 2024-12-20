@@ -17,4 +17,9 @@ class DokumenSpo extends Model
         'sub_kategori',
         'file',
     ];
+
+    public function peminjaman()
+    {
+        return $this->hasMany(Peminjaman::class);
+    }
 }

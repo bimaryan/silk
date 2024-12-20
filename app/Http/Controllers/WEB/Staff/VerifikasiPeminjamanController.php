@@ -4,75 +4,128 @@ namespace App\Http\Controllers\WEB\Staff;
 
 use App\Http\Controllers\Controller;
 use App\Models\Peminjaman;
+use App\Models\PeminjamanDetail;
+use App\Models\Pengembalian;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class VerifikasiPeminjamanController extends Controller
 {
     public function index()
     {
-        $peminjaman = Peminjaman::with(['barang.kategori', 'ruangan'])
-            ->whereNotNull('mahasiswa_id')  // Filter by mahasiswa_id
-            ->orWhereNotNull('dosen_id')    // Filter by dosen_id
-            ->get()
-            ->groupBy(function ($data) {
-                // Group by 'mahasiswa_id' if exists, otherwise by 'dosen_id'
-                return $data->mahasiswa_id ? 'mahasiswa_' . $data->mahasiswa_id : 'dosen_' . $data->dosen_id;
-            });
+        $peminjaman = Peminjaman::whereIn('persetujuan', ['Belum Diserahkan'])->with([
+            'user',
+            'peminjamanDetail.barang',
+            'ruangan.peminjaman',
+        ])
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return view('pages.staff.verifikasi-peminjaman.index', compact('peminjaman'));
     }
 
-    public function update(Request $request, Peminjaman $peminjaman)
+    public function updateStatusBarang(Request $request, string $id)
     {
-        // Temukan semua data peminjaman berdasarkan mahasiswa_id atau dosen_id
-        $relatedPeminjamans = Peminjaman::with(['barang.stock', 'ruangan'])
-            ->where('mahasiswa_id', $peminjaman->mahasiswa_id)
-            ->orWhere('dosen_id', $peminjaman->dosen_id)
-            ->get();
+        $peminjaman = Peminjaman::with('peminjamanDetail')->findOrFail($id);
 
-        // Ambil nilai approval dari input request
-        $approval = $request->input('aprovals');
 
-        foreach ($relatedPeminjamans as $relatedPeminjaman) {
-            // Logika untuk peminjaman barang
-            if ($relatedPeminjaman->jenis_peminjaman === 'Barang') {
-                $currentStock = $relatedPeminjaman->barang->stock->stock ?? null;
+        $request->validate([
+            'status' => 'required|array',
+            'status.*' => 'in:Diproses,Diterima,Ditolak',
+            'alasan_penolakan' => 'nullable|array'
+        ]);
 
-                if (is_null($currentStock)) {
-                    return redirect()->back()->with('error', 'Data stok tidak ditemukan.');
-                }
+        DB::beginTransaction();
+        try {
+            $statuses = $request->input('status', []);
+            $alasanPenolakan = $request->input('alasan_penolakan', []);
 
-                $jumlahPinjam = $relatedPeminjaman->stock_pinjam;
+            foreach ($peminjaman->peminjamanDetail as $detail) {
+                if (isset($statuses[$detail->id])) {
+                    $detail->status = $statuses[$detail->id];
 
-                if ($approval === 'Ya') {
-                    $newStock = $currentStock - $jumlahPinjam;
-
-                    if ($newStock >= 0) {
-                        $relatedPeminjaman->barang->stock->update([
-                            'stock' => $newStock,
-                        ]);
-
-                        $relatedPeminjaman->status = 'Dipinjamkan';
+                    if ($detail->status == 'Ditolak') {
+                        $detail->jumlah_pinjam = 0;
+                        $detail->alasan_penolakan = $alasanPenolakan[$detail->id] ?? 'Tidak ada alasan spesifik';
                     } else {
-                        return redirect()->back()->with('error', 'Stok barang tidak mencukupi.');
+                        $detail->alasan_penolakan = null;
+                    }
+
+                    $detail->save();
+                }
+            }
+
+            DB::commit();
+
+            return redirect()->back()->with('success', 'Status barang berhasil diperbarui');
+        } catch (Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Gagal memperbarui status: ' . $e->getMessage());
+        }
+    }
+
+    public function updatePersetujuan(Request $request, $id)
+    {
+        $request->validate([
+            'persetujuan' => 'required|in:Belum Diserahkan,Diserahkan',
+        ]);
+
+        DB::beginTransaction();
+        try {
+            $peminjaman = Peminjaman::with([
+                'peminjamanDetail.barang.stock',
+                'matkul',
+                'ruangan',
+                'peminjamanDetail',
+                'dokumenSpo',
+                'user'
+            ])->findOrFail($id);
+
+            $peminjaman->update([
+                'persetujuan' => $request->persetujuan,
+            ]);
+
+            if ($request->persetujuan == 'Diserahkan') {
+                $pengembalian = Pengembalian::where('peminjaman_id', $peminjaman->id)->first(); // Ambil pengembalian berdasarkan peminjaman_id
+                if (!$pengembalian) {
+                    $pengembalian = Pengembalian::updateOrCreate(
+                        ['peminjaman_id' => $peminjaman->id],
+                        [
+                            'user_id' => $peminjaman->user_id,
+                            'user_type' => $peminjaman->user_type,
+                            'persetujuan' => 'Belum Dikembalikan',
+                            'tindakan_spo_pengguna' => $peminjaman->tindakan_spo_pengguna
+                        ]
+                    );
+                }
+            }
+
+
+            if ($request->persetujuan == 'Diserahkan') {
+                foreach ($peminjaman->peminjamanDetail as $detail) {
+                    if ($detail->status == 'Diterima') {
+                        $barang = $detail->barang;
+                        $stok = $barang->stock;
+
+                        if ($stok && $stok->stock >= $detail->jumlah_pinjam) {
+                            $stok->stock -= $detail->jumlah_pinjam;
+                            $stok->save();
+                        } else {
+                            if ($stok->stock < $detail->jumlah_pinjam) {
+                                DB::rollBack();
+                                return redirect()->back()->with('error', 'Stok alat bahan tidak cukup.');
+                            }
+                        }
                     }
                 }
             }
 
-            // Logika untuk peminjaman ruangan
-            if ($relatedPeminjaman->jenis_peminjaman === 'Ruangan') {
-                if ($approval === 'Ya') {
-                    $relatedPeminjaman->status = 'Dipinjamkan';
-                } elseif ($approval === 'Tidak') {
-                    $relatedPeminjaman->status = 'Dipinjamkan';
-                }
-            }
-
-            // Update status dan approval
-            $relatedPeminjaman->aprovals = $approval;
-            $relatedPeminjaman->save();
+            DB::commit();
+            return redirect()->back()->with('success', 'Persetujuan peminjaman berhasil diperbarui.');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Terjadi kesalahan : ' . $e->getMessage());
         }
-
-        return redirect()->route('pengembalian.index')->with('success', 'Semua data peminjaman berhasil diperbarui.');
     }
 }

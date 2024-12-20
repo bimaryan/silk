@@ -3,64 +3,48 @@
 namespace App\Http\Controllers\WEB\Pengguna;
 
 use App\Http\Controllers\Controller;
+use App\Models\AlatBahan;
 use App\Models\Barang;
-use App\Models\Dosen;
 use App\Models\Kategori;
-use App\Models\Kelas;
 use App\Models\Keranjang;
-use App\Models\MataKuliah;
-use App\Models\Peminjaman;
-use App\Models\Ruangan;
-use App\Models\Stock;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
 
 class BerandaController extends Controller
 {
     public function index(Request $request)
     {
-        $users = Auth::user();
-        $kategori = $request->input('kategori');
+        // Data kategori
+        $dataKategori = Kategori::all();
 
-        if (!$users) {
-            return redirect()->route('login.index')->with('error', 'Anda harus login.');
-        }
+        // Filter berdasarkan kategori
+        $kategoriId = $request->kategori;
 
-        if(Auth::guard('mahasiswa')->check()) {
-            $notifikasiKeranjang = Peminjaman::get();
-        } elseif(Auth::guard('dosen')->check()) {
-            $notifikasiKeranjang = Peminjaman::get();
-        }
-
-        $validCategories = ['Alat', 'Bahan'];
-
-        if ($kategori && $kategori !== 'Semua') {
-            if (in_array($kategori, $validCategories)) {
-                $barangs = Barang::whereHas('kategori', function ($query) use ($kategori) {
-                    $query->where('kategori', $kategori);
-                })->take(6)->get();
-            } else {
-                $barangs = collect();
-            }
+        if ($kategoriId && $kategoriId !== 'semua') {
+            $dataBarang = Barang::where('kategori_id', $kategoriId)->with('kategori')->get();
         } else {
-            $barangs = Barang::whereHas('kategori', function ($query) use ($validCategories) {
-                $query->whereIn('kategori', $validCategories);
-            })->take(6)->get();
+            $dataBarang = Barang::with('kategori')->get();
         }
 
-        $kategoris = Kategori::whereIn('kategori', $validCategories)->get();
+        // Check jika data barang kosong
+        $barangKosong = $dataBarang->isEmpty();
 
-        $barangKosong = $barangs->isEmpty();
+
+        if (auth()->check()) {
+            $dataKeranjang = Keranjang::where('user_id', auth()->id())
+                ->with('barang')
+                ->get();
+
+            // Hitung jumlah total item di keranjang
+            $notifikasiKeranjang = $dataKeranjang->sum('barang_id');
+        }
 
         return view('pages.pengguna.beranda.index', [
-            'barangs' => $barangs,
-            'kategoris' => $kategoris,
+            'dataBarang' => $dataBarang,
+            'dataKategori' => $dataKategori,
             'barangKosong' => $barangKosong,
             'notifikasiKeranjang' => $notifikasiKeranjang,
+            'dataKeranjang' => $dataKeranjang
         ]);
-    }
-
-    public function show(string $nama_barang) {
-
     }
 }

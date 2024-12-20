@@ -21,7 +21,7 @@ class DashboardController extends Controller
 
         $persentasePeminjaman = ($totalPeminjaman > 0) ? ($peminjamanTerakhir30Hari / $totalPeminjaman) * 100 : 0;
 
-        $totalDikembalikan = Peminjaman::where('status', 'Dikembalikan')->count();
+        $totalDikembalikan = Peminjaman::where('persetujuan', 'Dikembalikan')->count();
 
         return view('pages.dashboard.index', compact('totalPeminjaman', 'totalMahasiswa', 'totalAlat', 'totalBahan', 'persentasePeminjaman', 'totalDikembalikan', 'peminjamanTerakhir30Hari'));
     }

@@ -3,9 +3,7 @@
 namespace App\Http\Controllers\WEB\Pengguna;
 
 use App\Http\Controllers\Controller;
-use App\Models\Kelas;
 use App\Models\Keranjang;
-use App\Models\Peminjaman;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -17,25 +15,23 @@ class EditPasswordController extends Controller
      */
     public function index()
     {
-        $users = Auth::user();
+        $dataKeranjang = [
+            'alat_bahan_id' => 0
+        ];
 
-        $notifikasiKeranjang = null;
+        if (auth()->check()) {
+            $dataKeranjang = Keranjang::where('user_id', auth()->id())
+                ->with('alatBahan')
+                ->get();
 
-        if (Auth::guard('mahasiswa')->check()) {
-            $notifikasiKeranjang = Peminjaman::where('mahasiswa_id', Auth::guard('mahasiswa')->id())->get();
-        } elseif (Auth::guard('dosen')->check()) {
-            $notifikasiKeranjang = Peminjaman::where('dosen_id', Auth::guard('dosen')->id())->get();
+            // Hitung jumlah total item di keranjang
+            $notifikasiKeranjang = $dataKeranjang->sum('alat_bahan_id');
         }
 
-        if (Auth::guard('mahasiswa')->check()) {
-            $user = Auth::guard('mahasiswa')->user();
-        } elseif (Auth::guard('dosen')->check()) {
-            $user = Auth::guard('dosen')->user();
-        } else {
-            abort(404, 'User not found');
-        }
-
-        return view('pages.pengguna.profile.editPassword', compact('user', 'notifikasiKeranjang'));
+        return view('pages.pengguna.profile.edit-password-pengguna', [
+            'dataKeranjang' => $dataKeranjang,
+            'notifikasiKeranjang' => $notifikasiKeranjang
+        ]);
     }
 
     /**

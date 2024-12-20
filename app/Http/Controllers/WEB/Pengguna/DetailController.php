@@ -3,93 +3,67 @@
 namespace App\Http\Controllers\WEB\Pengguna;
 
 use App\Http\Controllers\Controller;
+use App\Models\AlatBahan;
 use App\Models\Barang;
-use App\Models\Dosen;
-use App\Models\Kelas;
-use App\Models\Keranjang;
-use App\Models\Mahasiswa;
-use App\Models\MataKuliah;
-use App\Models\Peminjaman;
-use App\Models\Ruangan;
-use App\Models\Stock;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class DetailController extends Controller
 {
-    public function index($id)
+    /**
+     * Display a listing of the resource.
+     */
+    public function index(Request $request)
     {
-        $view = Barang::find($id);
+        $detailBarang = Barang::where('id', $request->id)->first();
 
-        $notifikasiKeranjang = null;
-
-        if (Auth::guard('mahasiswa')->check()) {
-            $notifikasiKeranjang = Peminjaman::where('mahasiswa_id', Auth::guard('mahasiswa')->id())->get();
-        } elseif (Auth::guard('dosen')->check()) {
-            $notifikasiKeranjang = Peminjaman::where('dosen_id', Auth::guard('dosen')->id())->get();
-        }
-
-        if (!$view) {
-            return redirect('katalog.index')->with('error', 'Data barang tidak ditemukan.');
-        }
-
-        return view('pages.pengguna.detail.index', [
-            'view' => $view,
-            'notifikasiKeranjang' => $notifikasiKeranjang,
-        ]);
+        return view('pages.pengguna.detail.index', compact('detailBarang'));
     }
 
-    public function store(Request $request, Barang $barang)
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
     {
-        $request->validate([
-            'tindakan_spo' => 'required|string',
-        ]);
+        //
+    }
 
-        $mahasiswa = Auth::guard('mahasiswa')->user();
-        $dosen = Auth::guard('dosen')->user();
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        //
+    }
 
-        if (!$mahasiswa && !$dosen) {
-            return back()->withErrors([
-                'auth' => 'Anda harus login sebagai mahasiswa atau dosen untuk melakukan peminjaman.',
-            ])->withInput();
-        }
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+    }
 
-        // Cek apakah barang sudah dipinjam oleh pengguna yang login
-        $existingPeminjaman = Peminjaman::where('barang_id', $barang->id)
-            ->where(function ($query) use ($mahasiswa, $dosen) {
-                if ($mahasiswa) {
-                    $query->where('mahasiswa_id', $mahasiswa->id);
-                }
-                if ($dosen) {
-                    $query->where('dosen_id', $dosen->id);
-                }
-            })->first();
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(string $id)
+    {
+        //
+    }
 
-        if ($existingPeminjaman) {
-            // Update stock_pinjam jika sudah ada
-            $newStock = $existingPeminjaman->stock_pinjam + $request->stock_pinjam;
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
+    }
 
-            if ($newStock > 10) {
-                return back()->withErrors([
-                    'stock_pinjam' => 'Jumlah total barang yang dipinjam tidak boleh lebih dari 10.',
-                ])->withInput();
-            }
-
-            $existingPeminjaman->update(['stock_pinjam' => $newStock]);
-
-            return redirect()->route('katalog.index')->with('success', 'Stock pinjam berhasil diperbarui.');
-        }
-
-        // Tambahkan peminjaman baru jika belum ada
-        Peminjaman::create([
-            'mahasiswa_id' => $mahasiswa ? $mahasiswa->id : null,
-            'dosen_id' => $dosen ? $dosen->id : null,
-            'barang_id' => $barang->id,
-            'stock_pinjam' => $request->stock_pinjam,
-            'tindakan_spo' => $request->tindakan_spo,
-            'jenis_peminjaman' => 'Barang',
-        ]);
-
-        return redirect()->route('katalog.index')->with('success', 'Barang berhasil ditambahkan ke keranjang.');
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
     }
 }

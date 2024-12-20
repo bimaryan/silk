@@ -25,6 +25,10 @@ class BarangController extends Controller
 
         $query = Barang::query();
 
+        $kategoris = Kategori::all();
+        $satuans = Satuan::all();
+        $stocks = Stock::all();
+
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where('nama_barang', 'LIKE', "%{$search}%")
@@ -41,9 +45,7 @@ class BarangController extends Controller
 
         $barangs = $query->paginate(5)->appends($request->all());
 
-        $kategoris = Kategori::all();
-        $satuans = Satuan::all();
-        $stocks = Stock::all();
+        
 
         return view('pages.staff.barang.index', compact('barangs', 'kategoris', 'satuans', 'stocks', 'notifikasiPeminjaman'));
     }

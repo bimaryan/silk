@@ -44,8 +44,29 @@
 </head>
 
 <body class="bg-gray-100">
-    @include('components.navbar.navbarPengguna')
+    @include('partials.navbar.pengguna-navbar')
     <div>
+        @if (session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+                confirmButtonColor: "#3085d6",
+            });
+        </script>
+    @endif
+
+    @if (session('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                text: '{{ session('error') }}',
+                confirmButtonColor: "#3085d6",
+            });
+        </script>
+    @endif
         <div class="max-w-screen-xl p-6 mx-auto mt-14">
             <div class="mt-4">
                 <div class="p-4 mt-4 bg-white border rounded-lg shadow-lg">

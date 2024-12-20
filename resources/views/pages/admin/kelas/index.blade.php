@@ -4,7 +4,7 @@
         <div class="space-y-4 rounded-lg mt-14">
             <div class="space-y-4 rounded-lg mt-14">
                 <div class="p-4 bg-white rounded-lg shadow-lg flex items-center">
-                    <p class="text-lg font-semibold text-green-500">Mahasiswa</p>
+                    <p class="text-lg font-semibold text-green-500">Kelas</p>
                 </div>
             </div>
 

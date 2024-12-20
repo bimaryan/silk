@@ -3,24 +3,14 @@
 @section('content-profile')
     <!-- Main Content -->
     <div class="p-4">
-        @if (session('success'))
-            <script>
-                Swal.fire({
-                    title: "Success",
-                    text: "{{ session('success') }}",
-                    icon: "success",
-                    confirmButtonColor: "#3085d6",
-                });
-            </script>
-        @endif
         <h1 class="mb-4 text-2xl font-semibold">Pengaturan Data Diri </h1>
         <form action="{{ route('edit-profile.update', auth()->user()->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="flex items-center mb-6">
                 <div class="relative overflow-hidden border border-4 border-green-500 rounded-full d-full">
-                    @if (isset(auth()->user()->foto) && auth()->user()->foto != '')
-                        <img id="profileImage" src="{{ asset(auth()->user()->foto) }}" alt="Foto Profil"
+                    @if (isset(auth()->user()->foto) && file_exists(public_path('foto/' . auth()->user()->foto)))
+                        <img id="profileImage" src="{{ asset('foto/' . auth()->user()->foto) }}" alt="Foto Profil"
                             class="object-cover rounded-full" style="width: 130px; height: 130px;">
                     @else
                         <!-- Tampilan default jika tidak ada gambar -->

@@ -3,17 +3,11 @@
 namespace App\Http\Controllers\WEB\Pengguna;
 
 use App\Http\Controllers\Controller;
+use App\Models\AlatBahan;
 use App\Models\Barang;
-use App\Models\Dosen;
 use App\Models\Kategori;
-use App\Models\Kelas;
 use App\Models\Keranjang;
-use App\Models\MataKuliah;
-use App\Models\Peminjaman;
-use App\Models\Ruangan;
-use App\Models\Stock;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class KatalogController extends Controller
 {
@@ -22,46 +16,45 @@ class KatalogController extends Controller
      */
     public function index(Request $request)
     {
-        $user = Auth::user();
 
-        $kategori = $request->input('kategori');
 
-        $notifikasiKeranjang = null;
 
-        if (Auth::guard('mahasiswa')->check()) {
-            $notifikasiKeranjang = Peminjaman::where('mahasiswa_id', Auth::guard('mahasiswa')->id())->get();
-        } elseif (Auth::guard('dosen')->check()) {
-            $notifikasiKeranjang = Peminjaman::where('dosen_id', Auth::guard('dosen')->id())->get();
+        $dataKategori = Kategori::all(); // Mengambil semua kategori
+
+        $kategoriId = $request->kategori;
+
+        // Query barang sesuai filter
+        $query = Barang::with('kategori');
+
+        if ($kategoriId && $kategoriId !== 'semua') {
+            $query->where('kategori_id', $kategoriId);
         }
 
-        $validCategories = ['Alat', 'Bahan'];
+        // Lakukan pagination di query
+        $dataBarang = $query->paginate(5)->appends($request->all());
 
-        if ($kategori && $kategori !== 'Semua') {
-            if (in_array($kategori, $validCategories)) {
-                $barangs = Barang::whereHas('kategori', function ($query) use ($kategori) {
-                    $query->where('kategori', $kategori);
-                })->paginate(6)->appends(['kategori' => $kategori]);
-            } else {
-                $barangs = collect();
-            }
-        } else {
-            $barangs = Barang::whereHas('kategori', function ($query) use ($validCategories) {
-                $query->whereIn('kategori', $validCategories);
-            })->paginate(6);
+        // Tentukan jika barang kosong
+        $barangKosong = $dataBarang->isEmpty();
+
+
+        if (auth()->check()) {
+            $dataKeranjang = Keranjang::where('user_id', auth()->id())
+                ->with('barang')
+                ->get();
+
+            // Hitung jumlah total item di keranjang
+            $notifikasiKeranjang = $dataKeranjang->sum('barang_id');
         }
-
-        $kategoris = Kategori::whereIn('kategori', $validCategories)->get();
-
-        $barangKosong = $barangs->isEmpty();
 
         return view('pages.pengguna.katalog.index', [
-            'barangs' => $barangs,
-            'kategoris' => $kategoris,
+            'dataBarang' => $dataBarang,
+            'dataKategori' => $dataKategori,
             'barangKosong' => $barangKosong,
-            'kategoriTerpilih' => $kategori,
+            'dataKeranjang' => $dataKeranjang,
             'notifikasiKeranjang' => $notifikasiKeranjang,
         ]);
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -76,42 +69,65 @@ class KatalogController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate(
+            [
+                'barang_id' => 'required|exists:barangs,id',
+                'jumlah_pinjam' => 'required|int|min:1',
+                'tindakan_spo' => 'nullable|string',
+            ]
+        );
+
+        $userID = auth()->id();
+        $userType = auth()->user()->getMorphClass();
+
+        $dataKeranjang = Keranjang::where('user_id', $userID)
+            ->where('barang_id', $request->barang_id)
+            ->first();
+
+        if ($dataKeranjang) {
+            $dataKeranjang->update([
+                'jumlah_pinjam' => $dataKeranjang->jumlah_pinjam + $request->jumlah_pinjam,
+                'tindakan_spo' => $request->tindakan_spo,
+            ]);
+        } else {
+            Keranjang::create([
+                'user_id' => $userID,
+                'user_type' => $userType,
+                'barang_id' => $request->barang_id,
+                'jumlah_pinjam' => $request->jumlah_pinjam,
+                'tindakan_spo' => $request->tindakan_spo,
+            ]);
+        }
+        return redirect()->route('katalog.index')->with('success', 'Barang berhasil ditambahkan ke keranjang');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $nama_barang)
+    public function show(string $id)
     {
-        $view = Barang::where('nama_barang', $nama_barang)->first();
+        // Ambil data barang berdasarkan ID
+        $userID = auth()->id();
 
-        $user = Auth::user();
+        $data = Barang::with(['kategori', 'stock', 'satuan'])->findOrFail($id);
 
-        $notifikasiKeranjang = Keranjang::with(['mahasiswa', 'dosen', 'barang'])
-            ->where('users_id', $user->id)
-            ->latest()
-            ->take(5)
-            ->get();
+        $dataKeranjang = Keranjang::with('barang')->where('user_id', $userID)->get();
 
-        $kelas = Kelas::all();
-        $dosen = Dosen::all();
-        $matkul = MataKuliah::all();
-        $stock = Stock::where('barang_id', $view->id)->first();
-        $ruangan = Ruangan::all();
 
-        if (!$view) {
-            return redirect('/')->with('error', 'Data barang tidak ditemukan.');
+
+        if (auth()->check()) {
+            $dataKeranjang = Keranjang::where('user_id', auth()->id())
+                ->with('barang')
+                ->get();
+
+            // Hitung jumlah total item di keranjang
+            $notifikasiKeranjang = $dataKeranjang->sum('barang_id');
         }
 
-        return view('peminjaman.detailbarang.index', [
-            'view' => $view,
-            'kelas' => $kelas,
-            'stock' => $stock,
-            'matkul' => $matkul,
-            'ruangan' => $ruangan,
-            'dosen' => $dosen,
-            'notifikasiKeranjang' => $notifikasiKeranjang
+        return view('pages.pengguna.detail.index', [
+            'data' => $data,
+            'dataKeranjang' => $dataKeranjang,
+            'notifikasiKeranjang' => $notifikasiKeranjang,
         ]);
     }
 

@@ -69,7 +69,7 @@
                     <a href="{{ route('katalog.index') }}" class="hover:underline me-4 md:me-6">Katalog</a>
                 </li>
                 <li>
-                    <a href="{{ route('informasi.index') }}"class="hover:underline me-4 md:me-6">Informasi</a>
+                    <a href=""class="hover:underline me-4 md:me-6">Informasi</a>
                 </li>
             </ul>
         </div>

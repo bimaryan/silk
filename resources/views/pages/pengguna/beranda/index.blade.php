@@ -49,7 +49,7 @@
                 </div>
             </div>
 
-            <div class="max-w-screen-xl mx-auto" id="filter-section">
+            <div class="" id="filter-section">
                 <div class="w-full p-6 space-y-5 bg-white rounded-xl">
                     <p class="text-3xl font-semibold text-center text-green-500">Alat dan Bahan Laboratorium</p>
                     <p class="text-center text-gray-500 text-m">Laboratorium Kesehatan Politeknik Negeri Indramayu memiliki
@@ -62,42 +62,40 @@
                     <form method="GET" action="{{ route('beranda.index') }}"
                         class="flex items-center justify-center gap-2 mb-4">
                         {{-- Tombol Semua Kategori --}}
-                        <button type="submit" name="kategori" value="Semua"
-                            class="px-3 py-2 rounded-lg border shadow-xl {{ request('kategori') == 'Semua' ? 'bg-green-800 text-white' : 'border-green-500 hover:bg-green-800 hover:text-white' }}">
+                        <button type="submit" name="kategori" value="semua"
+                            class="px-3 py-2 rounded-lg border shadow-xl {{ request('kategori') == 'semua' || !request('kategori') ? 'bg-green-800 text-white' : 'border-green-500 hover:bg-green-800 hover:text-white' }}">
                             Semua
                         </button>
 
                         {{-- Tombol untuk setiap kategori --}}
-                        @foreach ($kategoris as $kategori)
-                            <button type="submit" name="kategori" value="{{ $kategori->kategori }}"
-                                class="px-3 py-2 rounded-lg border shadow-xl {{ request('kategori') == $kategori->kategori ? 'bg-green-800 text-white' : 'border-green-500 hover:bg-green-800 hover:text-white' }}">
+                        @foreach ($dataKategori as $kategori)
+                            <button type="submit" name="kategori" value="{{ $kategori->id }}"
+                                class="px-3 py-2 rounded-lg border shadow-xl {{ request('kategori') == $kategori->id ? 'bg-green-800 text-white' : 'border-green-500 hover:bg-green-800 hover:text-white' }}">
                                 {{ $kategori->kategori }}
                             </button>
                         @endforeach
                     </form>
 
                     {{-- Bagian Kartu Barang --}}
-                    @if ($barangKosong)
+                    @if ($dataBarang->isEmpty())
                         <p class="mt-6 text-center text-gray-500">Tidak ada barang yang tersedia untuk kategori ini.</p>
                     @else
-                        <div id="card-section" class="grid grid-cols-1 gap-2 md:grid-cols-3 animate-card">
-                            @foreach ($barangs as $data)
-                                <a href="{{ route('detail.index', $data->id, ['nama_barang' => $data->nama_barang]) }}"
-                                    class="w-full p-3 border border-green-500 rounded-lg shadow-lg max-w-m">
+                        <div id="card-section" class="grid grid-cols-1 gap-2 md:grid-cols-4 animate-card">
+                            @foreach ($dataBarang as $data)
+                                <a href="{{ route('katalog.show', ['katalog' => $data->id]) }}" class="w-full p-3 border border-green-500 rounded-lg shadow-lg max-w-m">
                                     <div class="flex justify-center w-full">
-
-                                        <img src="{{ asset($data->foto ?? 'image/barang.png') }}"
-                                            class="object-cover zoom-image"
-                                            alt="{{ $data->nama_barang ?? 'Default Barang' }} " />
+                                        <img src="{{ asset('image/barang.png') }}" class="object-cover zoom-image"
+                                            alt="{{ $data->nama_pengguna }}" />
                                     </div>
                                     <div class="mt-1">
                                         <span
                                             class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">
-                                            {{ $data->kategori->kategori }}
+                                            {{ $data->kategori->kategori ?? 'Tidak ada kategori' }}
                                         </span>
                                     </div>
                                     <div class="mt-1">
-                                        <p class="font-normal">{{ Str::limit($data->nama_barang, 50) }}</p>
+                                        <p class="font-normal">{{ Str::limit($data->nama_pengguna, 50) }}</p>
+                                        <p class="text-sm text-gray-500">Stok : <span>{{ $data->stock->stock }}</span></p>
                                     </div>
                                 </a>
                             @endforeach
@@ -105,7 +103,7 @@
                     @endif
 
                     <div class="text-center">
-                        <a href="{{ route('katalog.index') }}" class="font-medium text-green-500 text-m">Lihat Semua</a>
+                        <a href="" class="font-medium text-green-500 text-m">Lihat Semua</a>
                     </div>
                 </div>
             </div>

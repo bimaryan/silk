@@ -27,4 +27,19 @@ class Barang extends Model
     {
         return $this->hasOne(Stock::class, 'barang_id', 'id');
     }
+
+    public function peminjamanDetail() 
+    {
+        return $this->hasMany(PeminjamanDetail::class);
+    }
+
+    public function pengembalianDetail()
+    {
+        return $this->hasMany(PengembalianDetail::class);
+    }
+
+    public function keranjang()
+    {
+        return $this->hasMany(Keranjang::class, 'barang_id');
+    }
 }

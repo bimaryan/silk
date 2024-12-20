@@ -19,6 +19,7 @@ use App\Http\Controllers\WEB\Pengguna\EditProfileController;
 use App\Http\Controllers\WEB\Pengguna\InformasiController;
 use App\Http\Controllers\WEB\Pengguna\KatalogController;
 use App\Http\Controllers\WEB\Pengguna\KeranjangController;
+use App\Http\Controllers\WEB\Pengguna\PeminjamanController;
 use App\Http\Controllers\WEB\Pengguna\PengembalianController;
 use App\Http\Controllers\WEB\Pengguna\RiwayatController;
 // use App\Http\Controllers\WEB\Pengguna\PeminjamanController;
@@ -34,8 +35,6 @@ use Illuminate\Support\Facades\Route;
 // ROUTE LOGIN
 Route::resource('login', LoginController::class);
 
-// ROUTE BERANDA
-Route::resource('/', BerandaController::class)->only('index');
 
 // ROUTE FORGOT PASSWORD
 Route::resource('forgot-password', ForgotPasswordController::class);
@@ -93,8 +92,12 @@ Route::middleware(['auth:admin'])->group(function () {
         Route::get('export-ruangan', [StaffRuanganController::class, 'exportRuangan'])->name('export-ruangan');
 
         Route::prefix('verifikasi/')->group(function () {
-            Route::resource('peminjaman', VerifikasiPeminjamanController::class);
-            Route::resource('pengembalian', VerifikasiPengembaliancontroller::class);
+            Route::get('verifikasi-peminjaman', [VerifikasiPeminjamanController::class, 'index'])->name('verifikasi-peminjaman.index');
+            Route::put('update-status-barang/{id}', [VerifikasiPeminjamanController::class, 'updateStatusBarang'])->name('verifikasi-peminjaman.update');
+            Route::put('updata-persetujuan-barang/{id}', [VerifikasiPeminjamanController::class, 'updatePersetujuan'])->name('updatePersetujuanBarang');
+
+
+            Route::resource('verifikasi-pengembalian', VerifikasiPengembaliancontroller::class);
         });
     });
 });
@@ -105,16 +108,20 @@ Route::middleware(['multiGuard:dosen,mahasiswa'])->group(function () {
     Route::resource('beranda', BerandaController::class)->only('index');
     Route::resource('katalog', KatalogController::class);
     Route::resource('katalog-ruangan', PenggunaRuanganController::class);
-    Route::resource('informasi', InformasiController::class);
+    Route::prefix('informasi/')->group(function () {
+        Route::get('informasi-peminjaman', [InformasiController::class, 'indexPeminjaman'])->name('informasi-peminjaman.index');
+        Route::get('informasi-pengembalian', [InformasiController::class, 'indexPengembalian'])->name('informasi-pengembalian.index');
+        Route::post('proses-pengembalian/{pengembalian_id}', [InformasiController::class, 'prosesPengembalian'])->name('pengembalian.proses');
+
+    });
     Route::resource('riwayat', RiwayatController::class);
     Route::resource('edit-profile', EditProfileController::class);
     Route::resource('edit-password', EditPasswordController::class);
+    Route::resource('peminjaman', PeminjamanController::class);
 
     Route::get('/detail/{id}', [DetailController::class, 'index'])->name('detail.index');
     Route::post('/detail/store/{barang}', [DetailController::class, 'store'])->name('detail.store');
     Route::resource('keranjang', KeranjangController::class);
     Route::resource('pengembalians', PengembalianController::class);
 
-
-    // Route::resource('/peminjaman', PeminjamanController::class);
 });

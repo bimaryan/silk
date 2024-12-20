@@ -25,7 +25,10 @@ class MahasiswaController extends Controller
             $query->where('nama', 'LIKE', "%{$search}%")
                 ->orWhere('nim', 'LIKE', "%{$search}%")
                 ->orWhere('email', 'LIKE', "%{$search}%")
-                ->orWhere('jenis_kelamin', 'LIKE', "%{$search}%");
+                ->orWhere('jenis_kelamin', 'LIKE', "%{$search}%")
+                ->orWhereHas('kelas', function ($q) use ($search) {
+                    $q->where('nama_kelas', 'LIKE', "%{$search}%");
+                });
         }
 
         $mahasiswa = $query->paginate(5)->appends($request->all());

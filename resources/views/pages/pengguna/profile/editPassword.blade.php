@@ -3,16 +3,6 @@
 @section('content-profile')
 <!-- Main Content -->
 <div class="p-4">
-    @if (session('success'))
-        <script>
-            Swal.fire({
-                title: "Success",
-                text: "{{ session('success') }}",
-                icon: "success",
-                confirmButtonColor: "#3085d6",
-            });
-        </script>
-    @endif
     <h1 class="mb-4 text-2xl font-semibold">Ubah Kata Sandi</h1>
     <form action="{{ route('edit-password.update', auth()->user()->id) }}" method="POST">
         @csrf

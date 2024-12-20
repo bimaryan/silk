@@ -22,8 +22,23 @@ class Dosen extends Model
         'foto',
     ];
 
-    public function dosen()
+    // public function dosen()
+    // {
+    //     return $this->hasMany(Peminjaman::class, 'dosen_id');
+    // }
+
+    public function keranjang()
     {
-        return $this->hasMany(Peminjaman::class, 'dosen_id');
+        return $this->morphMany(Keranjang::class, 'user');
+    }
+
+    public function peminjaman()
+    {
+        return $this->morphMany(Peminjaman::class, 'user');
+    }
+
+    public function pengembalian()
+    {
+        return $this->morphMany(Pengembalian::class, 'user');
     }
 }

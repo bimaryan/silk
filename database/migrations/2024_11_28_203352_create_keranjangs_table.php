@@ -13,13 +13,15 @@ return new class extends Migration
     {
         Schema::create('keranjangs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('users_id');
+            $table->unsignedBigInteger('user_id');
+            $table->string('user_type');
             $table->unsignedBigInteger('barang_id');
-            $table->string('stock_pinjam');
+            $table->integer('jumlah_pinjam')->unsigned();
             $table->string('tindakan_spo');
             $table->timestamps();
 
             $table->foreign('barang_id')->references('id')->on('barangs');
+            $table->index(['user_id', 'user_type']);
         });
     }
 
