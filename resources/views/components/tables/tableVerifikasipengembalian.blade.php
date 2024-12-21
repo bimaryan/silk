@@ -66,9 +66,9 @@
                     </td>
                 </tr>
 
-                {{-- @include('components.modal.', [
+                @include('components.modal.modalVerifikasipengembalian', [
                     'pengembalan' => $pengembalian,
-                ]) --}}
+                ])
                 @empty
                 <tr>
                     <td colspan="8" class="px-6 py-3 text-center text-gray-500 border">

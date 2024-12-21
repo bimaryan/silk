@@ -32,7 +32,7 @@ class InformasiController extends Controller
         }
 
         // Ambil data peminjaman terkait user yang login
-        $peminjaman = Peminjaman::where('persetujuan', 'Belum Diserahkan' )->with([
+        $peminjaman = Peminjaman::where('persetujuan', 'Belum Diserahkan')->with([
             'matkul',
             'ruangan',
             'peminjamanDetail.barang',
@@ -71,12 +71,7 @@ class InformasiController extends Controller
             $notifikasiKeranjang = $dataKeranjang->sum('barang_id');
 
             // Ambil data peminjaman terkait user yang login
-            $pengembalian = Peminjaman::with([
-                'peminjamanDetail.barang',
-                'ruangan',
-                'matkul',
-                'user',
-            ])->where('persetujuan', 'Diserahkan')->where('user_id', $userID)->orderBy('created_at', 'desc')->get();
+            $pengembalian = Pengembalian::whereIn('persetujuan', ['Menunggu Verifikasi', 'Belum Dikembalikan'])->with(['user', 'peminjaman.barang'])->orderBy('created_at', 'desc')->get();
 
             // Kirim data ke view
             return view('pages.pengguna.informasi.pengembalian', [
