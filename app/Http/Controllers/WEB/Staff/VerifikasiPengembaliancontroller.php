@@ -37,11 +37,19 @@ class VerifikasiPengembaliancontroller extends Controller
                 $jumlahKembali = $detail->jumlah_kembali;
                 $kondisi = strtolower($detail->kondisi);
 
-                $stok = Stock::where('barang_id', $barangId)->value('stock');
+                $stok = Stock::where('barang_id', $barangId)->first();
 
-                if ($kondisi === 'Dikembalikan') {
-                    $stokBaru = $stok + $jumlahKembali;
-                    Stock::where('barang_id', $barangId)->update(['stock' => $stokBaru]);
+                if (!$stok) {
+                    throw new Exception("Stok untuk barang dengan ID {$barangId} tidak ditemukan.");
+                }
+
+                if ($jumlahKembali > 0) {
+                    $stokBaru = $stok->stock + $jumlahKembali;
+
+                    // Update stok di tabel stock
+                    $stok->update([
+                        'stock' => $stokBaru
+                    ]);
                 }
 
                 if (in_array($kondisi, ['Hilang', 'Rusak'])) {

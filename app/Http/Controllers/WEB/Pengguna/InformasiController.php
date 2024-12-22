@@ -96,7 +96,7 @@ class InformasiController extends Controller
     {
         $request->validate([
             'jumlah_kembali' => 'required|array',
-            'jumlah_kembali.*' => 'required|integer|min:0',
+            'jumlah_kembali.*' => 'required|integer',
             'kondisi' => 'required|array',
             'kondisi.*' => 'required|in:Dikembalikan,Hilang,Rusak,Habis',
             'tindakan_spo_pengguna' => 'required|string',
