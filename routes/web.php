@@ -111,7 +111,7 @@ Route::middleware(['multiGuard:dosen,mahasiswa'])->group(function () {
     Route::prefix('informasi/')->group(function () {
         Route::get('informasi-peminjaman', [InformasiController::class, 'indexPeminjaman'])->name('informasi-peminjaman.index');
         Route::get('informasi-pengembalian', [InformasiController::class, 'indexPengembalian'])->name('informasi-pengembalian.index');
-        Route::post('proses-pengembalian/{pengembalian_id}', [InformasiController::class, 'prosesPengembalian'])->name('pengembalian.proses');
+    Route::post('proses-pengembalian/{pengembalian_id}', [InformasiController::class, 'prosesPengembalian'])->name('pengembalian.proses');
 
     });
     Route::resource('riwayat', RiwayatController::class);

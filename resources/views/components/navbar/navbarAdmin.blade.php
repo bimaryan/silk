@@ -107,14 +107,14 @@
                 </li>
                 <li>
 
-                    <a href="{{ 'data-mata-kuliah' }}"
+                    <a href="{{ route('data-mata-kuliah.index') }}"
                         class="mt-2 flex items-center p-2  rounded-lg dark:text-gray-100 hover:bg-green-800 hover:text-white group  {{ Route::is('data-mata-kuliah.index') ? 'bg-green-500 text-white' : '' }}">
                         <span class="flex-1 ms-3 whitespace-nowrap"><i class="fa-solid fa-book"></i> Mata
                             Kuliah</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{ 'data-spo' }}"
+                    <a href="{{ route('data-spo.index') }}"
                         class="flex items-center p-2  rounded-lg dark:text-gray-100 hover:bg-green-800 hover:text-white group  {{ Route::is('data-spo.index') ? 'bg-green-500 text-white' : '' }}">
                         <span class="flex-1 ms-3 whitespace-nowrap"><i class="fa-solid fa-file-lines"></i> Dokumen
                             SPO</span>

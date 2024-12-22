@@ -101,7 +101,7 @@
                                     alt="Gambar">
                                 <div>
                                     <p class="text-sm font-semibold ms-4">
-                                        {{ $detail->peminjaman->ruangan->nama_ruangan }}
+                                        {{ $detail->peminjaman->ruangan->nama_ruangan ?? '-'}}
                                     </p>
                                 </div>
                             </div>

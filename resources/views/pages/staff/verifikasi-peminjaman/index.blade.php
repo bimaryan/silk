@@ -29,7 +29,7 @@
                     </form>
                 </div>
                 <div id="tablePeminjaman">
-                    @include('components.tables.tableVerifikasipeminjaman')
+                    @include('components.tables.tableVerifikasipeminjaman', ['peminjaman' => $peminjaman])
                 </div>
             </div>
         </div>

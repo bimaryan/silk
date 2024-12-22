@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id'); // ID pengguna
             $table->string('user_type'); // Polymorphic relationship
-            $table->unsignedBigInteger('matkul_id');
+            $table->unsignedBigInteger('matkul_id')->nullable();
             $table->unsignedBigInteger('ruangan_id')->nullable();
-            $table->string('nama_dosen');
+            $table->string('nama_dosen')->nullable();
             $table->dateTime('tanggal_waktu_peminjaman');
             $table->time('waktu_pengembalian')->nullable();
             $table->enum('persetujuan', ['Belum Diserahkan', 'Diserahkan', 'Selesai'])->default('Belum Diserahkan');

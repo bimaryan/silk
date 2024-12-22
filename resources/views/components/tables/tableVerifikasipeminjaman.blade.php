@@ -16,6 +16,9 @@
                     Dosen Pengampu
                 </th>
                 <th scope="col" class="px-6 py-3">
+                    Nama Ruangan
+                </th>
+                <th scope="col" class="px-6 py-3">
                     Tanggal & Waktu Peminjaman
                 </th>
                 <th scope="col" class="px-6 py-3 text-center">
@@ -41,13 +44,16 @@
                             {{ $data->user->nama }}
                         </td>
                         <td scope="col" class="px-6 py-3">
-                            {{ $data->user->kelas->nama_kelas }}
+                            {{ $data->user->kelas->nama_kelas ?? '-' }}
                         </td>
                         <td scope="col" class="px-6 py-3">
-                            {{ $data->matkul->mata_kuliah }}
+                            {{ $data->matkul->mata_kuliah ?? '-' }}
                         </td>
                         <td scope="col" class="px-6 py-3">
-                            {{ $data->nama_dosen }}
+                            {{ $data->nama_dosen ?? '-' }}
+                        </td>
+                        <td scope="col" class="px-6 py-3">
+                            {{ $data->ruangan->nama_ruangan ?? '-' }}
                         </td>
                         <td scope="col" class="px-6 py-3">
                             {{ $data->tanggal_waktu_peminjaman }}
@@ -66,7 +72,8 @@
                         ])
                         <td scope="col" class="px-6 py-3">
                             <div class="flex items-center space-x-6">
-                                <form action="{{ route('updatePersetujuanBarang', $data->id)}}" method="POST" class="flex items-center gap-1">
+                                <form action="{{ route('updatePersetujuanBarang', $data->id) }}" method="POST"
+                                    class="flex items-center gap-1">
                                     @csrf
                                     @method('PUT')
                                     <div>
@@ -93,7 +100,6 @@
                     </tr>
                 @endforeach
             @endif
-
         </tbody>
     </table>
 </div>

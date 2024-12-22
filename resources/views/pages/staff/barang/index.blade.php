@@ -8,7 +8,7 @@
 
 
             <div class="p-4 bg-white rounded-lg shadow-lg">
-                <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2 justify-between mb-4">
                     <div class="flex items-center gap-2">
                         <button class="justify-center px-4 py-2 text-white bg-green-500 rounded hover:bg-green-800"
                             data-modal-target="import-barang" data-tooltip-target="import" data-tooltip-placement="left"

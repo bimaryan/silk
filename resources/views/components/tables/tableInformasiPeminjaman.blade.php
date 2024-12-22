@@ -2,29 +2,49 @@
     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400" style="100%"
         id="data-barang">
         <thead class=" text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-                <th scope="col" class="px-6 py-3">
-                    Nama Peminjam
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Dosen Pengampu
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Mata Kuliah
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Ruang Praktikum
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Tanggal & Waktu Peminjaman
-                </th>
-                <th scope="col" class="px-6 py-3">
-                    Persetujuan
-                </th>
-                <th scope="col" class="px-6 py-3 text-center">
-                    Aksi
-                </th>
-            </tr>
+            @if (Auth::guard('mahasiswa')->check())
+                <tr>
+                    <th scope="col" class="px-6 py-3">
+                        Nama Peminjam
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Dosen Pengampu
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Mata Kuliah
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Ruang Praktikum
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Tanggal & Waktu Peminjaman
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Persetujuan
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-center">
+                        Aksi
+                    </th>
+                </tr>
+            @elseif (Auth::guard('dosen')->check())
+                <tr>
+                    <th scope="col" class="px-6 py-3">
+                        Nama Peminjam
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Ruang Praktikum
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Tanggal & Waktu Peminjaman
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Persetujuan
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-center">
+                        Aksi
+                    </th>
+                </tr>
+            @endif
         </thead>
         <tbody>
             @if ($peminjaman->isEmpty())
@@ -34,57 +54,104 @@
                     </td>
                 </tr>
             @else
-                @foreach ($peminjaman as $data)
-                    <tr
-                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                @if (Auth::guard('mahasiswa')->check())
+                    @foreach ($peminjaman as $data)
+                        <tr
+                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
 
-                        <td scope="col" class="px-6 py-3">
-                            {{ $data->user->nama }}
-                        </td>
-                        <td scope="col" class="px-6 py-3">
-                            {{ $data->nama_dosen }}
-                        </td>
-                        <td scope="col" class="px-6 py-3">
-                            {{ $data->matkul->mata_kuliah }}
-                        </td>
-                        <td scope="col" class="px-6 py-3">
-                            {{ $data->ruangan->nama_ruangan }}
-                        </td>
-                        <td scope="col" class="px-6 py-3">
-                            {{ $data->tanggal_waktu_peminjaman ?? '-' }}
-                        </td>
-                        <td scope="col" class="px-6 py-3">
-                            <span class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
-                                {{ $data->persetujuan }}
-                            </span>
-                        </td>
-                        <td scope="col" class="flex items-center gap-2 px-6 py-3 justify-center">
-                            <div>
-                                <button type="button" data-modal-target="detail{{ $data->id }}"
-                                    data-modal-toggle="detail{{ $data->id }}"
-                                    class="flex items-center px-2 py-2 text-sm text-white bg-yellow-400 rounded">
-                                    <i class="fa-solid fa-eye"></i>
-                                </button>
-                            </div>
-                            {{-- <div>
+                            <td scope="col" class="px-6 py-3">
+                                {{ $data->user->nama }}
+                            </td>
+                            <td scope="col" class="px-6 py-3">
+                                {{ $data->nama_dosen }}
+                            </td>
+                            <td scope="col" class="px-6 py-3">
+                                {{ $data->matkul->mata_kuliah }}
+                            </td>
+                            <td scope="col" class="px-6 py-3">
+                                {{ $data->ruangan->nama_ruangan }}
+                            </td>
+                            <td scope="col" class="px-6 py-3">
+                                {{ $data->tanggal_waktu_peminjaman ?? '-' }}
+                            </td>
+                            <td scope="col" class="px-6 py-3">
+                                <span
+                                    class="text-yellow-500 text-xs font-semibold me-2 px-2.5 py-0.5 rounded dark:text-green-800">
+                                    {{ $data->persetujuan }}
+                                </span>
+                            </td>
+                            <td scope="col" class="flex items-center gap-2 px-6 py-3 justify-center">
+                                <div>
+                                    <button type="button" data-modal-target="detail{{ $data->id }}"
+                                        data-modal-toggle="detail{{ $data->id }}"
+                                        class="flex items-center px-2 py-2 text-sm text-white bg-yellow-400 rounded">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
+                                </div>
+                                {{-- <div>
+                            <button type="button" data-modal-target="pengembalian{{ $data->id }}"
+                                data-modal-toggle="pengembalian{{ $data->id }}"
+                                class="flex items-center px-2 py-2 text-sm text-white bg-yellow-400 rounded">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </div> --}}
+                            </td>
+                        </tr>
+
+                        @include('components.modal.modalInformasiPeminjaman', [
+                            'peminjaman' => $peminjaman,
+                        ])
+                        {{-- @include('components.modal.modalPengembalian', [
+                    'peminjaman' => $peminjaman,
+                ]) --}}
+                    @endforeach
+                @elseif (Auth::guard('dosen')->check())
+                    @foreach ($peminjaman as $data)
+                        <tr
+                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+
+                            <td scope="col" class="px-6 py-3">
+                                {{ $data->user->nama }}
+                            </td>
+                            <td scope="col" class="px-6 py-3">
+                                {{ $data->ruangan->nama_ruangan ?? '-' }}
+                            </td>
+                            <td scope="col" class="px-6 py-3">
+                                {{ $data->tanggal_waktu_peminjaman ?? '-' }}
+                            </td>
+                            <td scope="col" class="px-6 py-3">
+                                <span
+                                    class="text-yellow-500 text-xs font-semibold me-2 px-2.5 py-0.5 rounded dark:text-green-800">
+                                    {{ $data->persetujuan }}
+                                </span>
+                            </td>
+                            <td scope="col" class="flex items-center gap-2 px-6 py-3 justify-center">
+                                <div>
+                                    <button type="button" data-modal-target="detail{{ $data->id }}"
+                                        data-modal-toggle="detail{{ $data->id }}"
+                                        class="flex items-center px-2 py-2 text-sm text-white bg-yellow-400 rounded">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </button>
+                                </div>
+                                {{-- <div>
                                 <button type="button" data-modal-target="pengembalian{{ $data->id }}"
                                     data-modal-toggle="pengembalian{{ $data->id }}"
                                     class="flex items-center px-2 py-2 text-sm text-white bg-yellow-400 rounded">
                                     <i class="fa-solid fa-eye"></i>
                                 </button>
                             </div> --}}
-                        </td>
-                    </tr>
+                            </td>
+                        </tr>
 
-                    @include('components.modal.modalInformasiPeminjaman', [
-                        'peminjaman' => $peminjaman,
-                    ])
-                    {{-- @include('components.modal.modalPengembalian', [
+                        @include('components.modal.modalInformasiPeminjaman', [
+                            'peminjaman' => $peminjaman,
+                        ])
+                        {{-- @include('components.modal.modalPengembalian', [
                         'peminjaman' => $peminjaman,
                     ]) --}}
-                @endforeach
+                    @endforeach
+                @endif
             @endif
-
         </tbody>
     </table>
 </div>

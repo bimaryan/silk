@@ -17,6 +17,9 @@
                     Dosen Pengampu
                 </th>
                 <th scope="col" class="px-6 py-3">
+                    Nama Ruangan
+                </th>
+                <th scope="col" class="px-6 py-3">
                     Waktu Pengembalian
                 </th>
                 <th scope="col" class="px-6 py-3">
@@ -38,13 +41,16 @@
                         {{ $data->peminjaman->user->nama }}
                     </td>
                     <td scope="col" class="px-6 py-3">
-                        {{ $data->peminjaman->user->kelas->nama_kelas }}
+                        {{ $data->peminjaman->user->kelas->nama_kelas ?? '-' }}
                     </td>
                     <td scope="col" class="px-6 py-3">
-                        {{ $data->peminjaman->matkul->mata_kuliah }}
+                        {{ $data->peminjaman->matkul->mata_kuliah ?? '-' }}
                     </td>
                     <td scope="col" class="px-6 py-3">
-                        {{ $data->peminjaman->nama_dosen }}
+                        {{ $data->peminjaman->nama_dosen ?? '-' }}
+                    </td>
+                    <td scope="col" class="px-6 py-3">
+                        {{ $data->ruangan->nama_ruangan ?? '-' }}
                     </td>
                     <td scope="col" class="px-6 py-3">
                         {{ $data->peminjaman->waktu_pengembalian ?? '-' }}

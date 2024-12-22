@@ -65,12 +65,12 @@ class PeminjamanController extends Controller
         }
 
         $request->validate([
-            'waktu_pengembalian' => 'nullable|date_format:H:i',
-            'dokumenspo_id' => 'required|exists:dokumen_spos,id',
-            'nama_dosen' => 'required|string|max:255',
+            'waktu_pengembalian' => 'required|date_format:H:i',
+            'dokumenspo_id' => 'nullable|exists:dokumen_spos,id',
+            'nama_dosen' => 'nullable|string|max:255',
             'tanggal_waktu_peminjaman' => 'required|date|after_or_equal:today',
-            'ruangan_id' => 'required|exists:ruangans,id',
-            'matkul_id' => 'required|exists:mata_kuliahs,id',
+            'ruangan_id' => 'nullable|exists:ruangans,id',
+            'matkul_id' => 'nullable|exists:mata_kuliahs,id',
             'anggota_kelompok' => 'nullable|string',
         ]);
 
