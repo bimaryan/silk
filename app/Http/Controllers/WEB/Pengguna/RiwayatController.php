@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\WEB\Pengguna;
 
 use App\Http\Controllers\Controller;
+use App\Models\Keranjang;
 use App\Models\Peminjaman;
+use App\Models\Pengembalian;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -11,35 +13,37 @@ class RiwayatController extends Controller
 {
     public function index()
     {
-        // Check if the authenticated user is a 'mahasiswa' or 'dosen'
-        if (Auth::guard('mahasiswa')->check()) {
-            $user = Auth::guard('mahasiswa')->user();
-            $riwayat = Peminjaman::with(['mahasiswa', 'barang.kategori', 'ruangan', 'matkul', 'dosen'])
-                ->where('mahasiswa_id', $user->id)
-                ->get()
-                ->groupBy(function ($data) {
-                    return $data->mahasiswa_id;
-                });
-        } elseif (Auth::guard('dosen')->check()) {
-            $user = Auth::guard('dosen')->user();
-            $riwayat = Peminjaman::with(['mahasiswa', 'barang.kategori', 'ruangan', 'matkul', 'dosen'])
-                ->where('dosen_id', $user->id)
-                ->get()
-                ->groupBy(function ($data) {
-                    return $data->dosen_id;
-                });
-        } else {
-            return redirect()->route('login');
-        }
+        // Ambil user yang sedang login
+       $userID = auth()->id();
+       $userType = auth()->user()->getMorphClass();
 
-        $notifikasiKeranjang = null;
+       // Data keranjang untuk pengguna yang sedang login
+       $notifikasiKeranjang = [];
+       $dataKeranjang = [];
 
-        if (Auth::guard('mahasiswa')->check()) {
-            $notifikasiKeranjang = Peminjaman::where('mahasiswa_id', Auth::guard('mahasiswa')->id())->get();
-        } elseif (Auth::guard('dosen')->check()) {
-            $notifikasiKeranjang = Peminjaman::where('dosen_id', Auth::guard('dosen')->id())->get();
-        }
+       if (auth()->check()) {
+           $dataKeranjang = Keranjang::where('user_id', auth()->id())
+               ->with('barang')
+               ->get();
 
-        return view('pages.pengguna.riwayat.index', compact('riwayat', 'notifikasiKeranjang'));
+           // Hitung jumlah total item di keranjang
+           $notifikasiKeranjang = $dataKeranjang->sum('barang_id');
+
+           // Ambil data peminjaman terkait user yang login
+           $riwayat = Pengembalian::with([
+                'peminjaman.peminjamanDetail.barang',
+               'user',
+           ])->whereIn('persetujuan', ['Dikembalikan'])->where('user_id', $userID)->orderBy('created_at', 'desc')->get();
+
+           // Kirim data ke view
+           return view('pages.pengguna.riwayat.index', [
+               'riwayat' => $riwayat,
+               'dataKeranjang' => $dataKeranjang,
+               'notifikasiKeranjang' => $notifikasiKeranjang,
+               'userType' => $userType,
+               'userID' => $userID
+           ]);
+       }
     }
+
 }

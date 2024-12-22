@@ -34,7 +34,7 @@
                                 <div class="flex justify-between">
                                     <!-- Informasi Barang -->
                                     <div class="flex items-center gap-2">
-                                        <img src="{{ asset($detail->foto ?? 'image/barang.png') }}" class="w-12"
+                                        <img src="{{ asset('storage/' . $detail->barang->foto) ?? 'image/barang.png' }}" class="w-12"
                                             alt="Gambar">
                                         <div>
                                             <p class="text-sm font-semibold ms-4">{{ $detail->barang->nama_barang }}</p>

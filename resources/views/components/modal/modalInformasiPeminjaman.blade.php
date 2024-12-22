@@ -28,11 +28,12 @@
                             <div class="flex justify-between">
                                 <div class="flex justify-center items-center gap-2">
                                     <div class="px-4">
-                                        <img src="{{ asset($detail->foto ?? 'image/barang.png') }}" class="w-12"
-                                            alt="ini gambar">
+                                        <img src="{{ asset('storage/' . $detail->barang->foto) ?? 'image/barang.png' }}"
+                                            class="w-12" alt="ini gambar">
                                     </div>
                                     <div class="flex flex-col">
-                                        <p class="text-sm text-gray-900 font-semibold">{{ $detail->barang->nama }}
+                                        <p class="text-sm text-gray-900 font-semibold mb-1">
+                                            {{ $detail->barang->nama_barang }}
                                         </p>
                                         <p class="text-sm text-gray-900">
                                             <span
@@ -65,11 +66,14 @@
                                 <textarea id="tindakan_spo_{{ $detail->id }}" rows="4" name="tindakan_spo" readonly
                                     class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-green-500 focus:border-green-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{ $detail->tindakan_spo ?? 'tidak ada tindakan' }}</textarea>
                             </div>
-                            <div id="alasan-container-{{ $detail->id }}" class="{{ $detail->status == 'Ditolak' ? '' : 'hidden' }}">
-                                <label for="alasan_penolakan_{{ $detail->id }}" class="block mt-2 text-sm font-medium">
+                            <div id="alasan-container-{{ $detail->id }}"
+                                class="{{ $detail->status == 'Ditolak' ? '' : 'hidden' }}">
+                                <label for="alasan_penolakan_{{ $detail->id }}"
+                                    class="block mt-2 text-sm font-medium">
                                     Alasan Penolakan
                                 </label>
-                                <textarea id="alasan_penolakan_{{ $detail->id }}" name="alasan_penolakan[{{ $detail->id }}]" rows="2" readonly
+                                <textarea id="alasan_penolakan_{{ $detail->id }}" name="alasan_penolakan[{{ $detail->id }}]" rows="2"
+                                    readonly
                                     class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-green-500 focus:border-green-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{ $detail->alasan_penolakan }}</textarea>
                             </div>
                             <script>
@@ -82,6 +86,13 @@
                         </div>
                     </div>
                 @endforeach
+                <div
+                    class="w-full bg-white border border-gray-200 rounded-lg shadow p-3 dark:bg-gray-800 dark:border-gray-700">
+                        <label for="anggota_kelompok"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white text-left">Anggota Kelompok</label>
+                        <textarea id="anggota_kelompok" rows="4" name="anggota_kelompok" readonly
+                            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-green-500 focus:border-green-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{ $detail->peminjaman->anggota_kelompok ?? 'tidak ada tindakan' }}</textarea>
+                </div>
             </div>
         </div>
     </div>

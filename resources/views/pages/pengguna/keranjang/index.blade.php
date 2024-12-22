@@ -24,10 +24,10 @@
                                     <div class="flex items-center gap-2">
                                         @if (!empty($data->barang))
                                             <!-- Tampilkan Barang -->
-                                            <img src="{{ asset($data->barang->foto ?? 'image/barang.png') }}"
-                                                class="w-16 h-16" alt="gambar">
+                                            <img src="{{ asset('storage/' . $data->barang->foto) ?? 'image/barang.png' }}"
+                                                class="w-16 h-16" alt="{{ $data->barang->nama_barang }}">
                                             <p class="text-sm ms-2">{{ $data->barang->nama_barang }}</p>
-
+                                            <p class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">{{ $data->barang->kategori->kategori }}</p>
                                         @endif
                                     </div>
                                 </div>

@@ -10,7 +10,7 @@
             <div class="flex items-center mb-6">
                 <div class="relative overflow-hidden border border-4 border-green-500 rounded-full d-full">
                     @if (isset(auth()->user()->foto) && auth()->user()->foto != '')
-                        <img id="profileImage" src="{{ asset(auth()->user()->foto) }}" alt="Foto Profil"
+                        <img id="profileImage" src="{{ asset('storage/' . auth()->user()->foto) ?? 'image/icon_profile.png' }}" alt="Foto Profil"
                             class="object-cover rounded-full" style="width: 130px; height: 130px;">
                     @else
                         <!-- Tampilan default jika tidak ada gambar -->
@@ -45,9 +45,18 @@
                         class="block w-full mt-2 border-gray-300 rounded-lg shadow-sm focus:border-green-500 focus:ring focus:ring-green-500 focus:ring-opacity-50 disabled:bg-gray-100">
                 </div>
                 <div class="mb-4">
-                    <label for="kelas" class="block text-sm font-medium text-gray-700">Kelas</label>
-                    <input type="text" id="kelas" name="kelas" value="{{ auth()->user()->kelas }}" readonly
+                    <label for="kelas_id" class="block text-sm font-medium text-gray-700">Kelas</label>
+                    <select name="kelas_id" id="kelas_id"
                         class="block w-full mt-2 border-gray-300 rounded-lg shadow-sm focus:border-green-500 focus:ring focus:ring-green-500 focus:ring-opacity-50 disabled:bg-gray-100">
+                        @if (!$kelas->isEmpty())
+                            @foreach ($kelas as $kelas)
+                                <option value="{{ $kelas->id }}"
+                                    {{ $kelas->id == auth()->user()->kelas_id ? 'selected' : '' }}>
+                                    {{ $kelas->nama_kelas }}
+                                </option>
+                            @endforeach
+                        @endif
+                    </select>
                 </div>
 
             @elseif (Auth::guard('dosen')->check())

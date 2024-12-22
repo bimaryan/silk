@@ -23,7 +23,7 @@
             <div class="p-2">
                 <div class="flex flex-col items-center gap-5 p-4 md:flex-row">
                     <div class="relative overflow-hidden rounded-lg">
-                        <img src="{{ asset($data->foto ?? 'image/barang.png') }}" alt="{{ $data->foto }}"
+                        <img src="{{ asset('storage/' . $data->foto) }}" alt="{{ $data->foto }}"
                             class="object-cover" style="width: 150px; height: 150px;">
                     </div>
                     <div class="relative grid grid-cols-2 gap-2 overflow-x-auto">

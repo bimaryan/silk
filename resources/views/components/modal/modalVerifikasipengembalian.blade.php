@@ -21,21 +21,22 @@
             </div>
             <!-- Modal body -->
             <div class="p-4 md:p-5 space-y-4">
-                <form action="{{ route('pengembalians.update', $data->id) }}" method="POST">
+                <form action="{{ route('verifikasi-pengembalian.update', $data->id) }}" method="POST">
                     @csrf
+                    @method('PUT')
                     @foreach ($data->pengembalianDetail as $detail)
                         <div class="max-w-screen-xl mx-auto">
                             <div class="w-full bg-white border border-gray-200 rounded-lg shadow p-3">
                                 <div class="flex justify-between">
                                     <div class="flex items-center gap-2">
-                                        <img src="{{ asset($detail->alatBahan->foto ?? 'image/barang.png') }}"
+                                        <img src="{{ asset('storage/' . $detail->barang->foto) ?? 'image/barang.png' }}"
                                             class="w-12" alt="ini gambar">
                                         <div>
-                                            <p class="text-sm ms-2">{{ $detail->alatBahan->nama }}</p>
+                                            <p class="text-sm ms-2">{{ $detail->barang->nama }}</p>
                                             <p class="text-xs text-gray-500 mt-1">
                                                 <span
                                                     class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
-                                                    {{ $detail->alatBahan->kategori->kategori }}
+                                                    {{ $detail->barang->kategori->kategori }}
                                                 </span>
                                             </p>
                                         </div>
@@ -43,7 +44,7 @@
                                     <p>
                                         Jumlah peminjaman :
                                         <span>
-                                            {{ $data->peminjaman->peminjamanDetail->where('alat_bahan_id', $detail->alat_bahan_id)->first()->jumlah ?? '-' }}
+                                            {{ $data->peminjaman->peminjamanDetail->where('barang_id', $detail->barang_id)->first()->jumlah_pinjam ?? '-' }}
                                         </span>
                                     </p>
                                 </div>
@@ -53,15 +54,16 @@
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Jumlah
                                         barang kembali</label>
                                     <input type="text" id="jumlah_barang_kembali_{{ $detail->id }}"
-                                        name="jumlah[{{ $detail->id }}]" value="{{ $detail->jumlah_kembali }}"
-                                        readonly
+                                        name="jumlah[{{ $detail->id }}]"
+                                        value="{{ $detail->jumlah_kembali }}" readonly
                                         class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-green-500 focus:border-green-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                                 </div>
                                 <div class="mt-2">
                                     <label for="kondisi_{{ $detail->id }}"
                                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kondisi</label>
                                     <input type="text" id="kondisi_{{ $detail->id }}"
-                                        name="kondisi[{{ $detail->id }}]" value="{{ $detail->kondisi }}" readonly
+                                        name="kondisi[{{ $detail->id }}]" value="{{ $detail->kondisi }}"
+                                        readonly
                                         class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-green-500 focus:border-green-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" />
                                 </div>
                                 @if (in_array($detail->kondisi, ['Hilang', 'Rusak']))

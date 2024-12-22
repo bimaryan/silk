@@ -11,6 +11,7 @@ use App\Models\Peminjaman;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Imports\BarangImport;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
 class BarangController extends Controller
@@ -65,14 +66,16 @@ class BarangController extends Controller
         ]);
 
 
-        $filePath = $request->file('foto')->move('uploads/barang', time() . '_' . $request->file('foto')->getClientOriginalName());
+        $filePath = null;
+        if ($request->hasFile('foto')) {
+            $filePath = $request->file('foto')->store('uploads/barang', 'public');
+        }
 
         $barang = Barang::create([
             'nama_barang' => $request->nama_barang,
             'foto' => $filePath,
             'kategori_id' => $request->kategori_id,
             'satuan_id' => $request->satuan_id,
-            'kondisi_id' => 4,
         ]);
 
         Stock::create([
@@ -85,8 +88,8 @@ class BarangController extends Controller
 
     public function destroy(Barang $barang)
     {
-        if ($barang->foto && file_exists(public_path($barang->foto))) {
-            unlink(public_path($barang->foto));
+        if ($barang->foto && Storage::disk('public')->exists($barang->foto)) {
+            Storage::disk('public')->delete($barang->foto);
         }
 
         $barang->delete();
@@ -96,7 +99,6 @@ class BarangController extends Controller
 
     public function update(Request $request, Barang $barang)
     {
-        // Validasi input
         $request->validate([
             'nama_barang' => 'required|string|max:255',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -104,19 +106,17 @@ class BarangController extends Controller
             'satuan_id' => 'required|exists:satuans,id',
         ]);
 
-        // Jika ada file foto yang diupload
         if ($request->hasFile('foto')) {
-            // Menghapus foto lama jika ada
-            if ($barang->foto && file_exists(public_path('uploads/barang' . $barang->foto))) {
-                unlink(public_path('uploads/' . $barang->foto));
+            // Hapus foto lama
+            if ($barang->foto && Storage::disk('public')->exists($barang->foto)) {
+                Storage::disk('public')->delete($barang->foto);
             }
 
             // Simpan foto baru
-            $fotoPath = $request->file('foto')->move('uploads/barang', time() . '_' . $request->file('foto')->getClientOriginalName());
+            $fotoPath = $request->file('foto')->store('uploads/barang', 'public');
             $barang->foto = $fotoPath;
         }
 
-        // Update data barang
         $barang->update([
             'nama_barang' => $request->input('nama_barang'),
             'kategori_id' => $request->input('kategori_id'),

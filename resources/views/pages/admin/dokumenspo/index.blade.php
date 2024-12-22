@@ -42,7 +42,7 @@
                 <div id='tableDokumenSpo'>
                     @include('components.tables.tableDokumenspo', ['dokumen' => $dokumen])
                 </div>
-                <div class="mt-3">
+                <div class="mt-3 flex justify-center">
                     {{ $dokumen->links() }}
                 </div>
             </div>

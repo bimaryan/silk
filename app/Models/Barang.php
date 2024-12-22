@@ -25,10 +25,10 @@ class Barang extends Model
 
     public function stock()
     {
-        return $this->hasOne(Stock::class, 'barang_id', 'id');
+        return $this->hasOne(Stock::class, 'barang_id');
     }
 
-    public function peminjamanDetail() 
+    public function peminjamanDetail()
     {
         return $this->hasMany(PeminjamanDetail::class);
     }

@@ -18,7 +18,7 @@
                 <th scope="col" class="px-6 py-3">
                     Satuan
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-6 py-3 text-center">
                     Aksi
                 </th>
             </tr>
@@ -42,7 +42,7 @@
                     <td scope="col" class="px-6 py-3">
                         {{ $data->satuan->satuan }}
                     </td>
-                    <td scope="col" class="flex items-center gap-2 px-6 py-3">
+                    <td scope="col" class="flex items-center gap-2 px-6 py-3 justify-center">
                         <div>
                             <button type="button" data-modal-target="detail{{ $data->id }}"
                                 data-modal-toggle="detail{{ $data->id }}"

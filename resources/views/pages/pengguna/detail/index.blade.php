@@ -5,7 +5,7 @@
         <div class="max-w-screen-xl p-6 mx-auto mt-14 bg-white rounded-xl">
             <div class="space-y-3 grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div class="w-full flex justify-center items-center">
-                    <img src="{{ asset($data->foto ?? 'image/barang.png') }}" alt="{{ asset($data->foto) }}"
+                    <img src="{{ asset('storage/' . $data->foto) ?? 'image/barang.png' }}" alt="{{ asset($data->foto) }}"
                         class="object-cover rounded-lg zoom-image" style=" width: 80%;">
                 </div>
                 <div class="space-y-3">

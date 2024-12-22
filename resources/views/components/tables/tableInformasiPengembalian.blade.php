@@ -51,11 +51,11 @@
                             {{ $data->ruangan->nama_ruangan }}
                         </td>
                         <td scope="col" class="px-6 py-3">
-                            {{ $data->tanggal_waktu_peminjaman ?? '-' }}
+                            {{ $data->waktu_pengembalian ?? '-' }}
                         </td>
                         <td scope="col" class="px-6 py-3">
                             <span class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
-                                {{ $data->persetujuan }}
+                                {{ $data->pengembalian->persetujuan }}
                             </span>
                         </td>
                         <td scope="col" class="flex items-center gap-2 px-6 py-3 justify-center">

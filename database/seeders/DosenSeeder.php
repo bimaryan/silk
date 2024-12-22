@@ -15,11 +15,11 @@ class DosenSeeder extends Seeder
     public function run(): void
     {
         Dosen::create([
-            'nama' => 'Muhammad Anis Al Hilmi(Dosen)',
+            'nama' => 'Muhammad Anis Al Hilmi',
             'nip' => '199002282019031012',
             'username' => 'anis',
             'email' => 'anis@gmail.com',
-            'password' => Hash::make('@Polianis'),
+            'password' => Hash::make('polindra'),
             'jenis_kelamin' => 'Laki-laki',
         ]);
     }

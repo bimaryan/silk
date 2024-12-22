@@ -104,10 +104,10 @@ class PeminjamanController extends Controller
             Keranjang::where('user_id', $userID)->delete();
 
             DB::commit();
-            return redirect()->route('informasi.index')->with('success', 'Peminjaman berhasil dibuat.');
+            return redirect()->route('informasi-peminjaman.index')->with('success', 'Peminjaman berhasil dibuat.');
         } catch (Exception $e) {
             DB::rollBack();
-            return redirect()->route('informasi.index')->with('error', 'Terjadi kesalahan saat memproses peminjaman: ' . $e->getMessage());
+            return redirect()->route('informasi-peminjaman.index')->with('error', 'Terjadi kesalahan saat memproses peminjaman: ' . $e->getMessage());
         }
     }
 }

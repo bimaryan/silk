@@ -57,31 +57,39 @@ class InformasiController extends Controller
 
     public function indexPengembalian()
     {
-        // Ambil user yang sedang login
-        $userID = auth()->id();
-        $userType = auth()->user()->getMorphClass();
+       // Ambil user yang sedang login
+       $userID = auth()->id();
+       $userType = auth()->user()->getMorphClass();
 
+       // Data keranjang untuk pengguna yang sedang login
+       $notifikasiKeranjang = [];
+       $dataKeranjang = [];
 
-        if (auth()->check()) {
-            $dataKeranjang = Keranjang::where('user_id', auth()->id())
-                ->with('barang')
-                ->get();
+       if (auth()->check()) {
+           $dataKeranjang = Keranjang::where('user_id', auth()->id())
+               ->with('barang')
+               ->get();
 
-            // Hitung jumlah total item di keranjang
-            $notifikasiKeranjang = $dataKeranjang->sum('barang_id');
+           // Hitung jumlah total item di keranjang
+           $notifikasiKeranjang = $dataKeranjang->sum('barang_id');
 
-            // Ambil data peminjaman terkait user yang login
-            $pengembalian = Pengembalian::whereIn('persetujuan', ['Menunggu Verifikasi', 'Belum Dikembalikan'])->with(['user', 'peminjaman.barang'])->orderBy('created_at', 'desc')->get();
+           // Ambil data peminjaman terkait user yang login
+           $pengembalian = Peminjaman::with([
+               'matkul',
+               'ruangan',
+               'peminjamanDetail.barang',
+               'user',
+           ])->whereIn('persetujuan', ['Diserahkan', 'Menunggu Verifikasi'])->where('user_id', $userID)->orderBy('created_at', 'desc')->get();
 
-            // Kirim data ke view
-            return view('pages.pengguna.informasi.pengembalian', [
-                'pengembalian' => $pengembalian,
-                'dataKeranjang' => $dataKeranjang,
-                'notifikasiKeranjang' => $notifikasiKeranjang,
-                'userType' => $userType,
-                'userID' => $userID
-            ]);
-        }
+           // Kirim data ke view
+           return view('pages.pengguna.informasi.pengembalian', [
+               'pengembalian' => $pengembalian,
+               'dataKeranjang' => $dataKeranjang,
+               'notifikasiKeranjang' => $notifikasiKeranjang,
+               'userType' => $userType,
+               'userID' => $userID
+           ]);
+       }
     }
 
     public function prosesPengembalian(Request $request, $peminjamanId)
@@ -148,4 +156,5 @@ class InformasiController extends Controller
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
+
 }

@@ -45,7 +45,7 @@
                 <div id="tableMahasiswa">
                     @include('components.tables.tableMahasiswa', ['mahasiswa' => $mahasiswa])
                 </div>
-                <div class="mt-3">
+                <div class="mt-3 flex justify-center">
                     {{ $mahasiswa->links() }}
                 </div>
             </div>

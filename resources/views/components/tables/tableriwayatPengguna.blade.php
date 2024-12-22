@@ -18,9 +18,7 @@
                 <th scope="col" class="px-6 py-3">
                     Ruang Praktikum
                 </th>
-                <th scope="col" class="px-6 py-3">
-                    Tanggal & Waktu Peminjaman
-                </th>
+
                 <th scope="col" class="px-6 py-3">
                     Status
                 </th>
@@ -38,48 +36,38 @@
                 </tr>
             @else
                 @if ($riwayat->first()->first()->status_pengambalian != 'Diserahkan')
-                    @foreach ($riwayat as $userId => $loans)
+                    @foreach ($riwayat as $userId => $data)
                         <tr
                             class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                             <td class="px-6 py-3">{{ $loop->iteration }}</td>
                             <td class="px-6 py-3">
-                                @if ($loans->first()->mahasiswa_id)
-                                    {{ $loans->first()->mahasiswa->nama }}
-                                @elseif ($loans->first()->dosen_id)
-                                    {{ $loans->first()->dosen->nama }}
-                                @endif
+                                {{ $data->user->nama }}
                             </td>
                             <td class="px-6 py-3">
-                                {{ $loans->first()->nama_dosen ?? '-' }}
+                                {{ $data->peminjaman->nama_dosen}}
                             </td>
                             <td class="px-6 py-3">
-                                {{ $loans->first()->matkul->mata_kuliah ?? '-' }}
+                                {{ $data->peminjaman->matkul->mata_kuliah}}
                             </td>
                             <td class="px-6 py-3">
-                                {{ $loans->first()->ruangan->nama_ruangan ?? '-' }}
+                                {{ $data->peminjaman->ruangan->nama_ruangan}}
                             </td>
                             <td class="px-6 py-3">
-                                {{ $loans->first()->tanggal_waktu_peminjaman ?? '-' }}
-                            </td>
-                            <td class="px-6 py-3">
-                                @php
-                                    $status = $loans->first()->status;
-                                @endphp
-                                <span
-                                    class="text-{{ $status === 'Menunggu Persetujuan' ? 'yellow' : ($status === 'Dipinjamkan' ? 'green' : 'red') }}-100 text-{{ $status === 'Menunggu Persetujuan' ? 'yellow' : ($status === 'Dipinjamkan' ? 'green' : 'red') }}-500 text-xs">
-                                    {{ $status }}
+                                <span class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
+                                    {{ $data->persetujuan }}
                                 </span>
                             </td>
                             <td class="flex items-center gap-2 px-6 py-3 justify-center">
-                                <button type="button" data-modal-target="detail{{ $userId }}"
-                                    data-modal-toggle="detail{{ $userId }}"
+                                <button type="button" data-modal-target="detail{{ $data->id }}"
+                                    data-modal-toggle="detail{{ $data->id }}"
                                     class="flex items-center px-2 py-2 text-sm text-white bg-yellow-400 rounded">
                                     <i class="fa-solid fa-eye"></i>
                                 </button>
                             </td>
                         </tr>
                     @endforeach
-                    @include('components.modal.modalriwayatPengguna')
+                    @include('components.modal.modalriwayatPengguna', [
+                        'riwayat' => $riwayat,])
                 @endif
             @endif
         </tbody>

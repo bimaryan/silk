@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\WEB\Pengguna;
 
 use App\Http\Controllers\Controller;
+use App\Models\Kelas;
 use App\Models\Keranjang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class EditProfileController extends Controller
 {
@@ -16,24 +18,25 @@ class EditProfileController extends Controller
     public function index()
     {
         $dataKeranjang = [
-            'alat_bahan_id' => 0
+            'barang_id' => 0
         ];
 
         if (auth()->check()) {
             $dataKeranjang = Keranjang::where('user_id', auth()->id())
-                ->with('alatBahan')
+                ->with('barang')
                 ->get();
 
             // Hitung jumlah total item di keranjang
-            $notifikasiKeranjang = $dataKeranjang->sum('alat_bahan_id');
+            $notifikasiKeranjang = $dataKeranjang->sum('barang_id');
         }
 
         $user = Auth::user();
 
-
+        $kelas = Kelas::all();
 
         return view('pages.pengguna.profile.edit-profile-pengguna', [
             'user' => $user,
+            'kelas' => $kelas,
             'dataKeranjang' => $dataKeranjang,
             'notifikasiKeranjang' => $notifikasiKeranjang
         ]);
@@ -74,7 +77,7 @@ class EditProfileController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $user)
+    public function update(Request $request)
     {
         if (Auth::guard('dosen')->check()) {
             $user = Auth::guard('dosen')->user();
@@ -97,7 +100,7 @@ class EditProfileController extends Controller
             $request->validate([
                 'nama' => 'required',
                 'nim' => 'required|unique:mahasiswas,nim,' . $user->id,
-                'kelas' => 'required',
+                'kelas_id' => 'required|exists:kelas,id',
                 'email' => 'required|string|email',
                 'telepon' => 'required',
                 'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
@@ -105,7 +108,7 @@ class EditProfileController extends Controller
             ]);
 
             $user->nim = $request->nim;
-            $user->kelas = $request->kelas;
+            $user->kelas_id = $request->kelas_id;
         } else {
             abort(403, 'Unauthorized');
         }
@@ -115,14 +118,16 @@ class EditProfileController extends Controller
         $user->telepon = $request->telepon;
         $user->jenis_kelamin = $request->jenis_kelamin;
 
+        $fotoPath = null;
         if ($request->hasFile('foto')) {
-            if ($user->foto !== null) {
-                File::delete(public_path('foto/' . $user->foto));
+            // Hapus foto lama
+            if ($user->foto && Storage::disk('public')->exists($user->foto)) {
+                Storage::disk('public')->delete($user->foto);
             }
-            $image = $request->file('foto');
-            $name = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('foto'), $name);
-            $user->foto = $name;
+
+            // Simpan foto baru
+            $fotoPath = $request->file('foto')->store('uploads/profile', 'public');
+            $user->foto = $fotoPath;
         }
 
         $user->save();

@@ -28,7 +28,7 @@
                                         <img src="{{ asset($detail->foto ?? 'image/barang.png') }}" class="w-12"
                                             alt="Gambar">
                                         <div>
-                                            <p class="text-sm font-semibold">{{ $detail->barang->nama }}</p>
+                                            <p class="text-sm font-semibold">{{ $detail->barang->nama_barang }}</p>
                                             <p class="text-xs text-gray-500 mt-1">
                                                 <span
                                                     class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
@@ -68,7 +68,7 @@
                                         <option value="Habis">Habis</option>
                                     </select>
                                 </div>
-                                
+
                             </div>
                         </div>
                     @endforeach

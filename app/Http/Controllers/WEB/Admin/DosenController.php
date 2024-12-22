@@ -58,7 +58,7 @@ class DosenController extends Controller
         ]);
 
         $data_dosen->update([
-            'nama' => $request->nama . '(Dosen)',
+            'nama' => $request->nama,
             'nip' => $request->nip,
             'username' => $request->username,
         ]);

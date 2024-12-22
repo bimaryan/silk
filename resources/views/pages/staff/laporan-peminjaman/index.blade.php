@@ -39,7 +39,7 @@
                     @include('components.tables.tableLaporanpeinjaman', ['peminjamans' => $peminjamans])
                 </div>
 
-                <div class="mt-4">
+                <div class="mt-3 flex justify-center">
                     {{ $peminjamans->links() }}
                 </div>
             </div>

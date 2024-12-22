@@ -84,8 +84,8 @@
                             @foreach ($dataBarang as $data)
                                 <a href="{{ route('katalog.show', ['katalog' => $data->id]) }}" class="w-full p-3 border border-green-500 rounded-lg shadow-lg max-w-m">
                                     <div class="flex justify-center w-full">
-                                        <img src="{{ asset('image/barang.png') }}" class="object-cover zoom-image"
-                                            alt="{{ $data->nama_pengguna }}" />
+                                        <img src="{{ asset('storage/' . $data->foto) ?? 'image/barang.png' }}" class="object-cover zoom-image"
+                                            alt="{{ $data->nama_barang }}" />
                                     </div>
                                     <div class="mt-1">
                                         <span
@@ -103,7 +103,7 @@
                     @endif
 
                     <div class="text-center">
-                        <a href="" class="font-medium text-green-500 text-m">Lihat Semua</a>
+                        <a href="{{ route('katalog.index') }}" class="font-medium text-green-500 text-m">Lihat Semua</a>
                     </div>
                 </div>
             </div>

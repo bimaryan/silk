@@ -122,6 +122,5 @@ Route::middleware(['multiGuard:dosen,mahasiswa'])->group(function () {
     Route::get('/detail/{id}', [DetailController::class, 'index'])->name('detail.index');
     Route::post('/detail/store/{barang}', [DetailController::class, 'store'])->name('detail.store');
     Route::resource('keranjang', KeranjangController::class);
-    Route::resource('pengembalians', PengembalianController::class);
 
 });

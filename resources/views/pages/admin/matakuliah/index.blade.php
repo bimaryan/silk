@@ -39,7 +39,8 @@
                             </button>
 
                             <!-- Tombol reset -->
-                            <a href="{{ route('data-mata-kuliah.index') }}" class="p-2 text-white bg-gray-500 rounded-md hover:bg-gray-600">
+                            <a href="{{ route('data-mata-kuliah.index') }}"
+                                class="p-2 text-white bg-gray-500 rounded-md hover:bg-gray-600">
                                 Reset
                             </a>
                         </form>
@@ -48,70 +49,30 @@
                 <div id='tableMatakuliah'>
                     @include('components.tables.tableMatakuliah', ['matakuliah' => $matakuliah])
                 </div>
+                <div class="mt-3 flex justify-center">
+                    {{ $matakuliah->links() }}
+                </div>
             </div>
-
         </div>
+    </div>
 
-        <script>
-            function confirmDelete(id) {
-                Swal.fire({
-                    title: 'Apakah Anda yakin?',
-                    text: "Data yang dihapus tidak dapat dikembalikan!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ya, hapus!',
-                    cancelButtonText: 'Batal'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        document.getElementById('delete-form-' + id).submit();
-                    }
-                })
-            }
-        </script>
-
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script>
-            $(document).ready(function() {
-                // Apply filter ketika button filter di klik
-                $('#applyFilter').on('click', function(e) {
-                    e.preventDefault();
-                    loadTable();
-                });
-
-                // Handle pagination link click event
-                $(document).on('click', '.pagination a', function(e) {
-                    e.preventDefault();
-                    var page = $(this).attr('href').split('page=')[1];
-                    loadTable(page);
-                });
-
-                function loadTable(page = 1) {
-                    $.ajax({
-                        url: "{{ route('data-mata-kuliah.index') }}",
-                        method: "GET",
-                        data: {
-                            // name: $('#filterName').val(),
-                            // kategori_id: $('#filterKategori').val(),
-                            // kondisi: $('#filterKondisi').val(),
-                            // stock: $('#filterStock').val(),
-                            // satuan_id: $('#filterSatuan').val(),
-                            // page: page
-                        },
-                        success: function(response) {
-                            // Replace table and pagination links
-                            $('#tableMatakuliah').html($(response).find('#tableMatakuliah').html());
-                        }
-                    });
+    <script>
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Data yang dihapus tidak dapat dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + id).submit();
                 }
-            });
-            $(document).ready(function() {
-                $('#data-matakuliah').DataTable({
-                    paging: true,
-                    scrollCollapse: true,
-                    scrollY: '300px'
-                });
-            });
-        </script>
-    @endsection
+            })
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+@endsection

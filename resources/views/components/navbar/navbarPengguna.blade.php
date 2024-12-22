@@ -67,7 +67,7 @@
                 id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown"
                 data-dropdown-placement="bottom">
                 <span class="sr-only">Open user menu</span>
-                <img class="w-8 h-8 rounded-full" src="/docs/images/people/profile-picture-3.jpg" alt="user photo">
+                <img class="w-8 h-8 rounded-full" src="{{ asset('storage/' . auth()->user()->foto) ?? 'image/icon_profile.png' }}" alt="user photo">
             </button>
             <!-- Dropdown menu -->
             <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600"
@@ -115,7 +115,7 @@
                     <a href="{{ route('beranda.index') }}"
                         class="block py-2 px-3 rounded md:bg-transparent md:p-0
            {{ Route::is('beranda.index') ? 'text-white bg-green-700 md:text-green-700 md:bg-transparent' : 'text-gray-900 md:hover:text-green-700 dark:text-white dark:hover:bg-gray-700' }}"
-                        aria-current="page">Home</a>
+                        aria-current="page">Beranda</a>
                 </li>
                 <li>
                     <a href="{{ route('katalog.index') }}"
@@ -149,9 +149,9 @@
                 </li>
 
                 <li>
-                    <a href=""
+                    <a href="{{ route('riwayat.index') }}"
                         class="block py-2 px-3 rounded md:border-0 md:p-0
-           {{ Route::is('') ? 'text-white bg-green-700 md:text-green-700 md:bg-transparent' : 'text-gray-900 md:hover:text-green-700 dark:text-white dark:hover:bg-gray-700' }}">Riwayat
+           {{ Route::is('riwayat.index') ? 'text-white bg-green-700 md:text-green-700 md:bg-transparent' : 'text-gray-900 md:hover:text-green-700 dark:text-white dark:hover:bg-gray-700' }}">Riwayat
                         Peminjaman</a>
                 </li>
             </ul>
