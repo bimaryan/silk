@@ -23,6 +23,62 @@
             <div class="flex items-center">
                 <div class="flex items-center ms-3">
                     <div class="flex items-center gap-4">
+                        @if (Auth::user()->role->nama_role === 'Staff')
+                            <button id="dropdownNotificationButton" data-dropdown-toggle="dropdownNotification"
+                                class="relative inline-flex items-center text-sm font-medium text-center text-gray-500 hover:text-gray-900 focus:outline-none dark:hover:text-white dark:text-gray-400"
+                                type="button">
+                                <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                    fill="currentColor" viewBox="0 0 14 20">
+                                    <path
+                                        d="M12.133 10.632v-1.8A5.406 5.406 0 0 0 7.979 3.57.946.946 0 0 0 8 3.464V1.1a1 1 0 0 0-2 0v2.364a.946.946 0 0 0 .021.106 5.406 5.406 0 0 0-4.154 5.262v1.8C1.867 13.018 0 13.614 0 14.807 0 15.4 0 16 .538 16h12.924C14 16 14 15.4 14 14.807c0-1.193-1.867-1.789-1.867-4.175ZM3.823 17a3.453 3.453 0 0 0 6.354 0H3.823Z" />
+                                </svg>
+                                <div
+                                    class="absolute block w-5 h-5 bg-red-500 border-2 border-white rounded-full -top-0.5 start-2.5 dark:border-gray-900">
+                                    <p class="text-white text-xs">
+                                        {{ $notifikasi->count() ?? 0 }}
+                                    </p>
+                                </div>
+                            </button>
+
+                            <!-- Dropdown menu -->
+                            <div id="dropdownNotification"
+                                class="z-20 hidden max-w-sm bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-800 dark:divide-gray-700"
+                                aria-labelledby="dropdownNotificationButton">
+                                <div
+                                    class="block px-4 py-2 font-medium text-center text-gray-700 rounded-t-lg bg-gray-50 dark:bg-gray-800 dark:text-white">
+                                    Notifikasi
+                                </div>
+                                <div class="divide-y divide-gray-100 dark:divide-gray-700">
+                                    @if ($notifikasi->isNotEmpty())
+                                        @foreach ($notifikasi as $item)
+                                            <a href="{{ $item->persetujuan === 'Belum Diserahkan' ? route('verifikasi-peminjaman.index', $item->id) : route('verifikasi-pengembalian.index', $item->id) }}"
+                                                class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                                <div class="flex-1">
+                                                    <h4 class="text-sm font-medium text-gray-900 dark:text-white">
+                                                        {{ $item instanceof App\Models\Peminjaman ? 'Peminjaman' : 'Pengembalian' }}
+                                                        - {{ $item->created_at->format('d M Y, H:i') }}
+                                                    </h4>
+                                                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                                                        Nama: {{ $item->user->nama }}
+                                                    </p>
+                                                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                                                        Status: {{ $item->persetujuan }}
+                                                    </p>
+                                                </div>
+                                            </a>
+                                        @endforeach
+                                    @else
+                                        <p class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">Tidak ada
+                                            notifikasi.
+                                        </p>
+                                    @endif
+                                </div>
+                            </div>
+                        @endif
+
+
+
+
                         <div class="hidden md:block">
                             <div class="flex-col text-right md:flex">
                                 <p class="text-sm">{{ Auth::user()->nama }}</p>
@@ -123,7 +179,8 @@
                 <li>
                     <a href="{{ route('laporan-peminjaman.index') }}"
                         class="flex items-center p-2  rounded-lg dark:text-gray-100 hover:bg-green-800 hover:text-white group  {{ Route::is('laporan-peminjaman.index') ? 'bg-green-500 text-white' : '' }}">
-                        <span class="flex-1 ms-3 whitespace-nowrap"><i class="fa-solid fa-chart-simple me-2"></i>Laporan
+                        <span class="flex-1 ms-3 whitespace-nowrap"><i
+                                class="fa-solid fa-chart-simple me-2"></i>Laporan
                             Peminjaman</span>
                     </a>
                 </li>

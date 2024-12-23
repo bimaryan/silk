@@ -11,6 +11,7 @@ use App\Models\Peminjaman;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Imports\BarangImport;
+use App\Models\Pengembalian;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -46,9 +47,22 @@ class BarangController extends Controller
 
         $barangs = $query->paginate(5)->appends($request->all());
 
+        // Ambil notifikasi terkait peminjaman yang belum diproses
+        $peminjamanNotifications = Peminjaman::where('persetujuan', 'Belum Diserahkan')
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
 
+        // Ambil notifikasi terkait pengembalian yang perlu verifikasi
+        $pengembalianNotifications = Pengembalian::where('persetujuan', 'Menunggu Verifikasi')
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
 
-        return view('pages.staff.barang.index', compact('barangs', 'kategoris', 'satuans', 'stocks'));
+        // Gabungkan notifikasi
+        $notifikasi = $peminjamanNotifications->merge($pengembalianNotifications);
+
+        return view('pages.staff.barang.index', compact('barangs', 'kategoris', 'satuans', 'stocks', 'notifikasi'));
     }
 
     public function store(Request $request)

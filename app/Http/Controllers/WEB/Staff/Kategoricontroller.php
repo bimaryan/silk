@@ -5,6 +5,8 @@ namespace App\Http\Controllers\WEB\Staff;
 use App\Http\Controllers\Controller;
 use App\Imports\KategoriImport;
 use App\Models\Kategori;
+use App\Models\Peminjaman;
+use App\Models\Pengembalian;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -22,7 +24,22 @@ class Kategoricontroller extends Controller
 
         $kategori = $query->paginate(5)->appends($request->all());
 
-        return view('pages.staff.kategori.index', ['kategori' => $kategori]);
+        // Ambil notifikasi terkait peminjaman yang belum diproses
+        $peminjamanNotifications = Peminjaman::where('persetujuan', 'Belum Diserahkan')
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+
+        // Ambil notifikasi terkait pengembalian yang perlu verifikasi
+        $pengembalianNotifications = Pengembalian::where('persetujuan', 'Menunggu Verifikasi')
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+
+        // Gabungkan notifikasi
+        $notifikasi = $peminjamanNotifications->merge($pengembalianNotifications);
+
+        return view('pages.staff.kategori.index', ['kategori' => $kategori, 'notifikasi' => $notifikasi]);
     }
 
     public function store(Request $request)

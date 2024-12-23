@@ -6,6 +6,8 @@ use App\Exports\MataKuliahExport;
 use App\Http\Controllers\Controller;
 use App\Imports\MatkulImport;
 use App\Models\MataKuliah;
+use App\Models\Peminjaman;
+use App\Models\Pengembalian;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -24,7 +26,22 @@ class MataKuliahController extends Controller
 
         $matakuliah = $query->paginate(5)->appends($request->all());
 
-        return view('pages.admin.matakuliah.index', ['matakuliah' => $matakuliah]);
+        // Ambil notifikasi terkait peminjaman yang belum diproses
+        $peminjamanNotifications = Peminjaman::where('persetujuan', 'Belum Diserahkan')
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+
+        // Ambil notifikasi terkait pengembalian yang perlu verifikasi
+        $pengembalianNotifications = Pengembalian::where('persetujuan', 'Menunggu Verifikasi')
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+
+        // Gabungkan notifikasi
+        $notifikasi = $peminjamanNotifications->merge($pengembalianNotifications);
+
+        return view('pages.admin.matakuliah.index', ['matakuliah' => $matakuliah, 'notifikasi' => $notifikasi]);
     }
 
     public function store(Request $request)

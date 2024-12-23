@@ -5,6 +5,8 @@ namespace App\Http\Controllers\WEB\Staff;
 use App\Exports\RuanganExport;
 use App\Http\Controllers\Controller;
 use App\Imports\RuanganImport;
+use App\Models\Peminjaman;
+use App\Models\Pengembalian;
 use App\Models\Ruangan;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -14,7 +16,23 @@ class RuanganController extends Controller
     public function index()
     {
         $ruangan = Ruangan::paginate(5);
-        return view("pages.staff.ruangan.index", ["ruangan" => $ruangan]);
+
+        // Ambil notifikasi terkait peminjaman yang belum diproses
+        $peminjamanNotifications = Peminjaman::where('persetujuan', 'Belum Diserahkan')
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+
+        // Ambil notifikasi terkait pengembalian yang perlu verifikasi
+        $pengembalianNotifications = Pengembalian::where('persetujuan', 'Menunggu Verifikasi')
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+
+        // Gabungkan notifikasi
+        $notifikasi = $peminjamanNotifications->merge($pengembalianNotifications);
+        
+        return view("pages.staff.ruangan.index", ["ruangan" => $ruangan, "notifikasi" => $notifikasi]);
     }
 
     public function store(Request $request)

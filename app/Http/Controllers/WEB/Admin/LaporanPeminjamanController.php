@@ -4,35 +4,35 @@ namespace App\Http\Controllers\WEB\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Peminjaman;
+use App\Models\Pengembalian;
 use Illuminate\Http\Request;
 
 class LaporanPeminjamanController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $bulan = $request->input('bulan');
-        $tahun = $request->input('tahun');
+        $laporan = Peminjaman::with(['peminjamanDetail.barang', 'pengembalian'])
+        ->orderBy('created_at', 'desc')
+        ->get();
 
-        // $notifikasiPeminjaman = Peminjaman::with(['mahasiswa', 'dosen', 'barang'])
-        //     ->where('status', '!=', 'Dikembalikan')
-        //     ->latest()
-        //     ->take(5)
-        //     ->get();
+        // Ambil notifikasi terkait peminjaman yang belum diproses
+        $peminjamanNotifications = Peminjaman::where('persetujuan', 'Belum Diserahkan')
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
 
-        $peminjamans = Peminjaman::with(['mahasiswa', 'dosen', 'barang'])
-            ->when($bulan, function ($query, $bulan) {
-                return $query->whereMonth('tanggal_waktu_peminjaman', $bulan);
-            })
-            ->when($tahun, function ($query, $tahun) {
-                return $query->whereYear('tanggal_waktu_peminjaman', $tahun);
-            })
-            ->paginate(5);
+        // Ambil notifikasi terkait pengembalian yang perlu verifikasi
+        $pengembalianNotifications = Pengembalian::where('persetujuan', 'Menunggu Verifikasi')
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+
+        // Gabungkan notifikasi
+        $notifikasi = $peminjamanNotifications->merge($pengembalianNotifications);
 
         return view('pages.staff.laporan-peminjaman.index', [
-            // 'notifikasiPeminjaman' => $notifikasiPeminjaman,
-            'peminjamans' => $peminjamans,
-            'bulan' => $bulan,
-            'tahun' => $tahun,
+            'laporan' => $laporan,
+            'notifikasi' => $notifikasi
         ]);
     }
 }

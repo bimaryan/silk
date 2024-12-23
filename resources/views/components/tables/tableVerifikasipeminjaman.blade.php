@@ -24,7 +24,7 @@
                 <th scope="col" class="px-6 py-3 text-center">
                     Detail Barang
                 </th>
-                <th scope="col" class="px-6 py-3">
+                <th scope="col" class="px-6 py-3 text-center">
                     Persetujuan
                 </th>
             </tr>

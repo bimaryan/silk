@@ -36,11 +36,7 @@
                 </div>
 
                 <div id="tableLaporan">
-                    @include('components.tables.tableLaporanpeinjaman', ['peminjamans' => $peminjamans])
-                </div>
-
-                <div class="mt-3 flex justify-center">
-                    {{ $peminjamans->links() }}
+                    @include('components.tables.tableLaporanpeinjaman', ['laporan' => $laporan])
                 </div>
             </div>
         </div>

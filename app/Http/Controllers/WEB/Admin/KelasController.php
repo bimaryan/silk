@@ -6,6 +6,8 @@ use App\Exports\KelasExport;
 use App\Http\Controllers\Controller;
 use App\Imports\KelasImport;
 use App\Models\Kelas;
+use App\Models\Peminjaman;
+use App\Models\Pengembalian;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -23,7 +25,22 @@ class KelasController extends Controller
 
         $kelas = $query->paginate(5)->appends($request->all());
 
-        return view('pages.admin.kelas.index', ['kelas' => $kelas]);
+        // Ambil notifikasi terkait peminjaman yang belum diproses
+        $peminjamanNotifications = Peminjaman::where('persetujuan', 'Belum Diserahkan')
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+
+        // Ambil notifikasi terkait pengembalian yang perlu verifikasi
+        $pengembalianNotifications = Pengembalian::where('persetujuan', 'Menunggu Verifikasi')
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+
+        // Gabungkan notifikasi
+        $notifikasi = $peminjamanNotifications->merge($pengembalianNotifications);
+
+        return view('pages.admin.kelas.index', ['kelas' => $kelas, 'notifikasi' => $notifikasi]);
     }
 
     public function store(Request $request)

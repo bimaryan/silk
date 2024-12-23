@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Imports\MahasiswaImport;
+use App\Models\Peminjaman;
+use App\Models\Pengembalian;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -33,7 +35,22 @@ class MahasiswaController extends Controller
 
         $mahasiswa = $query->paginate(5)->appends($request->all());
 
-        return view('pages.admin.pengguna.mahasiswa.index', ['mahasiswa' => $mahasiswa], ['kelas' => $kelas]);
+        // Ambil notifikasi terkait peminjaman yang belum diproses
+        $peminjamanNotifications = Peminjaman::where('persetujuan', 'Belum Diserahkan')
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+
+        // Ambil notifikasi terkait pengembalian yang perlu verifikasi
+        $pengembalianNotifications = Pengembalian::where('persetujuan', 'Menunggu Verifikasi')
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+
+        // Gabungkan notifikasi
+        $notifikasi = $peminjamanNotifications->merge($pengembalianNotifications);
+
+        return view('pages.admin.pengguna.mahasiswa.index', ['mahasiswa' => $mahasiswa, 'kelas' => $kelas, 'notifikasi' => $notifikasi]);
     }
 
     public function store(Request $request)
@@ -62,11 +79,12 @@ class MahasiswaController extends Controller
     public function update(Request $request, Mahasiswa $data_mahasiswa)
     {
         $request->validate([
-            'foto' => 'required|image|mimes:png,jpg,jpeg|max:2048',
+            'foto' => 'nullable|image|mimes:png,jpg,jpeg|max:2048',
             'nama' => 'required|string',
             'nim' => 'required|string',
-            // 'kelas_id' => 'required|exists:kelas,id',
+            'kelas_id' => 'required|exists:kelas,id',
         ]);
+        
 
         if ($request->hasFile('foto')) {
             if ($data_mahasiswa->foto && file_exists(public_path($data_mahasiswa->foto))) {
@@ -81,7 +99,7 @@ class MahasiswaController extends Controller
         $data_mahasiswa->update([
             'nama' => $request->nama,
             'nim' => $request->nim,
-            // 'kelas_id' => $request->kelas_id,
+            'kelas_id' => $request->kelas_id,
         ]);
 
 
