@@ -11,8 +11,10 @@ use App\Http\Controllers\Controller;
 use App\Imports\MahasiswaImport;
 use App\Models\Peminjaman;
 use App\Models\Pengembalian;
+use Exception;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Validators\ValidationException;
 
 class MahasiswaController extends Controller
 {
@@ -58,7 +60,7 @@ class MahasiswaController extends Controller
         $validatedData = $request->validate([
             'nama' => 'required|string',
             'nim' => 'required|string',
-            // 'kelas_id' => 'required|string',
+            'kelas_id' => 'required|exists:kelas,id',
         ]);
 
 
@@ -68,7 +70,7 @@ class MahasiswaController extends Controller
             $mahasiswa = new Mahasiswa();
             $mahasiswa->nama = $request->nama;
             $mahasiswa->nim = $request->nim;
-            // $mahasiswa->kelas_id = $request->kelas_id;
+            $mahasiswa->kelas_id = $request->kelas_id;
             $mahasiswa->password = Hash::make($request->password);
             $mahasiswa->save();
         });
@@ -114,9 +116,28 @@ class MahasiswaController extends Controller
 
     public function importMahasiswa(Request $request)
     {
-        Excel::import(new MahasiswaImport(), $request->file('file'));
+        try {
+            // Pastikan file diunggah
+            if (!$request->hasFile('file')) {
+                return redirect()->back()->with('error', 'Harap unggah file Excel terlebih dahulu.');
+            }
 
-        return redirect()->back()->with('success', 'Mahasiswa berhasil di import!');
+            // Jalankan proses impor
+            Excel::import(new MahasiswaImport, $request->file('file'));
+
+            return redirect()->back()->with('success', 'Mahasiswa berhasil diimport!');
+        } catch (ValidationException $e) {
+            // Tangkap error validasi dari Maatwebsite Excel
+            $failures = $e->failures();
+            $messages = collect($failures)->map(function ($failure) {
+                return "Baris {$failure->row()}: {$failure->errors()[0]}";
+            })->implode("\n");
+
+            return redirect()->back()->with('error', "Mahasiswa gagal diimport! Kesalahan:\n" . $messages);
+        } catch (Exception $e) {
+            // Tangkap error umum lainnya
+            return redirect()->back()->with('error', "Mahasiswa gagal diimport! Kesalahan:\n" . $e->getMessage());
+        }
     }
 
     public function exportMahasiswa()

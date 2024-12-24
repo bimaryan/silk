@@ -53,6 +53,12 @@ class AdminController extends Controller
             'username' => 'required',
             'password' => 'required|string',
             'role_id' => 'required|exists:roles,id',
+        ],[
+            'nama.required' => 'Nama harus di isi',
+            'nip.required' => 'NIP harus di isi',
+            'username.required' => 'Username harus di isi',
+            'password.required' => 'Password harus di isi',
+            'role_id.required' => 'Role harus di isi',
         ]);
 
         Admin::create([
@@ -66,7 +72,7 @@ class AdminController extends Controller
         return redirect()->back()->with('success', 'Pendaftaran berhasil!');
     }
 
-    public function update(Request $request, Admin $admin_dan_staff)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'nama' => 'required',
@@ -76,13 +82,20 @@ class AdminController extends Controller
             'role_id' => 'required|exists:roles,id',
         ]);
 
-        $admin_dan_staff->update([
-            'nama' => $request->nama,
-            'nip' => $request->nip,
-            'username' => $request->username,
-            'password' => Hash::make($request->password),
-            'role_id' => $request->role_id,
-        ]);
+        $adminstaff = Admin::findOrFail($id);
+
+        $adminstaff->nama = $request->nama;
+        $adminstaff->nip = $request->nip;
+        $adminstaff->username = $request->username;
+
+        if ($request->filled('password')) {
+            $adminstaff->password = Hash::make($request->password);
+        }
+
+        $adminstaff->save();
+
+        $role = Role::findOrFail($request->role_id);
+        $adminstaff->role()->associate($role);
 
         return redirect()->back()->with('success', 'Pengguna berhasil di diperbarui!');
     }

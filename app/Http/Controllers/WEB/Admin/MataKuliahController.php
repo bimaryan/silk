@@ -8,8 +8,10 @@ use App\Imports\MatkulImport;
 use App\Models\MataKuliah;
 use App\Models\Peminjaman;
 use App\Models\Pengembalian;
+use Exception;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Validators\ValidationException;
 
 class MataKuliahController extends Controller
 {
@@ -83,11 +85,30 @@ class MataKuliahController extends Controller
         return redirect()->back()->with('success', 'Mata kuliah berhasil di hapus!');
     }
 
-    public function importMataKuliah(Request $request)
+    public function importMatakuliah(Request $request)
     {
-        Excel::import(new MatkulImport(), $request->file('file'));
+        try {
+            // Pastikan file diunggah
+            if (!$request->hasFile('file')) {
+                return redirect()->back()->with('error', 'Harap unggah file Excel terlebih dahulu.');
+            }
 
-        return redirect()->back()->with('success', 'Kelas berhasil di import!');
+            // Jalankan proses impor
+            Excel::import(new MatkulImport, $request->file('file'));
+
+            return redirect()->back()->with('success', 'Kelas berhasil diimport!');
+        } catch (ValidationException $e) {
+            // Tangkap error validasi dari Maatwebsite Excel
+            $failures = $e->failures();
+            $messages = collect($failures)->map(function ($failure) {
+                return "Baris {$failure->row()}: {$failure->errors()[0]}";
+            })->implode("\n");
+
+            return redirect()->back()->with('error', "Matkul gagal diimport! Kesalahan:\n" . $messages);
+        } catch (Exception $e) {
+            // Tangkap error umum lainnya
+            return redirect()->back()->with('error', "Matkul gagal diimport! Kesalahan:\n" . $e->getMessage());
+        }
     }
 
     public function exportMataKuliah()

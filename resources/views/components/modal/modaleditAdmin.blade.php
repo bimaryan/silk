@@ -53,17 +53,18 @@
                             <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
                             <input type="password" name="password" id="password"
                                 class="block w-full mt-2 border-gray-300 rounded-lg shadow-sm focus:border-green-500 focus:ring focus:ring-green-500 focus:ring-opacity-50">
-                            @error('password')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
                         </div>
                         <div class="mb-2">
                             <label for="role_id" class="block text-sm font-medium text-gray-700">Pilih
                                 Role</label>
                             <select name="role_id" id="role_id"
                                 class="block w-full p-2 mt-2 border-gray-300 rounded-lg shadow-sm focus:border-green-500 focus:ring focus:ring-green-500 focus:ring-opacity-50">
-                                <option value="{{ $data->role_id }}">{{ $data->role->nama_role }}
-                                </option>
+                                @foreach ($role as $role)
+                                    <option value="{{ $role->id }}"
+                                        {{ $role->nama_role == $data->role ? 'selected' : '' }}>
+                                        {{ $role->nama_role }}
+                                    </option>
+                                @endforeach
                             </select>
                             @error('role_id')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>

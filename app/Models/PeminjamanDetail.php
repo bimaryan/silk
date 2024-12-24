@@ -35,3 +35,4 @@ class PeminjamanDetail extends Model
     //     return $this->belongsTo(Ruangan::class, 'ruangan_id');
     // }
 }
+

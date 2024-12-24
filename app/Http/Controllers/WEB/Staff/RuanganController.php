@@ -13,9 +13,16 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class RuanganController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $ruangan = Ruangan::paginate(5);
+        $query = Ruangan::query();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where('nama_ruangan', 'LIKE', "%{$search}%");
+        }
+
+        $ruangan = $query->paginate(5)->appends($request->all());
 
         // Ambil notifikasi terkait peminjaman yang belum diproses
         $peminjamanNotifications = Peminjaman::where('persetujuan', 'Belum Diserahkan')

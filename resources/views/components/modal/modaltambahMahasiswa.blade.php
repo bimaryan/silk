@@ -34,26 +34,27 @@
                     </div>
                     <div class="mb-2">
                         <label for="nim" class="block text-sm font-medium text-gray-700">NIM</label>
-                        <input type="number" name="nim" id="nim" placeholder="Masukan NIM"
+                        <input type="number" name="nim" id="nim" placeholder="Masukan NIM" inputmode="numeric"
                             class="block w-full mt-2 border-gray-300 rounded-lg shadow-sm focus:border-green-500 focus:ring focus:ring-green-500 focus:ring-opacity-50">
                         @error('nim')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
                     </div>
-                    {{-- <div class="mb-2">
+                    <div class="mb-2">
                         <label for="kelas_id" class="block text-sm font-medium text-gray-700">Pilih
                             Kelas</label>
                         <select name="kelas_id" id="kelas_id"
                             class="block w-full p-2 mt-2 border-gray-300 rounded-lg shadow-sm focus:border-green-500 focus:ring focus:ring-green-500 focus:ring-opacity-50">
+                            <option value="">Pilih Kelas</option>
                             @foreach ($kelas as $data)
-                                <option value="{{ $data->kelas_id }}">{{ $data->nama_kelas }}
+                                <option value="{{ $data->id }}">{{ $data->nama_kelas }}
                                 </option>
                             @endforeach
                         </select>
                         @error('kelas_id')
                             <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                         @enderror
-                    </div> --}}
+                    </div>
 
 
                 </div>

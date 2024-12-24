@@ -8,7 +8,10 @@ use App\Imports\KelasImport;
 use App\Models\Kelas;
 use App\Models\Peminjaman;
 use App\Models\Pengembalian;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Validators\ValidationException;
 use Maatwebsite\Excel\Facades\Excel;
 
 class KelasController extends Controller
@@ -40,7 +43,7 @@ class KelasController extends Controller
         // Gabungkan notifikasi
         $notifikasi = $peminjamanNotifications->merge($pengembalianNotifications);
 
-        return view('pages.admin.kelas.index', ['kelas' => $kelas, 'notifikasi' => $notifikasi]);
+        return view('pages.admin.kelas.index', compact('kelas', 'notifikasi'));
     }
 
     public function store(Request $request)
@@ -58,17 +61,26 @@ class KelasController extends Controller
         return redirect()->back()->with('success', 'Kelas berhasil ditambahkan!');
     }
 
-    public function update(Kelas $data_kelas, Request $request)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'nama_kelas' => 'required|string',
         ]);
 
-        $data_kelas->update([
-            'nama_kelas' => $request->nama_kelas,
-        ]);
+        DB::beginTransaction();
+        try {
+            // Perbarui data kelas berdasarkan ID
+            $kelas = Kelas::findOrFail($id); // Pastikan ID valid
+            $kelas->update([
+                'nama_kelas' => $request->nama_kelas,
+            ]);
 
-        return redirect()->back()->with('success', 'Kelas berhasil diperbarui!');
+            DB::commit(); // Commit transaksi jika berhasil
+            return redirect()->back()->with('success', 'Kelas berhasil diperbarui!');
+        } catch (\Throwable $th) {
+            DB::rollBack(); // Rollback transaksi jika gagal
+            return redirect()->back()->with('error', 'Kelas gagal diperbarui! ' . $th->getMessage());
+        }
     }
 
     public function destroy(Kelas $data_kelas)
@@ -79,10 +91,31 @@ class KelasController extends Controller
 
     public function importKelas(Request $request)
     {
-        Excel::import(new KelasImport(), $request->file('file'));
+        try {
+            // Pastikan file diunggah
+            if (!$request->hasFile('file')) {
+                return redirect()->back()->with('error', 'Harap unggah file Excel terlebih dahulu.');
+            }
 
-        return redirect()->back()->with('success', 'Kelas berhasil di import!');
+            // Jalankan proses impor
+            Excel::import(new KelasImport, $request->file('file'));
+
+            return redirect()->back()->with('success', 'Kelas berhasil diimport!');
+        } catch (ValidationException $e) {
+            // Tangkap error validasi dari Maatwebsite Excel
+            $failures = $e->failures();
+            $messages = collect($failures)->map(function ($failure) {
+                return "Baris {$failure->row()}: {$failure->errors()[0]}";
+            })->implode("\n");
+
+            return redirect()->back()->with('error', "Kelas gagal diimport! Kesalahan:\n" . $messages);
+        } catch (Exception $e) {
+            // Tangkap error umum lainnya
+            return redirect()->back()->with('error', "Kelas gagal diimport! Kesalahan:\n" . $e->getMessage());
+        }
     }
+
+
 
     public function exportKelas()
     {
