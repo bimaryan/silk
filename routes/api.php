@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\API\Auth\LoginController;
+use App\Http\Controllers\API\Pengguna\BerandaController;
+use App\Http\Controllers\API\Pengguna\DetailController;
+use App\Http\Controllers\API\Pengguna\InformasiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +18,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::resource('login', LoginController::class)->only('store');
+
+Route::middleware('auth:sanctum')->group(function(){
+    Route::resource('beranda', BerandaController::class);
+    Route::get('{nama_barang}', [DetailController::class, 'index'])->name('detail');
+    Route::prefix('informasi/')->group(function(){});
+    Route::get('informasi-peminjaman', [InformasiController::class, 'index'])->name('informasi.peminjaman');
 });

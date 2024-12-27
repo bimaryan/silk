@@ -1,20 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\WEB\Pengguna;
+namespace App\Http\Controllers\API\Pengguna;
 
 use App\Http\Controllers\Controller;
-use App\Models\AlatBahan;
+use Illuminate\Http\Request;
 use App\Models\Barang;
 use App\Models\Kategori;
 use App\Models\Keranjang;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Schema;
 
 class BerandaController extends Controller
 {
     public function index(Request $request)
     {
-        // Data kategori
+        // Data kategoriphp artisan vendor:publish --provider=BeyondCode\\ErdGenerator\\ErdGeneratorServiceProvider
         $dataKategori = Kategori::all();
 
         // Filter berdasarkan kategori
@@ -41,7 +39,7 @@ class BerandaController extends Controller
             $notifikasiKeranjang = $dataKeranjang->sum('barang_id');
         }
 
-        return view('pages.pengguna.beranda.index', [
+        return response()->json([
             'dataBarang' => $dataBarang,
             'dataKategori' => $dataKategori,
             'barangKosong' => $barangKosong,

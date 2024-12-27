@@ -31,13 +31,13 @@
         }
     </style>
     <div class="background">
-
-        <div class="p-6 mx-auto ">
+        <div class="max-w-screen-xl mx-auto">
             <div class="flex items-center justify-center h-screen p-6">
                 <div class="max-w-md space-y-5 animate-slide">
                     <h2 class="font-medium text-center text-green-500 text-8xl">SIPELAK</h2>
                     <p class="text-lg font-semibold text-center text-white">
-                        Sistem Peminjaman Laboratorium Kesehatan adalah sebuah sistem berbasis teknologi yang dirancang untuk
+                        Sistem Peminjaman Laboratorium Kesehatan adalah sebuah sistem berbasis teknologi yang dirancang
+                        untuk
                         mempermudah proses peminjaman, pengembalian, serta pengelolaan inventaris laboratorium secara
                         digital.
                     </p>
@@ -49,7 +49,7 @@
                 </div>
             </div>
 
-            <div class="" id="filter-section">
+            <div id="filter-section">
                 <div class="w-full p-6 space-y-5 bg-white rounded-xl">
                     <p class="text-3xl font-semibold text-center text-green-500">Alat dan Bahan Laboratorium</p>
                     <p class="text-center text-gray-500 text-m">Laboratorium Kesehatan Politeknik Negeri Indramayu memiliki
@@ -63,14 +63,14 @@
                         class="flex items-center justify-center gap-2 mb-4">
                         {{-- Tombol Semua Kategori --}}
                         <button type="submit" name="kategori" value="semua"
-                            class="px-3 py-2 rounded-lg border shadow-xl {{ request('kategori') == 'semua' || !request('kategori') ? 'bg-green-800 text-white' : 'border-green-500 hover:bg-green-800 hover:text-white' }}">
+                            class="px-3 py-2 rounded-lg border shadow-xl {{ request('kategori') == 'Semua' || !request('kategori') ? 'bg-green-800 text-white' : 'border-green-500 hover:bg-green-800 hover:text-white' }}">
                             Semua
                         </button>
 
                         {{-- Tombol untuk setiap kategori --}}
                         @foreach ($dataKategori as $kategori)
-                            <button type="submit" name="kategori" value="{{ $kategori->id }}"
-                                class="px-3 py-2 rounded-lg border shadow-xl {{ request('kategori') == $kategori->id ? 'bg-green-800 text-white' : 'border-green-500 hover:bg-green-800 hover:text-white' }}">
+                            <button type="submit" name="kategori" value="{{ strtolower($kategori->kategori) }}"
+                                class="px-3 py-2 rounded-lg border shadow-xl {{ request('kategori') == strtolower($kategori->kategori) ? 'bg-green-800 text-white' : 'border-green-500 hover:bg-green-800 hover:text-white' }}">
                                 {{ $kategori->kategori }}
                             </button>
                         @endforeach
@@ -82,10 +82,11 @@
                     @else
                         <div id="card-section" class="grid grid-cols-1 gap-2 md:grid-cols-4 animate-card">
                             @foreach ($dataBarang as $data)
-                                <a href="{{ route('katalog.show', ['katalog' => $data->id]) }}" class="w-full p-3 border border-green-500 rounded-lg shadow-lg max-w-m">
+                                <a href="{{ route('katalog.show', ['katalog' => $data->id]) }}"
+                                    class="w-full p-3 border border-green-500 rounded-lg shadow-lg max-w-m">
                                     <div class="flex justify-center w-full">
-                                        <img src="{{ asset('storage/' . $data->foto) ?? 'image/barang.png' }}" class="object-cover zoom-image"
-                                            alt="{{ $data->nama_barang }}" />
+                                        <img src="{{ asset('storage/' . $data->foto) ?? 'image/barang.png' }}"
+                                            class="object-cover zoom-image" alt="{{ $data->nama_barang }}" />
                                     </div>
                                     <div class="mt-1">
                                         <span

@@ -13,8 +13,8 @@
             </button>
 
             @foreach ($dataKategori as $kategori)
-                <button type="submit" name="kategori" value="{{ $kategori->id }}"
-                    class="px-3 py-2 rounded-lg border shadow-xl {{ request('kategori') == $kategori->id ? 'bg-green-800 text-white' : 'border-green-500 hover:bg-green-800 hover:text-white bg-white' }}">
+                <button type="submit" name="kategori" value="{{ strtolower($kategori->kategori) }}"
+                    class="px-3 py-2 rounded-lg border shadow-xl {{ request('kategori') == strtolower($kategori->kategori) ? 'bg-green-800 text-white' : 'border-green-500 hover:bg-green-800 hover:text-white bg-white' }}">
                     {{ $kategori->kategori }}
                 </button>
             @endforeach
@@ -32,8 +32,8 @@
                     <a href="{{ route('katalog.show', ['katalog' => $data->id]) }}"
                         class="w-full p-3 border border-green-500 bg-white rounded-lg shadow-lg max-w-m">
                         <div class="flex justify-center w-full">
-                            <img src="{{ asset('storage/' . $data->foto) ?? 'image/barang.png' }}" class="object-cover zoom-image"
-                                alt="{{ $data->nama_barang }}" />
+                            <img src="{{ asset('storage/' . $data->foto) ?? 'image/barang.png' }}"
+                                class="object-cover zoom-image" alt="{{ $data->nama_barang }}" />
                         </div>
                         <div class="mt-1">
                             <span
@@ -57,8 +57,6 @@
 
 
     <script>
-
-
         document.addEventListener('DOMContentLoaded', () => {
             const scrollPosition = sessionStorage.getItem('scrollPosition');
             if (scrollPosition) {

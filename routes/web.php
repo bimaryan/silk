@@ -96,7 +96,6 @@ Route::middleware(['auth:admin'])->group(function () {
             Route::put('update-status-barang/{id}', [VerifikasiPeminjamanController::class, 'updateStatusBarang'])->name('verifikasi-peminjaman.update');
             Route::put('updata-persetujuan-barang/{id}', [VerifikasiPeminjamanController::class, 'updatePersetujuan'])->name('updatePersetujuanBarang');
 
-
             Route::resource('verifikasi-pengembalian', VerifikasiPengembaliancontroller::class);
         });
     });

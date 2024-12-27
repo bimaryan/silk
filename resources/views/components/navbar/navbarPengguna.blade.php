@@ -67,7 +67,8 @@
                 id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown"
                 data-dropdown-placement="bottom">
                 <span class="sr-only">Open user menu</span>
-                <img class="w-8 h-8 rounded-full" src="{{ asset('storage/' . auth()->user()->foto) ?? 'image/icon_profile.png' }}" alt="user photo">
+                <img class="w-8 h-8 rounded-full"
+                    src="{{ asset('storage/' . auth()->user()->foto) ?? 'image/icon_profile.png' }}" alt="user photo">
             </button>
             <!-- Dropdown menu -->
             <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600"
@@ -122,28 +123,36 @@
                         class="block py-2 px-3 rounded md:border-0 md:p-0
            {{ Route::is('katalog.index') ? 'text-white bg-green-700 md:text-green-700 md:bg-transparent' : 'text-gray-900 md:hover:text-green-700 dark:text-white dark:hover:bg-gray-700' }}">Katalog</a>
                 </li>
-                <li>
-                    <a href="{{route('katalog-ruangan.index')}}"
-                        class="block py-2 px-3 rounded md:border-0 md:p-0
+                {{-- @if (Auth::guard('dosen')->check())
+                    <li>
+                        <a href="{{ route('katalog-ruangan.index') }}"
+                            class="block py-2 px-3 rounded md:border-0 md:p-0
            {{ Route::is('ruangan.index') ? 'text-white bg-green-700 md:text-green-700 md:bg-transparent' : 'text-gray-900 md:hover:text-green-700 dark:text-white dark:hover:bg-gray-700' }}">Ruangan</a>
-                </li>
-
+                    </li>
+                @endif --}}
                 <li>
-                    <button id="dropdownNavbarLink" data-dropdown-toggle="informasidropdown" class="flex items-center justify-between w-full py-2 px-3 rounded md:border-0 md:p-0
+                    <button id="dropdownNavbarLink" data-dropdown-toggle="informasidropdown"
+                        class="flex items-center justify-between w-full py-2 px-3 rounded md:border-0 md:p-0
            {{ Route::is('informasi.index') ? 'text-white bg-green-700 md:text-green-700 md:bg-transparent' : 'text-gray-900 md:hover:text-green-700 dark:text-white dark:hover:bg-gray-700' }}">Informasi
-                        <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                        <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 1 4 4 4-4" />
                         </svg>
                     </button>
                     <!-- Dropdown menu -->
-                    <div id="informasidropdown" class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
-                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-400" aria-labelledby="dropdownLargeButton">
-                          <li>
-                            <a href="{{ route('informasi-peminjaman.index') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Peminjaman</a>
-                          </li>
-                          <li>
-                            <a href="{{ route('informasi-pengembalian.index') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Pengembalian</a>
-                          </li>
+                    <div id="informasidropdown"
+                        class="z-10 hidden font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+                        <ul class="py-2 text-sm text-gray-700 dark:text-gray-400"
+                            aria-labelledby="dropdownLargeButton">
+                            <li>
+                                <a href="{{ route('informasi-peminjaman.index') }}"
+                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Peminjaman</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('informasi-pengembalian.index') }}"
+                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Pengembalian</a>
+                            </li>
                         </ul>
                     </div>
                 </li>

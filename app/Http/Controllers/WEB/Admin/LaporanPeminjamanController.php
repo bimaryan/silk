@@ -11,6 +11,7 @@ class LaporanPeminjamanController extends Controller
 {
     public function index()
     {
+<<<<<<< HEAD
         $laporan = Peminjaman::with(['peminjamanDetail.barang', 'pengembalian'])
         ->orderBy('created_at', 'desc')
         ->get();
@@ -33,6 +34,24 @@ class LaporanPeminjamanController extends Controller
         return view('pages.staff.laporan-peminjaman.index', [
             'laporan' => $laporan,
             'notifikasi' => $notifikasi
+=======
+
+        $pengembalian = Pengembalian::whereIn('persetujuan', ['Dikembalikan'])->with([
+            'user',
+            'peminjaman.barang',
+
+        ])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $peminjamanNotifications = Peminjaman::where('persetujuan', 'Menunggu')
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+
+        return view('pages.staff.laporan-peminjaman.index', [
+            'pengembalian' => $pengembalian
+>>>>>>> 73a6ef1 (p)
         ]);
     }
 }

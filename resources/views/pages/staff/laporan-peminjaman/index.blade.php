@@ -36,8 +36,17 @@
                 </div>
 
                 <div id="tableLaporan">
+<<<<<<< HEAD
                     @include('components.tables.tableLaporanpeinjaman', ['laporan' => $laporan])
                 </div>
+=======
+                    @include('components.tables.tableLaporanpeinjaman', ['pengembalian' => $pengembalian])
+                </div>
+
+                {{-- <div class="mt-3 flex justify-center">
+                    {{ $peminjamans->links() }}
+                </div> --}}
+>>>>>>> 73a6ef1 (p)
             </div>
         </div>
     </div>

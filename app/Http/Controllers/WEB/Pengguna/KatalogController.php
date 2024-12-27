@@ -16,26 +16,27 @@ class KatalogController extends Controller
      */
     public function index(Request $request)
     {
-
-
-
         $dataKategori = Kategori::all(); // Mengambil semua kategori
 
-        $kategoriId = $request->kategori;
+        $kategoriName = $request->kategori;
 
-        // Query barang sesuai filter
+        // Query barang sesuai filter kategori
         $query = Barang::with('kategori');
 
-        if ($kategoriId && $kategoriId !== 'semua') {
-            $query->where('kategori_id', $kategoriId);
+        if ($kategoriName && $kategoriName !== 'semua') {
+            $query->whereHas('kategori', function ($query) use ($kategoriName) {
+                $query->where('kategori', $kategoriName);
+            });
         }
 
-        // Lakukan pagination di query
+        // Lakukan pagination
         $dataBarang = $query->paginate(5)->appends($request->all());
 
         // Tentukan jika barang kosong
         $barangKosong = $dataBarang->isEmpty();
 
+        $dataKeranjang = [];
+        $notifikasiKeranjang = 0;
 
         if (auth()->check()) {
             $dataKeranjang = Keranjang::where('user_id', auth()->id())
@@ -43,7 +44,7 @@ class KatalogController extends Controller
                 ->get();
 
             // Hitung jumlah total item di keranjang
-            $notifikasiKeranjang = $dataKeranjang->sum('barang_id');
+            $notifikasiKeranjang = $dataKeranjang->count();
         }
 
         return view('pages.pengguna.katalog.index', [
@@ -112,8 +113,6 @@ class KatalogController extends Controller
         $data = Barang::with(['kategori', 'stock', 'satuan'])->findOrFail($id);
 
         $dataKeranjang = Keranjang::with('barang')->where('user_id', $userID)->get();
-
-
 
         if (auth()->check()) {
             $dataKeranjang = Keranjang::where('user_id', auth()->id())
