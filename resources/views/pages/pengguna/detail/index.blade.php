@@ -1,12 +1,22 @@
 @extends('pengguna')
 
 @section('content')
-    <div class="space-y-3 p-4 mt-5">
-        <div class="max-w-screen-xl p-6 mx-auto mt-14 bg-white rounded-xl">
+    <style>
+        .zoom-image {
+            width: 100%;
+            height: 300px;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+        }
+    </style>
+
+
+    <div class="p-4">
+        <div class="max-w-screen-xl p-6 mx-auto bg-white rounded-xl">
             <div class="space-y-3 grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div class="w-full flex justify-center items-center">
                     <img src="{{ asset('storage/' . $data->foto) ?? 'image/barang.png' }}" alt="{{ asset($data->foto) }}"
-                        class="object-cover rounded-lg zoom-image" style=" width: 80%;">
+                        class="zoom-image">
                 </div>
                 <div class="space-y-3">
                     <div>
@@ -53,7 +63,7 @@
                                 <label for="tindakan_spo"
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tindakan
                                     SPO</label>
-                                    <textarea id="tindakan_spo" rows="4" name="tindakan_spo"
+                                <textarea id="tindakan_spo" rows="4" name="tindakan_spo"
                                     class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-green-500 focus:border-green-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                     placeholder="Masukkan tindakan SPO"></textarea>
                             </div>

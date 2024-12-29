@@ -3,7 +3,7 @@
     <style>
         .zoom-image {
             width: 100%;
-            height: 200px;
+            height: 300px;
             object-fit: cover;
             transition: transform 0.3s ease;
         }
@@ -31,10 +31,10 @@
         }
     </style>
     <div class="background">
-        <div class="max-w-screen-xl mx-auto">
-            <div class="flex items-center justify-center h-screen p-6">
+        <div class="max-w-screen-xl p-4 mx-auto">
+            <div class="flex items-center justify-center" style="height: 90vh">
                 <div class="max-w-md space-y-5 animate-slide">
-                    <h2 class="font-medium text-center text-green-500 text-8xl">SIPELAK</h2>
+                    <h2 class="font-medium text-center text-green-500 text-7xl">SIPELAK</h2>
                     <p class="text-lg font-semibold text-center text-white">
                         Sistem Peminjaman Laboratorium Kesehatan adalah sebuah sistem berbasis teknologi yang dirancang
                         untuk

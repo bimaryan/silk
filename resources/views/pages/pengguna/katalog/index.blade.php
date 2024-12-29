@@ -22,10 +22,7 @@
 
         {{-- Bagian Kartu Barang --}}
         @if ($barangKosong)
-            <div
-                class="align-center mx-auto block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-                <p class="mt-6 text-center text-gray-500">Tidak ada barang yang tersedia untuk kategori ini.</p>
-            </div>
+            <p class="mt-6 text-center text-gray-500">Tidak ada barang yang tersedia untuk kategori ini.</p>
         @else
             <div id="card-section" class="grid grid-cols-1 gap-4 md:grid-cols-4 animate-card">
                 @foreach ($dataBarang as $data)

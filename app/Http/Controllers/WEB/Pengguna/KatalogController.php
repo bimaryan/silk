@@ -23,6 +23,12 @@ class KatalogController extends Controller
         // Query barang sesuai filter kategori
         $query = Barang::with('kategori');
 
+        $searchQuery = $request->search;
+
+        if ($searchQuery) {
+            $query->where('nama_barang', 'like', "%{$searchQuery}%");
+        }
+
         if ($kategoriName && $kategoriName !== 'semua') {
             $query->whereHas('kategori', function ($query) use ($kategoriName) {
                 $query->where('kategori', $kategoriName);

@@ -35,7 +35,6 @@ use Illuminate\Support\Facades\Route;
 // ROUTE LOGIN
 Route::resource('login', LoginController::class);
 
-
 // ROUTE FORGOT PASSWORD
 Route::resource('forgot-password', ForgotPasswordController::class);
 

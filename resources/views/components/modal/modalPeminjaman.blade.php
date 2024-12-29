@@ -55,7 +55,7 @@
                             <label for="matkul_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                 Mata Kuliah
                             </label>
-                            <select id="matkul_id" name="matkul_id" required
+                            <select id="matkul_id" name="matkul_id"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
                                 <option value="">Pilih Mata Kuliah</option>
                                 @foreach ($matkul as $data)
@@ -68,7 +68,7 @@
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                 Ruang Praktikum
                             </label>
-                            <select id="ruangan_id" name="ruangan_id" required
+                            <select id="ruangan_id" name="ruangan_id"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
                                 <option value="">Pilih Ruang Praktikum</option>
                                 @foreach ($ruangLaboratorium as $data)
@@ -85,7 +85,6 @@
                             Tanggal & Waktu Peminjaman
                         </label>
                         <input type="datetime-local" name="tanggal_waktu_peminjaman" id="tanggal_waktu_peminjaman"
-                            required
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" />
                     </div>
                     <div class="mb-5">
@@ -93,7 +92,7 @@
                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                             Waktu Pengembalian
                         </label>
-                        <input type="time" name="waktu_pengembalian" id="waktu_pengembalian" required
+                        <input type="time" name="waktu_pengembalian" id="waktu_pengembalian"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5" />
                     </div>
                     @if (Auth::guard('mahasiswa')->check())
@@ -102,7 +101,7 @@
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                                 Dokumen SPO
                             </label>
-                            <select id="dokumenspo_id" name="dokumenspo_id" required
+                            <select id="dokumenspo_id" name="dokumenspo_id"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5">
                                 <option value="">Pilih Dokumen SPO</option>
                                 @foreach ($dokumenSpo as $data)

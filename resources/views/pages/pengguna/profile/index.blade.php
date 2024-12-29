@@ -67,9 +67,9 @@
             });
         </script>
     @endif
-        <div class="max-w-screen-xl p-6 mx-auto mt-14">
-            <div class="mt-4">
-                <div class="p-4 mt-4 bg-white border rounded-lg shadow-lg">
+        <div class="max-w-screen-xl p-6 mx-auto">
+            <div>
+                <div class="p-4 bg-white border rounded-lg shadow-lg">
                     <nav class="bg-white dark:bg-gray-700">
                         <div class="max-w-screen-xl px-4 py-3 mx-auto">
                             <div class="flex items-center">

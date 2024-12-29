@@ -50,7 +50,7 @@
     </style>
 </head>
 
-<body class="bg-gray-100">
+<body class="bg-gray-100 relative">
     @include('components.navbar.navbarPengguna')
     @if (session('success'))
         <script>
