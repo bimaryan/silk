@@ -50,7 +50,7 @@
                         {{ $data->peminjaman->nama_dosen ?? '-' }}
                     </td>
                     <td scope="col" class="px-6 py-3">
-                        {{ $data->ruangan->nama_ruangan ?? '-' }}
+                        {{ $data->peminjaman->ruangan->nama_ruangan ?? '-' }}
                     </td>
                     <td scope="col" class="px-6 py-3">
                         {{ $data->peminjaman->waktu_pengembalian ?? '-' }}

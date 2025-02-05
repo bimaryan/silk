@@ -57,7 +57,7 @@
                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white text-left">Tindakan
                                     SPO</label>
                                 <textarea id="tindakan_spo_{{ $detail->id }}" rows="4" name="tindakan_spo" readonly
-                                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-green-500 focus:border-green-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{ $detail->tindakan_spo ?? 'tidak ada tindakan' }}</textarea>
+                                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-green-500 focus:border-green-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{ $detail->tindakan_spo_pengguna ?? 'tidak ada tindakan' }}</textarea>
                             </div>
                             <div id="alasan-container-{{ $detail->id }}"
                                 class="{{ $detail->status == 'Ditolak' ? '' : 'hidden' }}">

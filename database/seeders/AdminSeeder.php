@@ -24,14 +24,14 @@ class AdminSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'role_id' => 1,
             ],
-            [
-                'nama' => 'Staff 1',
-                'nip' => '09871239812',
-                'username' => 'staff',
-                'email' => 'staff@gmail.com',
-                'password' => Hash::make('password'),
-                'role_id' => 2,
-            ]
+            // [
+            //     'nama' => 'Staff 1',
+            //     'nip' => '09871239812',
+            //     'username' => 'staff',
+            //     'email' => 'staff@gmail.com',
+            //     'password' => Hash::make('password'),
+            //     'role_id' => 2,
+            // ]
         ];
 
         foreach ($admins as $admin) {
