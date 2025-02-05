@@ -24,20 +24,20 @@ class VerifikasiPengembaliancontroller extends Controller
             ->get();
 
 
-            // Ambil notifikasi terkait peminjaman yang belum diproses
+        // Ambil notifikasi terkait peminjaman yang belum diproses
         $peminjamanNotifications = Peminjaman::where('persetujuan', 'Belum Diserahkan')
         ->orderBy('created_at', 'desc')
         ->take(5)
         ->get();
 
-    // Ambil notifikasi terkait pengembalian yang perlu verifikasi
-    $pengembalianNotifications = Pengembalian::where('persetujuan', 'Menunggu Verifikasi')
-        ->orderBy('created_at', 'desc')
-        ->take(5)
-        ->get();
+        // Ambil notifikasi terkait pengembalian yang perlu verifikasi
+        $pengembalianNotifications = Pengembalian::where('persetujuan', 'Menunggu Verifikasi')
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
 
-    // Gabungkan notifikasi
-    $notifikasi = $peminjamanNotifications->merge($pengembalianNotifications);
+        // Gabungkan notifikasi
+        $notifikasi = $peminjamanNotifications->merge($pengembalianNotifications);
 
         return view('pages.staff.verifikasi-pengembalian.index', compact('pengembalian', 'notifikasi'));
     }

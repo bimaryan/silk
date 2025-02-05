@@ -11,9 +11,9 @@ class LaporanPeminjamanController extends Controller
 {
     public function index()
     {
-        $laporan = Peminjaman::with(['peminjamanDetail.barang', 'pengembalian'])
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $laporan = Pengembalian::with([
+            'peminjaman.peminjamanDetail.barang',
+       ])->whereIn('persetujuan', ['Dikembalikan'])->orderBy('created_at', 'desc')->get();
 
         // Ambil notifikasi terkait peminjaman yang belum diproses
         $peminjamanNotifications = Peminjaman::where('persetujuan', 'Belum Diserahkan')

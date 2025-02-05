@@ -29,30 +29,29 @@
             </tr>
         </thead>
         <tbody>
-            @if ($laporan->isEmpty())
+            @if (!$laporan->isEmpty())
                 @foreach ($laporan as $data)
-                    <tr
-                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         <td scope="col" class="px-6 py-3">
                             {{ $loop->iteration }}
                         </td>
                         <td scope="col" class="px-6 py-3">
-                            {{ $data->user->nama }}
+                            {{ $data->user->nama ?? 'N/A' }}
                         </td>
                         <td scope="col" class="px-6 py-3">
-                            {{ $data->user->kelas->nama_kelas }}
+                            {{ $data->user->kelas->nama_kelas ?? 'N/A' }}
                         </td>
                         <td scope="col" class="px-6 py-3">
-                            {{ $data->matkul->mata_kuliah }}
+                            {{ $data->peminjaman->matkul->mata_kuliah ?? 'N/A' }}
                         </td>
                         <td scope="col" class="px-6 py-3">
-                            {{ $data->nama_dosen }}
+                            {{ $data->peminjaman->nama_dosen ?? 'N/A' }}
                         </td>
                         <td scope="col" class="px-6 py-3">
-                            {{ $data->created_at }} / {{ $data->waktu_pengembalian }}
+                            {{ $data->peminjaman->tanggal_waktu_peminjaman }} / {{ $data->peminjaman->waktu_pengembalian ?? 'N/A' }}
                         </td>
                         <td scope="col" class="px-6 py-3">
-                            {{ $data->persetujuan }}
+                            {{ $data->persetujuan ?? 'N/A' }}
                         </td>
                         <td scope="col" class="px-6 py-3 text-center">
                             <div>
@@ -61,10 +60,18 @@
                                     class="flex items-center px-2 py-2 text-sm text-white bg-yellow-400 rounded">
                                     <i class="fa-solid fa-eye"></i>
                                 </button>
+
+                                @include('components.modal.modallaporan', ['data' => $data])
                             </div>
                         </td>
                     </tr>
                 @endforeach
+            @else
+                <tr>
+                    <td colspan="8" class="px-6 py-3 text-center">
+                        Tidak ada data laporan peminjaman.
+                    </td>
+                </tr>
             @endif
         </tbody>
     </table>

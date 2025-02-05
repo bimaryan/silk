@@ -44,16 +44,17 @@
                                 {{ $data->user->nama }}
                             </td>
                             <td class="px-6 py-3">
-                                {{ $data->peminjaman->nama_dosen}}
+                                {{ $data->peminjaman->nama_dosen }}
                             </td>
                             <td class="px-6 py-3">
-                                {{ $data->peminjaman->matkul->mata_kuliah}}
+                                {{ $data->peminjaman->matkul->mata_kuliah }}
                             </td>
                             <td class="px-6 py-3">
-                                {{ $data->peminjaman->ruangan->nama_ruangan}}
+                                {{ $data->peminjaman->ruangan->nama_ruangan }}
                             </td>
                             <td class="px-6 py-3">
-                                <span class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
+                                <span
+                                    class="bg-yellow-100 text-yellow-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
                                     {{ $data->persetujuan }}
                                 </span>
                             </td>
@@ -65,9 +66,10 @@
                                 </button>
                             </td>
                         </tr>
+                        @include('components.modal.modalriwayatPengguna', [
+                            'riwayat' => $riwayat,
+                        ])
                     @endforeach
-                    @include('components.modal.modalriwayatPengguna', [
-                        'riwayat' => $riwayat,])
                 @endif
             @endif
         </tbody>

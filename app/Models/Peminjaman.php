@@ -44,7 +44,7 @@ class Peminjaman extends Model
     {
         return $this->belongsTo(MataKuliah::class, 'matkul_id');
     }
-    
+
 
     public function dokumenspo()
     {
@@ -65,5 +65,5 @@ class Peminjaman extends Model
     {
         return $this->belongsTo(Ruangan::class, 'ruangan_id');
     }
-    
+
 }
