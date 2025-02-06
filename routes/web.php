@@ -46,6 +46,7 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::resource('dashboard', DashboardController::class)->only('index');
     Route::resource('logout', LogoutController::class)->only('index');
     Route::resource('laporan-peminjaman', LaporanPeminjamanController::class);
+    Route::get('export-laporan', [LaporanPeminjamanController::class, 'LaporanExport'])->name('laporan-peminjaman.export');
 
     Route::middleware(['UserAccess:Admin'])->group(function () {
         Route::prefix('pengguna/')->group(function () {

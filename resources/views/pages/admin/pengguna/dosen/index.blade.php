@@ -11,18 +11,18 @@
                 <div class="flex items-center justify-between mb-4">
 
                     <div class="flex items-center gap-2">
+                        <button data-modal-target="import-dosen" data-modal-toggle="import-dosen" data-tooltip-target="import"
+                            data-tooltip-placement="left"
+                            class="justify-center px-4 py-2 text-white bg-green-500 rounded hover:bg-green-800">
+                            <i class="fa-solid fa-file-arrow-up"></i>
+                        </button>
+                        @include('components.modal.modalimportDosen')
+
                         <button data-modal-target="tambah-dosen" data-modal-toggle="tambah-dosen"
                             class="justify-center px-4 py-2 text-white bg-green-500 rounded hover:bg-green-800">
                             <i class="fa-solid fa-plus"></i>
                         </button>
                         @include('components.modal.modaltambahDosen')
-
-                        <button data-modal-target="import-dosen" data-modal-toggle="import-dosen"
-                            data-tooltip-target="import" data-tooltip-placement="left"
-                            class="justify-center px-4 py-2 text-white bg-green-500 rounded hover:bg-green-800">
-                            <i class="fa-solid fa-file-arrow-up"></i>
-                        </button>
-                        @include('components.modal.modalimportDosen')
                     </div>
                     <div class="flex items-center gap-2">
                         <form method="GET" action="{{ route('data-dosen.index') }}" class="flex items-center gap-2">
@@ -39,7 +39,8 @@
                             </button>
 
                             <!-- Tombol reset -->
-                            <a href="{{ route('data-dosen.index') }}" class="p-2 text-white bg-gray-500 rounded-md hover:bg-gray-600">
+                            <a href="{{ route('data-dosen.index') }}"
+                                class="p-2 text-white bg-gray-500 rounded-md hover:bg-gray-600">
                                 Reset
                             </a>
                         </form>
@@ -75,5 +76,4 @@
     </script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 @endsection

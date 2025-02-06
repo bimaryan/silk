@@ -2,7 +2,7 @@
 
 namespace App\Exports;
 
-use App\Models\Peminjaman;
+use App\Models\Pengembalian;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
@@ -16,19 +16,20 @@ class LaporanExport implements FromCollection, WithHeadings, ShouldAutoSize
      */
     public function collection()
     {
-        return Peminjaman::with(['mahasiswa', 'dosen'])
+        return Pengembalian::with(['user', 'peminjaman.peminjamanDetail.barang', 'pengembalianDetail.barang'])
             ->get()
             ->map(function ($data) {
                 return [
                     'No' => $data->id,
-                    'Nama Mahasiswa' => $data->mahasiswa->nama,
-                    'Nama Barang' => $data->barang->nama_barang,
-                    'Jumlah Pinjam' => $data->stock_pinjam,
-                    'Tanggal Pinjam' => $data->tgl_pinjam,
-                    'Waktu Pinjam' => $data->waktu_pinjam,
-                    'Waktu Kembali' => $data->waktu_kembali,
-                    'Kondisi Barang' => $data->barang->kondisi->kondisi,
-                    'Status' => $data->status,
+                    'Nama' => $data->user->nama ?? $data->user->nama,
+                    'Kelas' => $data->user->kelas->nama_kelas ?? '-',
+                    'Mata Kuliah' => $data->peminjaman->matkul->mata_kuliah,
+                    'Dosen Pengampu' => $data->peminjaman->nama_dosen,
+                    'TanggalPeminjaman dan Pengembalian' => $data->peminjaman->tanggal_waktu_peminjaman . 'dan' . $data->peminjaman->waktu_pengembalian,
+                    'Nama Barang' => $data->pengembalianDetail->pluck('barang.nama_barang')->implode(', '),
+                    'Nama Anggota' => $data->peminjaman->anggota_kelompok,
+                    'Status' => $data->persetujuan,
+
                 ];
             });
     }
@@ -42,13 +43,13 @@ class LaporanExport implements FromCollection, WithHeadings, ShouldAutoSize
     {
         return [
             'No',
-            'Nama Mahasiswa',
+            'Nama',
+            'Kelas',
+            'Mata Kuliah',
+            'Dosen Pengampu',
+            'TanggalPeminjaman dan Pengembalian',
             'Nama Barang',
-            'Jumlah Pinjam',
-            'Tanggal Pinjam',
-            'Waktu Pinjam',
-            'Waktu Kembali',
-            'Kondisi Barang',
+            'Nama Anggota',
             'Status',
         ];
     }

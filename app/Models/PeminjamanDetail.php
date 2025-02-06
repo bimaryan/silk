@@ -22,7 +22,7 @@ class PeminjamanDetail extends Model
 
     public function peminjaman()
     {
-        return $this->belongsTo(Peminjaman::class);
+        return $this->belongsTo(Peminjaman::class, 'peminjaman_id');
     }
 
     public function barang()
@@ -35,4 +35,3 @@ class PeminjamanDetail extends Model
     //     return $this->belongsTo(Ruangan::class, 'ruangan_id');
     // }
 }
-

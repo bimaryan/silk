@@ -8,10 +8,10 @@
             <div class="p-4 bg-white rounded-lg shadow-lg">
                 <div class="flex items-center justify-between mb-4">
                     <div class="flex items-center gap-2">
-                        <button class="justify-center px-4 py-2 text-white bg-green-500 rounded hover:bg-green-800"
-                            data-modal-target="import-mahasiswa" data-tooltip-target="import" data-tooltip-placement="left"
-                            data-modal-toggle="import-mahasiswa"><i class="fa-solid fa-file-arrow-up"></i>
-                        </button>
+                        <a href="{{route('laporan-peminjaman.export')}}" class="justify-center px-4 py-2 text-white bg-green-500 rounded hover:bg-green-800"
+                            data-modal-target="export-laporan" data-tooltip-target="export" data-tooltip-placement="left"
+                            data-modal-toggle="export-laporan"><i class="fa-solid fa-file-arrow-down"></i>
+                        </a>
                     </div>
                     <div class="flex items-center gap-2">
                         <form method="GET" action="" class="flex items-center gap-2">
