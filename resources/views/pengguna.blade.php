@@ -50,20 +50,10 @@
             position: relative;
             width: 100%;
             height: 100%;
-            background-image: url('{{ asset('image/foto-lapterpadu.jpg') }}');
+            /* Add a dark gradient overlay directly over the image */
+            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), url('{{ asset('image/foto-lapterpadu.jpg') }}');
             background-size: cover;
             background-position: center;
-        }
-
-        .background::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: -1;
         }
     </style>
 </head>

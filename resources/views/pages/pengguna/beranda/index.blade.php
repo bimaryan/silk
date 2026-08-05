@@ -29,22 +29,56 @@
             transform: translateX(0);
             opacity: 1;
         }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 2.5rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #4ade80, #10b981);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .btn-premium {
+            background: linear-gradient(to right, #22c55e, #059669);
+            color: white;
+            font-weight: 700;
+            padding: 1rem 2rem;
+            border-radius: 9999px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-premium:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 20px 25px -5px rgba(21, 128, 61, 0.5);
+            color: white;
+        }
     </style>
     <div class="background">
         <div class="max-w-screen-xl p-4 mx-auto">
             <div class="flex items-center justify-center" style="height: 90vh">
-                <div class="max-w-md space-y-5 animate-slide">
-                    <h2 class="font-medium text-center text-green-500 text-7xl">SIPELAK</h2>
-                    <p class="text-lg font-semibold text-center text-white">
+                <div class="max-w-2xl space-y-6 animate-slide glass-card">
+                    <h2 class="font-extrabold text-center gradient-text text-7xl">SIPELAK</h2>
+                    <p class="text-xl font-medium text-center text-white" style="text-shadow: 1px 1px 3px rgba(0,0,0,0.5);">
                         Sistem Peminjaman Laboratorium Kesehatan adalah sebuah sistem berbasis teknologi yang dirancang
                         untuk
                         mempermudah proses peminjaman, pengembalian, serta pengelolaan inventaris laboratorium secara
                         digital.
                     </p>
-                    <div class="flex items-center justify-center">
-                        <a href="#filter-section"
-                            class="px-4 py-3 font-semibold text-green-500 bg-gray-100 border border-green-500 rounded-xl border-1 text-m hover:bg-green-800 hover:text-white">Pinjam
-                            Sekarang!</a>
+                    <div class="flex items-center justify-center pt-4">
+                        <a href="#filter-section" class="btn-premium">
+                            Pinjam Sekarang!
+                        </a>
                     </div>
                 </div>
             </div>
