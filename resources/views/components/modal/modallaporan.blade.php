@@ -28,7 +28,7 @@
                             <div class="flex justify-between">
                                 <div class="flex justify-center items-center gap-2">
                                     <div class="px-4">
-                                        <img src="{{ asset('storage/' . $detail->barang->foto) ?? 'image/barang.png' }}"
+                                        <img src="{{ \Illuminate\Support\Str::startsWith($detail->barang->foto, ['http://', 'https://']) ? $detail->barang->foto : ($detail->barang->foto ? asset('storage/' . $detail->barang->foto) : asset('image/barang.png')) }}"
                                             class="w-12" alt="ini gambar">
                                     </div>
                                     <div class="flex flex-col">

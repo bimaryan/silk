@@ -32,7 +32,7 @@
                                         <div
                                             class="flex justify-between items-center mb-1 bg-white p-2 border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700">
                                             <div class="flex items-center gap-2">
-                                                <img src="{{ asset($loan->barang->foto ?? 'image/barang.png') }}"
+                                                <img src="{{ \Illuminate\Support\Str::startsWith($loan->barang->foto, ['http://', 'https://']) ? $loan->barang->foto : ($loan->barang->foto ? asset('storage/' . $loan->barang->foto) : asset('image/barang.png')) }}"
                                                     class="w-12" alt="gambar barang">
                                                 <p class="text-sm ms-2">{{ $loan->barang->nama_barang ?? '-' }}</p>
                                             </div>
@@ -65,7 +65,7 @@
                                         <div
                                             class="flex w-full items-center justify-between gap-4 bg-white p-2 border border-gray-200 rounded-lg dark:bg-gray-800 dark:border-gray-700 mb-2">
                                             <div class="flex items-center gap-2">
-                                                <img src="{{ asset($loan->ruangan->foto ?? 'image/barang.png') }}"
+                                                <img src="{{ \Illuminate\Support\Str::startsWith($loan->ruangan->foto, ['http://', 'https://']) ? $loan->ruangan->foto : ($loan->ruangan->foto ? asset('storage/' . $loan->ruangan->foto) : asset('image/barang.png')) }}"
                                                     class="w-12" alt="gambar ruangan">
                                                 <p class="text-sm font-medium">{{ $loan->ruangan->nama_ruangan }}</p>
                                             </div>

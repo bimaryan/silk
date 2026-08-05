@@ -82,7 +82,13 @@ class VerifikasiPengembaliancontroller extends Controller
                 }
             }
 
+            $pengembalian = Pengembalian::where('id', $pengembalianId)->first();
+
             Pengembalian::where('id', $pengembalianId)->update([
+                'persetujuan' => 'Dikembalikan',
+            ]);
+
+            Peminjaman::where('id', $pengembalian->peminjaman_id)->update([
                 'persetujuan' => 'Dikembalikan',
             ]);
 

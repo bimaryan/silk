@@ -45,6 +45,10 @@
 
 
 
+            @php
+                $currentUser = Auth::guard('mahasiswa')->user() ?? Auth::guard('dosen')->user();
+            @endphp
+            @if($currentUser)
             <button id="dropdownNotificationButton" data-dropdown-toggle="dropdownNotification"
                 class="me-4 relative inline-flex items-center text-sm font-medium text-center text-gray-500 hover:text-gray-900 focus:outline-none dark:hover:text-white dark:text-gray-400"
                 type="button" data-dropdown-placement="bottom">
@@ -106,7 +110,7 @@
                 data-dropdown-placement="bottom">
                 <span class="sr-only">Open user menu</span>
                 <img class="w-8 h-8 rounded-full"
-                    src="{{ asset('storage/' . auth()->user()->foto) ?? 'image/icon_profile.png' }}" alt="user photo">
+                    src="{{ \Illuminate\Support\Str::startsWith($currentUser->foto, ['http://', 'https://']) ? $currentUser->foto : ($currentUser->foto ? asset('storage/' . $currentUser->foto) : asset('image/icon_profile.png')) }}" alt="user photo">
             </button>
             <!-- Dropdown menu -->
             <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600"
@@ -114,12 +118,12 @@
                 <div class="px-4 py-3">
                     @if (Auth::guard('mahasiswa')->check())
                         <span
-                            class="block text-sm text-gray-900 dark:text-white">{{ Auth::guard('mahasiswa')->user()->nama }}</span>
+                            class="block text-sm text-gray-900 dark:text-white">{{ $currentUser->nama }}</span>
                         <span
-                            class="block text-sm  text-gray-500 truncate dark:text-gray-400">{{ Auth::user()->kelas->nama_kelas ?? '-' }}</span>
+                            class="block text-sm  text-gray-500 truncate dark:text-gray-400">{{ $currentUser->kelas->nama_kelas ?? '-' }}</span>
                     @elseif (Auth::guard('dosen')->check())
                         <span
-                            class="block text-sm text-gray-900 dark:text-white">{{ Auth::guard('dosen')->user()->nama }}</span>
+                            class="block text-sm text-gray-900 dark:text-white">{{ $currentUser->nama }}</span>
                     @endif
                 </div>
                 <ul class="py-2" aria-labelledby="user-menu-button">
@@ -136,6 +140,9 @@
                     </li>
                 </ul>
             </div>
+            @else
+                <a href="{{ route('login.index') }}" class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 flex justify-center items-center focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Masuk</a>
+            @endif
             <button data-collapse-toggle="navbar-user" type="button"
                 class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
                 aria-controls="navbar-user" aria-expanded="false">

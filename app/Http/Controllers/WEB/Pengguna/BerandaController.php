@@ -32,8 +32,12 @@ class BerandaController extends Controller
         $barangKosong = $dataBarang->isEmpty();
 
 
-        if (auth()->check()) {
-            $dataKeranjang = Keranjang::where('user_id', auth()->id())
+        $notifikasiKeranjang = 0;
+        $dataKeranjang = collect();
+        $currentUser = auth()->guard('mahasiswa')->user() ?? auth()->guard('dosen')->user();
+
+        if ($currentUser) {
+            $dataKeranjang = Keranjang::where('user_id', $currentUser->id)
                 ->with('barang')
                 ->get();
 

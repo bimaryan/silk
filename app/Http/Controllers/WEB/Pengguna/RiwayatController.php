@@ -14,36 +14,40 @@ class RiwayatController extends Controller
     public function index()
     {
         // Ambil user yang sedang login
-       $userID = auth()->id();
-       $userType = auth()->user()->getMorphClass();
+        $currentUser = auth()->guard('mahasiswa')->user() ?? auth()->guard('dosen')->user();
 
-       // Data keranjang untuk pengguna yang sedang login
-       $notifikasiKeranjang = [];
-       $dataKeranjang = [];
+        // Data keranjang untuk pengguna yang sedang login
+        $notifikasiKeranjang = 0;
+        $dataKeranjang = collect();
+        $riwayat = collect();
+        $userType = null;
+        $userID = null;
 
-       if (auth()->check()) {
-           $dataKeranjang = Keranjang::where('user_id', auth()->id())
-               ->with('barang')
-               ->get();
+        if ($currentUser) {
+            $userID = $currentUser->id;
+            $userType = $currentUser->getMorphClass();
+            $dataKeranjang = Keranjang::where('user_id', $userID)
+                ->with('barang')
+                ->get();
 
-           // Hitung jumlah total item di keranjang
-           $notifikasiKeranjang = $dataKeranjang->sum('barang_id');
+            // Hitung jumlah total item di keranjang
+            $notifikasiKeranjang = $dataKeranjang->sum('barang_id');
 
-           // Ambil data peminjaman terkait user yang login
-           $riwayat = Pengembalian::with([
-                'peminjaman.peminjamanDetail.barang',
-               'user',
-           ])->whereIn('persetujuan', ['Dikembalikan'])->where('user_id', $userID)->orderBy('created_at', 'desc')->get();
+            // Ambil data peminjaman terkait user yang login
+            $riwayat = Pengembalian::with([
+                 'peminjaman.peminjamanDetail.barang',
+                'user',
+            ])->whereIn('persetujuan', ['Dikembalikan'])->where('user_id', $userID)->orderBy('created_at', 'desc')->get();
+        }
 
-           // Kirim data ke view
-           return view('pages.pengguna.riwayat.index', [
-               'riwayat' => $riwayat,
-               'dataKeranjang' => $dataKeranjang,
-               'notifikasiKeranjang' => $notifikasiKeranjang,
-               'userType' => $userType,
-               'userID' => $userID
-           ]);
-       }
+        // Kirim data ke view
+        return view('pages.pengguna.riwayat.index', [
+            'riwayat' => $riwayat,
+            'dataKeranjang' => $dataKeranjang,
+            'notifikasiKeranjang' => $notifikasiKeranjang,
+            'userType' => $userType,
+            'userID' => $userID
+        ]);
     }
 
 }

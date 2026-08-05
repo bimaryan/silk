@@ -46,8 +46,8 @@
                     @foreach ($ruangans as $data)
                         <div class="w-full p-3 border border-green-500 bg-white rounded-lg shadow-lg max-w-m">
                             <div class="flex justify-center w-full">
-                                <img src="{{ asset($data->foto ?? 'image/barang.png') }}"
-                                    alt="{{ asset($data->foto ?? 'Tidak ada foto') }}" class="object-cover zoom-image" />
+                                <img src="{{ \Illuminate\Support\Str::startsWith($data->foto, ['http://', 'https://']) ? $data->foto : ($data->foto ? asset('storage/' . $data->foto) : asset('image/barang.png')) }}"
+                                    alt="{{ \Illuminate\Support\Str::startsWith($data->foto, ['http://', 'https://']) ? $data->foto : ($data->foto ? asset('storage/' . $data->foto) : asset('Tidak ada foto')) }}" class="object-cover zoom-image" />
                             </div>
                             <div class="mt-2 flex items-center justify-between">
                                 <p class="font-normal">{{ $data->nama_ruangan }}</p>

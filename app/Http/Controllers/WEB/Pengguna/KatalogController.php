@@ -36,16 +36,17 @@ class KatalogController extends Controller
         }
 
         // Lakukan pagination
-        $dataBarang = $query->paginate(5)->appends($request->all());
+        $dataBarang = $query->paginate(8)->appends($request->all());
 
         // Tentukan jika barang kosong
         $barangKosong = $dataBarang->isEmpty();
 
-        $dataKeranjang = [];
+        $dataKeranjang = collect();
         $notifikasiKeranjang = 0;
+        $currentUser = auth()->guard('mahasiswa')->user() ?? auth()->guard('dosen')->user();
 
-        if (auth()->check()) {
-            $dataKeranjang = Keranjang::where('user_id', auth()->id())
+        if ($currentUser) {
+            $dataKeranjang = Keranjang::where('user_id', $currentUser->id)
                 ->with('barang')
                 ->get();
 
@@ -114,14 +115,14 @@ class KatalogController extends Controller
     public function show(string $id)
     {
         // Ambil data barang berdasarkan ID
-        $userID = auth()->id();
-
         $data = Barang::with(['kategori', 'stock', 'satuan'])->findOrFail($id);
 
-        $dataKeranjang = Keranjang::with('barang')->where('user_id', $userID)->get();
+        $dataKeranjang = collect();
+        $notifikasiKeranjang = 0;
+        $currentUser = auth()->guard('mahasiswa')->user() ?? auth()->guard('dosen')->user();
 
-        if (auth()->check()) {
-            $dataKeranjang = Keranjang::where('user_id', auth()->id())
+        if ($currentUser) {
+            $dataKeranjang = Keranjang::where('user_id', $currentUser->id)
                 ->with('barang')
                 ->get();
 

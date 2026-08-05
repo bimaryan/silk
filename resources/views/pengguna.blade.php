@@ -21,6 +21,24 @@
             font-style: normal;
         }
 
+        /* Fix SweetAlert2 buttons not showing in Tailwind/Flowbite */
+        div:where(.swal2-container) div:where(.swal2-actions) {
+            margin-top: 1.25em !important;
+            gap: 10px !important;
+        }
+        div:where(.swal2-container) button:where(.swal2-styled) {
+            padding: 8px 20px !important;
+            color: #fff !important;
+            border-radius: 6px !important;
+            font-weight: 500 !important;
+        }
+        div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm {
+            background-color: #3085d6 !important;
+        }
+        div:where(.swal2-container) button:where(.swal2-styled).swal2-cancel {
+            background-color: #d33 !important;
+        }
+
         .zoom-image {
             width: 100%;
             height: 200px;

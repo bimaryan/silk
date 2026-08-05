@@ -36,7 +36,7 @@ class MatkulImport implements ToCollection, WithHeadingRow
         }
 
         if (!empty($error)) {
-            throw new Exception(implode("\n", $error));
+            throw new Exception(\implode("\n", $error));
         }
     }
 }

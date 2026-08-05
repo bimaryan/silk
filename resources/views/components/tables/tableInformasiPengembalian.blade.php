@@ -55,7 +55,6 @@
                 </tr>
             @else
                 @if (Auth::guard('mahasiswa')->check())
-                    @if ($pengembalian->first()->first()->persetujuan != 'Diserahkan')
                         @foreach ($pengembalian as $data)
                             <tr
                                 class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
@@ -96,7 +95,6 @@
                                 'pengembalian' => $pengembalian,
                             ])
                         @endforeach
-                    @endif
                 @elseif (Auth::guard('dosen')->check())
                     @foreach ($pengembalian as $data)
                         <tr

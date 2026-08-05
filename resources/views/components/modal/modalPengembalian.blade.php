@@ -25,7 +25,7 @@
                             <div class="w-full bg-white border border-gray-200 rounded-lg shadow p-3">
                                 <div class="flex justify-between">
                                     <div class="flex items-center gap-2">
-                                        <img src="{{ asset($detail->foto ?? 'image/barang.png') }}" class="w-12"
+                                        <img src="{{ \Illuminate\Support\Str::startsWith($detail->foto, ['http://', 'https://']) ? $detail->foto : ($detail->foto ? asset('storage/' . $detail->foto) : asset('image/barang.png')) }}" class="w-12"
                                             alt="Gambar">
                                         <div>
                                             <p class="text-sm font-semibold">{{ $detail->barang->nama_barang }}</p>

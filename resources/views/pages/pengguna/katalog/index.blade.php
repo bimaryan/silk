@@ -29,7 +29,7 @@
                     <a href="{{ route('katalog.show', ['katalog' => $data->id]) }}"
                         class="w-full p-3 border border-green-500 bg-white rounded-lg shadow-lg max-w-m">
                         <div class="flex justify-center w-full">
-                            <img src="{{ asset('storage/' . $data->foto) ?? 'image/barang.png' }}"
+                            <img src="{{ \Illuminate\Support\Str::startsWith($data->foto, ['http://', 'https://']) ? $data->foto : ($data->foto ? asset('storage/' . $data->foto) : asset('image/barang.png')) }}"
                                 class="object-cover zoom-image" alt="{{ $data->nama_barang }}" />
                         </div>
                         <div class="mt-1">

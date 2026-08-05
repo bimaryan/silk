@@ -9,8 +9,8 @@
             @method('PUT')
             <div class="flex items-center mb-6">
                 <div class="relative overflow-hidden border border-4 border-green-500 rounded-full d-full">
-                    @if (isset(auth()->user()->foto) && file_exists(public_path('foto/' . auth()->user()->foto)))
-                        <img id="profileImage" src="{{ asset('foto/' . auth()->user()->foto) }}" alt="Foto Profil"
+                    @if (isset(auth()->user()->foto) && auth()->user()->foto != '')
+                        <img id="profileImage" src="{{ \Illuminate\Support\Str::startsWith(auth()->user()->foto, ['http://', 'https://']) ? auth()->user()->foto : asset('storage/' . auth()->user()->foto) }}" alt="Foto Profil"
                             class="object-cover rounded-full" style="width: 130px; height: 130px;">
                     @else
                         <!-- Tampilan default jika tidak ada gambar -->

@@ -22,7 +22,7 @@
                                 <div class="flex items-center gap-2">
                                     @if (!empty($data->barang))
                                         <!-- Tampilkan Barang -->
-                                        <img src="{{ asset('storage/' . $data->barang->foto) ?? 'image/barang.png' }}"
+                                        <img src="{{ \Illuminate\Support\Str::startsWith($data->barang->foto, ['http://', 'https://']) ? $data->barang->foto : ($data->barang->foto ? asset('storage/' . $data->barang->foto) : asset('image/barang.png')) }}"
                                             class="w-16 h-16" alt="{{ $data->barang->nama_barang }}">
                                         <p class="text-sm ms-2">{{ $data->barang->nama_barang }}</p>
                                         <p

@@ -32,6 +32,8 @@ use App\Http\Controllers\WEB\Staff\VerifikasiPeminjamanController;
 use App\Http\Controllers\WEB\Staff\VerifikasiPengembaliancontroller;
 use Illuminate\Support\Facades\Route;
 
+Route::resource('/', BerandaController::class);
+
 // ROUTE LOGIN
 Route::resource('login', LoginController::class);
 
@@ -101,24 +103,29 @@ Route::middleware(['auth:admin'])->group(function () {
     });
 });
 
+Route::resource('katalog', KatalogController::class)->only(['index', 'show']);
+Route::get('/detail/{id}', [DetailController::class, 'index'])->name('detail.index');
+Route::prefix('informasi/')->group(function () {
+    Route::get('informasi-peminjaman', [InformasiController::class, 'indexPeminjaman'])->name('informasi-peminjaman.index');
+    Route::get('informasi-pengembalian', [InformasiController::class, 'indexPengembalian'])->name('informasi-pengembalian.index');
+});
+Route::resource('riwayat', RiwayatController::class)->only(['index']);
+
+Route::resource('beranda', BerandaController::class)->only('index');
+
 Route::middleware(['multiGuard:dosen,mahasiswa'])->group(function () {
     Route::resource('logout', LogoutController::class)->only('index');
-
-    Route::resource('beranda', BerandaController::class)->only('index');
-    Route::resource('katalog', KatalogController::class);
+    Route::resource('katalog', KatalogController::class)->except(['index', 'show']);
     Route::resource('katalog-ruangan', PenggunaRuanganController::class);
     Route::prefix('informasi/')->group(function () {
-        Route::get('informasi-peminjaman', [InformasiController::class, 'indexPeminjaman'])->name('informasi-peminjaman.index');
-        Route::get('informasi-pengembalian', [InformasiController::class, 'indexPengembalian'])->name('informasi-pengembalian.index');
-    Route::post('proses-pengembalian/{pengembalian_id}', [InformasiController::class, 'prosesPengembalian'])->name('pengembalian.proses');
-
+        Route::post('proses-pengembalian/{pengembalian_id}', [InformasiController::class, 'prosesPengembalian'])->name('pengembalian.proses');
     });
-    Route::resource('riwayat', RiwayatController::class);
+    
+    Route::resource('riwayat', RiwayatController::class)->except(['index']);
     Route::resource('edit-profile', EditProfileController::class);
     Route::resource('edit-password', EditPasswordController::class);
     Route::resource('peminjaman', PeminjamanController::class);
 
-    Route::get('/detail/{id}', [DetailController::class, 'index'])->name('detail.index');
     Route::post('/detail/store/{barang}', [DetailController::class, 'store'])->name('detail.store');
     Route::resource('keranjang', KeranjangController::class);
 

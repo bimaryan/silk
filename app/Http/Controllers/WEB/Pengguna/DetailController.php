@@ -14,9 +14,26 @@ class DetailController extends Controller
      */
     public function index(Request $request)
     {
-        $detailBarang = Barang::where('id', $request->id)->first();
+        $data = Barang::where('id', $request->id)->first();
 
-        return view('pages.pengguna.detail.index', compact('detailBarang'));
+        $dataKeranjang = collect();
+        $notifikasiKeranjang = 0;
+        $currentUser = auth()->guard('mahasiswa')->user() ?? auth()->guard('dosen')->user();
+
+        if ($currentUser) {
+            $dataKeranjang = Keranjang::where('user_id', $currentUser->id)
+                ->with('barang')
+                ->get();
+
+            // Hitung jumlah total item di keranjang
+            $notifikasiKeranjang = $dataKeranjang->sum('barang_id');
+        }
+
+        return view('pages.pengguna.detail.index', [
+            'data' => $data,
+            'dataKeranjang' => $dataKeranjang,
+            'notifikasiKeranjang' => $notifikasiKeranjang,
+        ]);
     }
 
     /**
