@@ -39,7 +39,7 @@
                             </span>
                         </div>
                         <div class="mt-1">
-                            <p class="font-normal">{{ Str::limit($data->nama_barang, 50) }}</p>
+                            <p class="font-normal">{{ $data->nama_barang }}</p>
                             <p class="text-sm text-gray-500">Stok : <span>{{ $data->stock->stock }}</span></p>
                         </div>
                     </a>
