@@ -40,7 +40,7 @@ Ini adalah proyek MBKM yang dibuat untuk tujuan pembelajaran. Berikut adalah lan
 
     Pertama, lakukan clone repositori dengan perintah berikut:
 
-    `https://github.com/bimaryan/project-mbkm.git`
+    `https://github.com/bimaryan/silk.git`
 
 2. **Install Dependency dan Generate Key**
 
